@@ -1,0 +1,5 @@
+name: BungeeUtilisals
+main: com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals
+version: 2.0.0
+author: didjee2
+depends: ['BungeeYAML']

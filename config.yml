@@ -1,0 +1,316 @@
+
+#          |==| BungeeUtilisals |==| Developed by didjee2 |==|            #
+#            |==| Some bugs or problems? Or an idea? |==|                 #
+#          |==| Say it in the BungeeUtilisals discussion! |==|            #
+#           This config can be reloaded with /butilisals reload!          #
+#    Very Important! The whole plugin will not work without BungeeYAML    #
+#            BungeeYAML can be downloaded at our SpigotMC Page!           #
+#_________________________________________________________________________#
+
+
+#_________________________________________________________________________________#
+# VERY IMPORTANT:
+# Remove the following Modules from your modules.yml AND from your Modules folder
+# - cmd_alert
+# - cmd_glist
+# - cmd_server
+# REMOVE THOSE, AND THE COMMANDS WILL BE OVERRIDDEN
+# Otherways, BungeeUtilisals isn't able to override those commands as it's a module.
+#_________________________________________________________________________________#
+
+# This is the Prefix, for the most messages & alert prefix!
+Prefix: '&e&lBungeeUtilisals &8» &r'
+
+# This is a system that allows you to connect to the Bukkit server you are in to ask if you have the permission!
+Bukkit-Permissions: false
+
+# This loads support for redisbungee when needed, it changes glist, but also some other commands like alert over the proxy's
+Use-RedisBungee: false
+
+# If enabled, the persons with the permission "butilisals.notify"
+# Will get a Message if there is an available update.
+UpdateChecker: true
+
+# VERY IMPORTANT! MYSQL NEEDS TO BE ENABLED AND GOOD THINGS NEED TO BE FILLED IN!
+# While MySQL being disabled, the Ban, Report & Friend system will not be loaded!
+MySQL:
+
+  Enabled: false
+  Host: '127.0.0.1'
+
+  Port: 3306
+
+  Database: 'database'
+
+  Username: 'username'
+
+  Password: 'password'
+
+# This are the main message, for the main & oldest commands (like /alert).
+Main-messages:
+  # this is the message when a player doesn't have the right permission!
+  no-permission: '&cYou do not have the permission to use this command!'  
+
+  # This is the message when you are already connected to a server.
+  already-connected: '&cYou are already connected to this server!'
+
+  # This is the Message being shown if you type /server!
+  server-message: '&7Hello &a%player%&7, you are now connected to &a%servername%&7!'
+
+  # This is the message being show while a player is offline.
+  # Currently only used by /find command.
+  offline-player: '&cThat player is not online!'
+
+  # This is the message being show if you use /find!
+  find-message: '&7Hello &a%player%&7, &a%target% &7is online in &a%server%&7!'
+
+  # This is the message if someone entered the wrong args for the /find command.
+  use-find: '&cPlease use /find (playername)!'
+
+  # The Message if a Server Switch is successfull!
+  sended-message: '&7Hello &a%player%&7, you have been connected to &a%server%&7!'
+
+  # The message if someone is using /server (servername), and that server does not exist!
+  no-server: '&cThat server does not exist!'
+
+  # This is the message if someone entered the wrong args for the /server command.
+  use-server: '&cPlease use /server or /server (servername)!'
+
+# This is the part for the Big Alert Command. (Chat & Title).
+BigAlert:
+  Messages:
+    BungeeUtilisals: '&e&lThis server is using BungeeUtilisals!'
+  Chat:
+    Enabled: true
+  ActionBar:
+    Enabled: true
+  Title:
+    Enabled: true
+    FadeIn: 30
+    Stay: 60
+    FadeOut: 30
+
+# This is the format of the StaffChat command.
+StaffChat:
+  Enabled: true
+  Format: '&4[&9%server%&4] &6%player%&c: %message%'
+  ChatEnabled: '&2You are now talking in the Staff Chat!'
+  ChatDisabled: '&2You are not talking in the Staff Chat anymore!'
+
+# This is the messages part for the clearchat command.
+ClearChat:
+  Enabled: true
+  Local: '&cThe local chat has been cleared by a Staff Member!'
+  Global: '&cThe global chat has been cleared by a Staff Member!'
+
+ChatLock:
+  Lock: '&7The Chat has been Locked.'
+  Unlock: '&7The Chat has been unlocked.'
+  Locked: '&7The Chat has been locked. You cannot talk right now.'
+  Broadcast:
+    Enabled: true
+    Lock:
+      - '&4------------------------------------------'
+      - '&c        The Chat has been Locked!         '
+      - '&4------------------------------------------'
+    UnLock:
+      - '&4------------------------------------------'
+      - '&c      The Chat has been UnLocked!         '
+      - '&4------------------------------------------'
+
+# Hub Command Section
+Hub:
+  Enabled: false
+  # The Server in the BungeeCord Config!
+  Server: Hub
+  # The Custom Command.
+  Command: 'hub;lobby'
+  # The Custom Message
+  Message: '&cYou have been connected to the hub!'
+  # This is the Message if someone is already connected to the hub.
+  inHub: '&cYou are already in the hub!'
+
+# The Rules Section
+Rules:
+  # Enable / disable the /rules command over here!
+  Enabled: true
+
+  # List your rules below!
+  Rules:
+  - '&aYour first rule!'
+  - '&eYour second rule!'
+
+  # The text shown below the rules!
+  Text: '&3Found rule breaker? &bClick Here to report them!'
+
+  # The Hover text of the Text message.
+  Hover: 'This Messages will send you to www.example.com ;)'
+
+  # The Linked site if you click on the text message!
+  Site: 'www.example.com'
+
+  # The Header of the Rules Message.
+  Header: '&7&l&m========================================='
+
+  # The Footer of the Rules Message.
+  Footer: '&7&l&m========================================='
+
+Vote:
+  # Enable / disable the /vote command over here!
+  Enabled: true
+
+  # List your Vote Links below!
+  Links:
+  - '&aYour first link!'
+  - '&eYour second link!'
+
+  # The text shown below the links!
+  Text: '&3Go to one of the links above to Vote for our server ;)'
+
+  # The Hover text of the Text message.
+  Hover: 'This Message will send you to our Main Vote Site'
+
+  # The Linked site if you click on the text message!
+  Site: 'www.example.com/vote'
+
+  # The Header of the Vote Message.
+  Header: '&7&l&m========================================='
+
+  # The Footer of the Vote Message.
+  Footer: '&7&l&m========================================='
+
+Store:
+  # Enable / disable the /store command over here!
+  Enabled: true
+
+  # List the command messages below!
+  Message:
+  - '&aDonate to support us and to keep our server!'
+  - '&eIt really helps!'
+
+  # The text shown below the message!
+  Text: '&3Donate to support our server!'
+
+  # The Hover text of the Text message.
+  Hover: 'This Message will send you to our Store'
+
+  # The Linked site if you click on the text message!
+  Site: 'http://example.buycraft.net'
+
+  # The Header of the Store Message.
+  Header: '&7&l&m========================================='
+
+  # The Footer of the Store Message.
+  Footer: '&7&l&m========================================='
+  
+
+ChatOptions:
+  # Setting this to true will result in a . after every sentence.
+  point-after-sentence: true
+  # Setting this to true will change the first letter of a message in a capital letter.
+  first-letter-uppercase: true
+
+GList:
+  Enabled: true
+  # This is the Format for the /glist command!
+  # Example: Hub (1): didjee2   (That is being shown by default!)
+  Format: '&6%server% &8(&b%players%&8): &f%playerlist%'
+  
+  # The Color code for the PlayerList, this is to avoid some bugs with color codes.
+  PlayerListColor: '&f'
+
+  # This is the Format for the Total Players in the server!
+  # Example: There are 2 players online now! (Default one ;))
+  Total: '&6There are &b%totalnum% &6players online now!'
+
+  # This is the section for the custom /glist.
+  # If you have like 10 SG servers, and you don't want them in your /glist?
+  # Just Enable this and remove the names from the SG servers below!
+  Custom_GList: true
+
+  # The aliases for the /glist.
+  Aliase: 'list'
+
+  # The servers that you want to show in your /glist
+  # You can set 2 servers as one below, the word before the : will being shown in the GList
+  # And you can calculate server players into one. Like, you have 4 hubs, and you want to show it as one,
+  # Then just split the server names with the "," symbol, and the players + player amount will be shown under 1 server.
+  Servers:
+    Hub: 'hub,hub1,hub2'
+    Factions: 'Factions'
+    Skywars: 'Skywars1,Skywars2'
+
+AntiSwear:
+  Enabled: true
+  # Setting the Advanced option to false, won't block that much.
+  # Like you have blocked the word "ass". Setting advanced to true, should block things like
+  # Compass too, advanced to false won't block this!
+  Advanced: false
+  # Those are the disallowed words.
+  Blocked:
+  - 'Your'
+  - 'Words'
+  # This is the message if someone is swearing.
+  Message: '&cPlease do not swear!'
+  # Let this empty to block the hole message.
+  Replace_With: '****'
+
+AntiCaps:
+  Enabled: true
+  # Maximum percentage of characters in a message allowed to be uppercase
+  Max_Percentage: 25
+  # Minimum length of a message for the plugin to take effect. (Used to prevent false positives such as "Hi" being 50% caps.)
+  Min_Length: 4
+  Message: '&cPlease do not use Caps!'
+
+# The AntiSpam part!
+# This could be buggy!
+AntiSpam:
+  # You can enable // disable antispam here!
+  Enabled: false
+  # How many seconds does players need to wait before they can talk again?
+  # This is in SECONDS!
+  Seconds: 2
+  Message: '&cYou need to wait %time% seconds to talk again.'
+
+# The NoRepeat part will block repeating the same messages!
+Norepeat:
+  # You can enable // disable the norepeat here!
+  Enabled: false
+  Message: '&cPlease do not repeat a message!'
+
+# The MessageLimiter Part will force a max. amount of messages in X amount of time.
+MessageLimiter:
+  # Enable or Disable the MessageLimiter over here.
+  Enabled: true
+  # Set the max amount messages in X amount of seconds (see below)!
+  Max: 10
+  # Set the time of the max amount!
+  Time: 10
+  # Set the message if someone has reached his limit!
+  Message: '&cYou have reached the limit. Max 10 Messages/10 Seconds!'
+
+# The AntiAdvertisment part
+AntiAd:
+  # Should the AntiAd be enabled or not?
+  Enabled: true
+  # Enter the things that need to be replaced by a . when checking if it's an advertiser!
+  Replace-with-dot:
+  - '{.}'
+  - ' . '
+  - '(.)'
+  - '*.*'
+  - '[.]'
+  - '\./'
+  - '/.\'
+  - '/./'
+  - '\.\'
+  - '<.>'
+  - '>.<'
+  - '>.>'
+  - '<.<'
+  - 'dot'
+  Whitelist:
+  - 'play.centrixpvp.com'
+  - 'play.skybattle.net'
+  Message: '&cPlease do not advertise!'

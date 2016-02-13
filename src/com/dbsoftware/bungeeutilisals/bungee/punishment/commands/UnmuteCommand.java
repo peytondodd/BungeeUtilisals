@@ -1,0 +1,58 @@
+package com.dbsoftware.bungeeutilisals.bungee.punishment.commands;
+
+import java.util.Arrays;
+import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
+import com.dbsoftware.bungeeutilisals.bungee.punishment.MuteAPI;
+import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
+import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
+import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
+import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.plugin.Command;
+
+public class UnmuteCommand extends Command {
+
+	public UnmuteCommand() {
+		super("unmute");
+	}
+
+	public static void executeUnmuteCommand(CommandSender sender, String[] args) {
+		if(args.length != 1){
+			for(String s : Punishments.punishments.getStringList("Punishments.Unmute.Messages.WrongArgs", Arrays.asList(new String[]{"&4&lBans &8» &ePlease use &b/unmute (player)&e!"}))){
+				sender.sendMessage(TextComponent.fromLegacyText(s.replace("&", "§")));
+			}
+			return;
+		}
+		if(MuteAPI.isMuted(args[0])){
+			MuteAPI.removeMute(MuteAPI.getMuteNumber(args[0]));
+			for(String s : Punishments.punishments.getStringList("Punishments.Unmute.Messages.Unmuted", Arrays.asList(new String[]{"&4&Bans &8» &b%player% &ehas been unmuted!"}))){
+				sender.sendMessage(Utils.format(s.replace("%player%", args[0])));
+			}
+		} else {
+			for(String s : Punishments.punishments.getStringList("Punishments.Unmute.Messages.NotMuted", Arrays.asList(new String[]{"&4&Bans &8» &cThat player is not muted!"}))){
+				sender.sendMessage(Utils.format(s));
+			}
+			return;
+		}
+	}
+	
+	@Override
+	public void execute(CommandSender sender, String[] args) {
+		if(!(sender instanceof ProxiedPlayer)){
+			executeUnmuteCommand(sender, args);
+			return;
+		}
+		if(BungeeUtilisals.getInstance().getConfig().getBoolean("Bukkit-Permissions")){
+			PluginMessageChannel.sendPermissionCheckPluginMessage("hasPermission", "butilisals.unmute", "unmute", args, ((ProxiedPlayer)sender));
+			return;
+		}
+		if(sender.hasPermission("butilisals.unmute") || sender.hasPermission("butilisals.*")){
+			executeUnmuteCommand(sender, args);
+		} else {
+			for(String s : Punishments.punishments.getStringList("Punishments.Messages.NoPermission", Arrays.asList(new String[]{"&4&lPermissions &8» &cYou don't have the permission to use this command!"}))){
+				sender.sendMessage(Utils.format(s));
+			}
+		}
+	}
+}
