@@ -7,6 +7,7 @@ import com.dbsoftware.bungeeutilisals.bungee.friends.Friends;
 import com.dbsoftware.bungeeutilisals.bungee.party.Party;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.report.Reports;
+import com.dbsoftware.bungeeutilisals.bungee.tabmanager.TabManager;
 import com.dbsoftware.bungeeutilisals.bungee.titleannouncer.TitleAnnouncements;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
@@ -65,6 +66,7 @@ public class Butilisals extends Command {
 	    Reports.reloadReportsData();
 	    Party.reloadPartyData();
 	    Punishments.reloadPunishmentData();
+	    TabManager.reloadTab();
 		sender.sendMessage(Utils.format("&e&lBungeeUtilisals &8» &6Config reloaded!"));
 	}
 	

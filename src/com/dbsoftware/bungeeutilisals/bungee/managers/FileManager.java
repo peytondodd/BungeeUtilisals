@@ -45,7 +45,6 @@ public class FileManager {
 		}
 	}
 	public String getString(String path, String def) {
-		
 		if(file.contains(path)) {
 			return file.getString(path);
 		} else {		
@@ -143,6 +142,10 @@ public class FileManager {
 	
 	public void setStringList(String path, List<String> def) {
 		file.set(path, def);
+	}
+	
+	public boolean contains(String section){
+		return file.contains(section);
 	}
 	
 	public List<String> getConfigurationSection(String section){

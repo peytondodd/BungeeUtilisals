@@ -36,6 +36,7 @@ import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.redisbungee.RedisManager;
 import com.dbsoftware.bungeeutilisals.bungee.report.Reports;
 import com.dbsoftware.bungeeutilisals.bungee.staffchat.StaffChat;
+import com.dbsoftware.bungeeutilisals.bungee.tabmanager.TabManager;
 import com.dbsoftware.bungeeutilisals.bungee.titleannouncer.TitleAnnouncer;
 import com.dbsoftware.bungeeutilisals.bungee.updater.UpdateChecker;
 import com.dbsoftware.bungeeutilisals.bungee.utils.TPSRunnable;
@@ -112,7 +113,9 @@ public class BungeeUtilisals extends ConfigurablePlugin implements Listener {
 				
 			}, 10, TimeUnit.MINUTES);	
 	    }
-	    	    
+	    
+	    TabManager.loadTab();
+	    
 	    ProxyServer.getInstance().getLogger().info("BungeeUtilisals is now Enabled!");
 	}
 	

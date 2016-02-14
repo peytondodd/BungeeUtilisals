@@ -21,7 +21,7 @@ public class LoginEvent implements Listener {
 			String version = UpdateChecker.getLatestVersion();
 			
 			p.sendMessage(Utils.format("&e&lBungeeUtilisals &8» &6Version &b" + version + " &6is available!"));
-			p.sendMessage(Utils.format("Go download it on the &bSpigotMC &6page!"));	
+			p.sendMessage(Utils.format("&6Go download it on the &bSpigotMC &6page!"));	
 		}
 	}
 }
