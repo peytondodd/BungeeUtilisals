@@ -1,9 +1,7 @@
 package com.dbsoftware.bungeeutilisals.bungee.punishment.commands;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
-
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.MuteAPI;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
@@ -26,14 +24,14 @@ public class TempmuteCommand extends Command {
 	public static void executeTempmuteCommand(CommandSender sender, String[] args) {
 		String mutereason = "";
 		if(args.length < 3){
-			for(String s : Punishments.punishments.getStringList("Punishments.Tempmute.Messages.WrongArgs", Arrays.asList(new String[]{"&4&lBans &8» &ePlease use &b/tempmute (player) (time) (reason) &e!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempmute.Messages.WrongArgs")){
 				sender.sendMessage(TextComponent.fromLegacyText(s.replace("&", "§")));
 			}
 			return;
 		}
 		int mutes = MuteAPI.getMuteNumbers().size();
 		if(MuteAPI.isMuted(args[0])){
-			for(String s : Punishments.punishments.getStringList("Punishments.Tempmute.Messages.AlreadyMuted", Arrays.asList(new String[]{"&4&lBans &8» &cThat player is already muted!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempmute.Messages.AlreadyMuted")){
 				sender.sendMessage(Utils.format(s));
 			}
 			return;
@@ -51,18 +49,18 @@ public class TempmuteCommand extends Command {
 			try {
 				time = TimeUnit.parseDateDiff(args[1], true);
 			} catch(NumberFormatException e){
-				for(String s : Punishments.punishments.getStringList("Punishments.Tempmute.Messages.WrongTime", Arrays.asList(new String[]{"&4&lBans &8» &ePlease use a good TimeUnit!"}))){
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempmute.Messages.WrongTime")){
 					sender.sendMessage(Utils.format(s));
 				}
 				return;
 			} catch(Exception e){
-				for(String s : Punishments.punishments.getStringList("Punishments.Tempmute.Messages.WrongTime", Arrays.asList(new String[]{"&4&lBans &8» &ePlease use a good TimeUnit!"}))){
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempmute.Messages.WrongTime")){
 					sender.sendMessage(Utils.format(s));
 				}
 				return;
 			}
 			if(time == -1L){
-				for(String s : Punishments.punishments.getStringList("Punishments.Tempmute.Messages.WrongTime", Arrays.asList(new String[]{"&4&lBans &8» &ePlease use a good TimeUnit!"}))){
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempmute.Messages.WrongTime")){
 					sender.sendMessage(Utils.format(s));
 				}
 				return;
@@ -71,10 +69,7 @@ public class TempmuteCommand extends Command {
 			SimpleDateFormat df2 = new SimpleDateFormat("kk:mm dd/MM/yyyy");
 			String date = df2.format(new Date(time));
 			
-			for(String s : Punishments.punishments.getStringList("Punishments.Tempmute.Messages.MuteMessage", Arrays.asList(new String[]{
-					"&4&lBans &8» &b%player% &ehas tempmuted you!",
-					"&4&lBans &8» &eReason: &b%reason%",
-					"&4&lBans &8» &eUnmute Time: &b%time%"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempmute.Messages.MuteMessage")){
 				p.sendMessage(Utils.format(s.replace("%player%", sender.getName()).replace("%reason%", mutereason).replace("%time%", date)));
 			}
 			
@@ -91,18 +86,18 @@ public class TempmuteCommand extends Command {
 			try {
 				time = TimeUnit.parseDateDiff(args[1], true);
 			} catch(NumberFormatException e){
-				for(String s : Punishments.punishments.getStringList("Punishments.Tempmute.Messages.WrongTime", Arrays.asList(new String[]{"&4&lBans &8» &ePlease use a good TimeUnit!"}))){
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempmute.Messages.WrongTime")){
 					sender.sendMessage(Utils.format(s));
 				}
 				return;
 			} catch(Exception e){
-				for(String s : Punishments.punishments.getStringList("Punishments.Tempmute.Messages.WrongTime", Arrays.asList(new String[]{"&4&lBans &8» &ePlease use a good TimeUnit!"}))){
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempmute.Messages.WrongTime")){
 					sender.sendMessage(Utils.format(s));
 				}
 				return;
 			}
 			if(time == -1L){
-				for(String s : Punishments.punishments.getStringList("Punishments.Tempmute.Messages.WrongTime", Arrays.asList(new String[]{"&4&lBans &8» &ePlease use a good TimeUnit!"}))){
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempmute.Messages.WrongTime")){
 					sender.sendMessage(Utils.format(s));
 				}
 				return;
@@ -111,7 +106,7 @@ public class TempmuteCommand extends Command {
 		}
 		PlayerInfo pinfo = new PlayerInfo(args[0]);
 		pinfo.addMute();
-		for(String s : Punishments.punishments.getStringList("Punishments.Tempmute.Messages.Muted", Arrays.asList(new String[]{"&4&lBans &8» &b%player% &ehas been tempmuted! &bReason: &e%reason%"}))){
+		for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempmute.Messages.Muted")){
 			sender.sendMessage(Utils.format(s.replace("%player%", args[0]).replace("%reason%", mutereason)));
 		}
 	}
@@ -129,7 +124,7 @@ public class TempmuteCommand extends Command {
 		if(sender.hasPermission("butilisals.tempmute") || sender.hasPermission("butilisals.*")){
 			executeTempmuteCommand(sender, args);
 		} else {
-			for(String s : Punishments.punishments.getStringList("Punishments.Messages.NoPermission", Arrays.asList(new String[]{"&4&lPermissions &8» &cYou don't have the permission to use this command!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Messages.NoPermission")){
 				sender.sendMessage(Utils.format(s));
 			}
 		}

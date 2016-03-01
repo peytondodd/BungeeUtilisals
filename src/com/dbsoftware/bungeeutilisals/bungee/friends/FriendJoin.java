@@ -24,7 +24,7 @@ public class FriendJoin implements Listener {
 		     
 			 List<String> requests = FriendsAPI.getFriendRequests(p.getName());
 		     if(requests.size() != 0){
-		    	 p.sendMessage(Utils.format(Friends.friends.getString("Friends.Messages.RequestJoinMessage", "").replace("&", "§").replace("%requests%", requests.size() + "")));
+		    	 p.sendMessage(Utils.format(Friends.friends.getFile().getString("Friends.Messages.RequestJoinMessage", "").replace("&", "§").replace("%requests%", requests.size() + "")));
 		     }
 		     
 		     Iterator<ProxiedPlayer> i = ProxyServer.getInstance().getPlayers().iterator();
@@ -32,7 +32,7 @@ public class FriendJoin implements Listener {
 			     ProxiedPlayer player = i.next();
 				 List<String> friends = FriendsAPI.getFriends(player.getName());
 				 if(friends.contains(p.getName())){
-					 player.sendMessage(Utils.format(Friends.friends.getString("Friends.Messages.FriendJoin", "").replace("&", "§").replace("%friend%", p.getName())));
+					 player.sendMessage(Utils.format(Friends.friends.getFile().getString("Friends.Messages.FriendJoin", "").replace("&", "§").replace("%friend%", p.getName())));
 				 }
 		     }
 		}

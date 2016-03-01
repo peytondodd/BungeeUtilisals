@@ -1,16 +1,13 @@
 package com.dbsoftware.bungeeutilisals.bungee.punishment.commands;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
-
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.BanAPI;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PlayerInfo;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
-
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -26,14 +23,14 @@ public class BanCommand extends Command {
 	public static void executeBanCommand(CommandSender sender, String[] args) {
 		String banreason = "";
 		if(args.length < 2){
-			for(String s : Punishments.punishments.getStringList("Punishments.Ban.Messages.WrongArgs", Arrays.asList(new String[]{"&4&lBans &8» &ePlease use &b/ban (player) (reason) &e!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Ban.Messages.WrongArgs")){
 				sender.sendMessage(TextComponent.fromLegacyText(s.replace("&", "§")));
 			}
 			return;
 		}
 		int bans = BanAPI.getBanNumbers().size();
 		if(BanAPI.isBanned(args[0])){
-			for(String s : Punishments.punishments.getStringList("Punishments.Ban.Messages.AlreadyBanned", Arrays.asList(new String[]{"&4&lBans &8» &cThat player is already banned!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Ban.Messages.AlreadyBanned")){
 				sender.sendMessage(Utils.format(s));
 			}
 			return;
@@ -47,12 +44,7 @@ public class BanCommand extends Command {
 			}
 			reason = reason.replace(p.getName() + " ", "");
 			banreason = reason;
-			for(String s : Punishments.punishments.getStringList("Punishments.Ban.Messages.KickMessage", Arrays.asList(new String[]{
-					"&cBungeeUtilisals &8» &7Banned",
-					" ",
-					"&cReason &8» &7%reason%",
-					"&cUnban at &8» &7%unbantime%",
-				 	"&cBanned by &8» &7%banner%"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Ban.Messages.KickMessage")){
 				kreason = kreason + "\n" + s;
 			}
 			BanAPI.addBan(bans + 1, sender.getName(), p.getName(), -1L, reason);
@@ -72,19 +64,14 @@ public class BanCommand extends Command {
 			}
 			reason = reason.replace(args[0] + " ", "");
 			banreason = reason;
-			for(String s : Punishments.punishments.getStringList("Punishments.Ban.Messages.KickMessage", Arrays.asList(new String[]{
-					"&cBungeeUtilisals &8» &7Banned",
-					" ",
-					"&cReason &8» &7%reason%",
-					"&cUnban at &8» &7%unbantime%",
-				 	"&cBanned by &8» &7%banner%"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Ban.Messages.KickMessage")){
 				kreason = kreason + "\n" + s;
 			}
 			BanAPI.addBan(bans + 1, sender.getName(), args[0], -1L, reason);
 		}
 		PlayerInfo pinfo = new PlayerInfo(args[0]);
 		pinfo.addBan();
-		for(String s : Punishments.punishments.getStringList("Punishments.Ban.Messages.Banned", Arrays.asList(new String[]{"&4&lBans &8» &b%player% &ehas been banned! &bReason: &e%reason%"}))){
+		for(String s : Punishments.punishments.getFile().getStringList("Punishments.Ban.Messages.Banned")){
 			sender.sendMessage(Utils.format(s.replace("%player%", args[0]).replace("%reason%", banreason)));
 		}
 	}
@@ -102,7 +89,7 @@ public class BanCommand extends Command {
 		if(sender.hasPermission("butilisals.ban") || sender.hasPermission("butilisals.*")){
 			executeBanCommand(sender, args);
 		} else {
-			for(String s : Punishments.punishments.getStringList("Punishments.Messages.NoPermission", Arrays.asList(new String[]{"&4&lPermissions &8» &cYou don't have the permission to use this command!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Messages.NoPermission")){
 				sender.sendMessage(Utils.format(s));
 			}
 		}

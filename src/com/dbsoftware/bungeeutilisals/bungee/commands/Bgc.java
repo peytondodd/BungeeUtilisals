@@ -20,7 +20,7 @@ public class Bgc extends Command {
 		super("bgc", "", new String[]{"glag", "gtps", "blag"});
 	}
 
-	public static void executeBgcCommand(CommandSender sender, String[] args) {
+	public static void executeBgcCommand(CommandSender sender, String[] args){
 		Runtime run = Runtime.getRuntime();
 		long maxMemory = run.maxMemory() / 1024 / 1024;
 		long totalMemory = run.totalMemory() / 1024 / 1024;

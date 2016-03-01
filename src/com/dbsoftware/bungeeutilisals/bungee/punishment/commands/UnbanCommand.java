@@ -1,7 +1,5 @@
 package com.dbsoftware.bungeeutilisals.bungee.punishment.commands;
 
-import java.util.Arrays;
-
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.BanAPI;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
@@ -22,7 +20,7 @@ public class UnbanCommand extends Command {
 
 	public static void executeUnbanCommand(CommandSender sender, String[] args) {
 		if(args.length != 1){
-			for(String s : Punishments.punishments.getStringList("Punishments.Unban.Messages.WrongArgs", Arrays.asList(new String[]{"&4&lBans &8» &ePlease use &b/unban (player)&e!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Unban.Messages.WrongArgs")){
 				sender.sendMessage(TextComponent.fromLegacyText(s.replace("&", "§")));
 			}
 			return;
@@ -30,26 +28,26 @@ public class UnbanCommand extends Command {
 		PlayerInfo pinfo = new PlayerInfo(args[0]);
 		String ip = pinfo.getIP();
 		if(!BanAPI.isBanned(args[0]) && ip != null && !BanAPI.isIPBanned(ip)){
-			for(String s : Punishments.punishments.getStringList("Punishments.Unban.Messages.NotBanned", Arrays.asList(new String[]{"&4&lBans &8» &cThat player is not banned!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Unban.Messages.NotBanned")){
 				sender.sendMessage(Utils.format(s));
 			}
 			return;
 		}
 		if(BanAPI.isBanned(args[0])){
 			BanAPI.removeBan(BanAPI.getBanNumber(args[0]));
-			for(String s : Punishments.punishments.getStringList("Punishments.Unban.Messages.Unbanned", Arrays.asList(new String[]{"&4&lBans &8» &b%player% &ehas been unbanned!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Unban.Messages.Unbanned")){
 				sender.sendMessage(Utils.format(s.replace("%player%", args[0])));
 			}
 		}
 		if(ip == null){
-			for(String s : Punishments.punishments.getStringList("Punishments.Unban.Messages.NeverJoined", Arrays.asList(new String[]{"&4&lBans &8» &cThat player never joined!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Unban.Messages.NeverJoined")){
 				sender.sendMessage(Utils.format(s));
 			}
 			return;
 		}
 		if(BanAPI.isIPBanned(ip)){
 			BanAPI.removeIPBan(BanAPI.getIPBanNumber(ip));
-			for(String s : Punishments.punishments.getStringList("Punishments.Unban.Messages.Unbanned", Arrays.asList(new String[]{"&4&lBans &8» &b%player% &ehas been unbanned!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Unban.Messages.Unbanned")){
 				sender.sendMessage(Utils.format(s.replace("%player%", args[0])));
 			}
 		}
@@ -68,7 +66,7 @@ public class UnbanCommand extends Command {
 		if(sender.hasPermission("butilisals.unban") || sender.hasPermission("butilisals.*")){
 			executeUnbanCommand(sender, args);
 		} else {
-			for(String s : Punishments.punishments.getStringList("Punishments.Messages.NoPermission", Arrays.asList(new String[]{"&4&lPermissions &8» &cYou don't have the permission to use this command!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Messages.NoPermission")){
 				sender.sendMessage(Utils.format(s));
 			}
 		}

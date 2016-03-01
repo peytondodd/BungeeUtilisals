@@ -2,6 +2,7 @@ package com.dbsoftware.bungeeutilisals.bungee.redisbungee.listeners;
 
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.redisbungee.ChannelNames;
+import com.dbsoftware.bungeeutilisals.bungee.staffchat.StaffChat;
 import com.dbsoftware.bungeeutilisals.bungee.utils.ActionBarUtil;
 import com.dbsoftware.bungeeutilisals.bungee.utils.TitleUtil;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
@@ -18,12 +19,12 @@ public class PubSubMessageListener implements Listener {
 	@EventHandler
 	public void onPubSubMessage(PubSubMessageEvent event){
 		String channel = event.getChannel();
-		if(channel.equals(ChannelNames.BU_ACTIONBAR.toString())){
+		if(channel.equals(ChannelNames.BU_ACTIONBAR.name)){
 			String message = event.getMessage().replace("&", "§");
 			for(ProxiedPlayer p : ProxyServer.getInstance().getPlayers()){
 				ActionBarUtil.sendActionBar(p, message.replace("%p%", p.getName()));
 			}
-		} else if(channel.equals(ChannelNames.BU_TITLE.toString())){
+		} else if(channel.equals(ChannelNames.BU_TITLE.name)){
 			String message = event.getMessage();
 			if(message.contains("%n")){
 				String[] titles = message.split("%n");
@@ -53,10 +54,18 @@ public class PubSubMessageListener implements Listener {
 				}
 				return;
 			}
-		} else if(channel.equals(ChannelNames.BU_CHAT.toString())){
+		} else if(channel.equals(ChannelNames.BU_CHAT.name)){
 			for(ProxiedPlayer p : ProxyServer.getInstance().getPlayers()){
 				BaseComponent[] message = Utils.format(event.getMessage().replace("%p%", p.getName()));
 				p.sendMessage(message);
+			}
+		} else if(channel.equals(ChannelNames.BU_STAFFCHAT.name)){
+			String message = event.getMessage();
+			
+			for(ProxiedPlayer p : ProxyServer.getInstance().getPlayers()){
+				if(StaffChat.inchat.contains(p.getName())){
+					p.sendMessage(Utils.format(message));
+				}
 			}
 		}
 	}

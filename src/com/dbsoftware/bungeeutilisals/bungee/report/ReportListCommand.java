@@ -37,7 +37,7 @@ public class ReportListCommand extends Command {
 		}
 		ProxiedPlayer p = (ProxiedPlayer)sender;
 		if(args.length != 1){
-			p.sendMessage(TextComponent.fromLegacyText(getReports().getString("Reports.Messages.WrongListArgs", "&cPlease use /reports (page)!").replace("&", "§")));
+			p.sendMessage(TextComponent.fromLegacyText(getReports().getFile().getString("Reports.Messages.WrongListArgs", "&cPlease use /reports (page)!").replace("&", "§")));
 			return;
 		}
 		
@@ -47,7 +47,7 @@ public class ReportListCommand extends Command {
 		try { 
 			page = Integer.parseInt(spage) - 1;
 		} catch(NumberFormatException e){
-			sender.sendMessage(Utils.format(getReports().getString("Reports.Messages.WrongNumber", "&cPlease use use a valid number!")));
+			sender.sendMessage(Utils.format(getReports().getFile().getString("Reports.Messages.WrongNumber", "&cPlease use use a valid number!")));
 		}
 		
 		List<Integer> numbers = new ArrayList<Integer>();
@@ -91,7 +91,7 @@ public class ReportListCommand extends Command {
 				numbers.add(Collections.max(numbers) + 1);
 			}
 		} else {
-			p.sendMessage(TextComponent.fromLegacyText(getReports().getString("Reports.Messages.NoReportsOnThisPage", "&cThere are no reports on this page!!").replace("&", "§")));
+			p.sendMessage(TextComponent.fromLegacyText(getReports().getFile().getString("Reports.Messages.NoReportsOnThisPage", "&cThere are no reports on this page!!").replace("&", "§")));
 			return;
 		}
 		
@@ -100,7 +100,7 @@ public class ReportListCommand extends Command {
 			String reported = ReportAPI.getReportedPlayer(i);
 			String reason = ReportAPI.getReason(i);
 			
-			TextComponent message = new TextComponent(getReports().getString("Reports.Messages.ReportListFormat",
+			TextComponent message = new TextComponent(getReports().getFile().getString("Reports.Messages.ReportListFormat",
 					"&bReport &6%number%&b) &6%player% &bhas reported &6%reported% &bfor &6%reason%&b!")
 					.replace("&", "§").replace("%number%", i + "").replace("%player%", reporter).replace("%reported%", reported).replace("%reason%", reason));
 			
@@ -132,7 +132,7 @@ public class ReportListCommand extends Command {
 			return;
 		}
 		if(!sender.hasPermission("butilisals.reportlist") && !sender.hasPermission("butilisals.*")){
-			sender.sendMessage(TextComponent.fromLegacyText(getReports().getString("Reports.Messages.NoPermission", "&cYou don't have the permission to use the Report Command!").replace("&", "§")));
+			sender.sendMessage(TextComponent.fromLegacyText(getReports().getFile().getString("Reports.Messages.NoPermission", "&cYou don't have the permission to use the Report Command!").replace("&", "§")));
 			return;
 		}
 		executeReportListCommand(sender, args);

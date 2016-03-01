@@ -1,6 +1,5 @@
 package com.dbsoftware.bungeeutilisals.bungee.punishment.commands;
 
-import java.util.Arrays;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.MuteAPI;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
@@ -19,18 +18,18 @@ public class UnmuteCommand extends Command {
 
 	public static void executeUnmuteCommand(CommandSender sender, String[] args) {
 		if(args.length != 1){
-			for(String s : Punishments.punishments.getStringList("Punishments.Unmute.Messages.WrongArgs", Arrays.asList(new String[]{"&4&lBans &8» &ePlease use &b/unmute (player)&e!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Unmute.Messages.WrongArgs")){
 				sender.sendMessage(TextComponent.fromLegacyText(s.replace("&", "§")));
 			}
 			return;
 		}
 		if(MuteAPI.isMuted(args[0])){
 			MuteAPI.removeMute(MuteAPI.getMuteNumber(args[0]));
-			for(String s : Punishments.punishments.getStringList("Punishments.Unmute.Messages.Unmuted", Arrays.asList(new String[]{"&4&Bans &8» &b%player% &ehas been unmuted!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Unmute.Messages.Unmuted")){
 				sender.sendMessage(Utils.format(s.replace("%player%", args[0])));
 			}
 		} else {
-			for(String s : Punishments.punishments.getStringList("Punishments.Unmute.Messages.NotMuted", Arrays.asList(new String[]{"&4&Bans &8» &cThat player is not muted!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Unmute.Messages.NotMuted")){
 				sender.sendMessage(Utils.format(s));
 			}
 			return;
@@ -50,7 +49,7 @@ public class UnmuteCommand extends Command {
 		if(sender.hasPermission("butilisals.unmute") || sender.hasPermission("butilisals.*")){
 			executeUnmuteCommand(sender, args);
 		} else {
-			for(String s : Punishments.punishments.getStringList("Punishments.Messages.NoPermission", Arrays.asList(new String[]{"&4&lPermissions &8» &cYou don't have the permission to use this command!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Messages.NoPermission")){
 				sender.sendMessage(Utils.format(s));
 			}
 		}

@@ -1,6 +1,5 @@
 package com.dbsoftware.bungeeutilisals.bungee.punishment.commands;
 
-import java.util.Arrays;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.BanAPI;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
@@ -22,14 +21,14 @@ public class BanIPCommand extends Command {
 	public static void executeBanIPCommand(CommandSender sender, String[] args) {
 		String banreason = "";
 		if(args.length < 2){
-			for(String s : Punishments.punishments.getStringList("Punishments.BanIP.Messages.WrongArgs", Arrays.asList(new String[]{"&4&lBans &8» &ePlease use &b/banip (player) (reason) &e!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.BanIP.Messages.WrongArgs")){
 				sender.sendMessage(TextComponent.fromLegacyText(s.replace("&", "§")));
 			}
 			return;
 		}
 		int bans = BanAPI.getIPBanNumbers().size();
 		if(BanAPI.isBanned(args[0])){
-			for(String s : Punishments.punishments.getStringList("Punishments.BanIP.Messages.AlreadyBanned", Arrays.asList(new String[]{"&4&lBans &8» &cThat IP is already banned!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.BanIP.Messages.AlreadyBanned")){
 				sender.sendMessage(Utils.format(s));
 			}
 			return;
@@ -44,16 +43,12 @@ public class BanIPCommand extends Command {
 			}
 			reason = reason.replace(p.getName() + " ", "");
 			banreason = reason;
-			for(String s : Punishments.punishments.getStringList("Punishments.BanIP.Messages.KickMessage", Arrays.asList(new String[]{
-					"&cBungeeUtilisals &8» &7IPBanned",
-					" ",
-					"&cReason &8» &7%reason%",
-				 	"&cBanned by &8» &7%banner%"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.BanIP.Messages.KickMessage")){
 				kreason = kreason + "\n" + s;
 			}
 			String IP = pinfo.getIP();
 			if(IP == null){
-				for(String s : Punishments.punishments.getStringList("Punishments.BanIP.Messages.NeverJoined", Arrays.asList(new String[]{"&4&lBans &8» &cThat player never joined!"}))){
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.BanIP.Messages.NeverJoined")){
 					sender.sendMessage(Utils.format(s));
 				}
 				return;
@@ -69,16 +64,12 @@ public class BanIPCommand extends Command {
 			}
 			reason = reason.replace(args[0] + " ", "");
 			banreason = reason;
-			for(String s : Punishments.punishments.getStringList("Punishments.BanIP.Messages.KickMessage", Arrays.asList(new String[]{
-					"&cBungeeUtilisals &8» &7IPBanned",
-					" ",
-					"&cReason &8» &7%reason%",
-				 	"&cBanned by &8» &7%banner%"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.BanIP.Messages.KickMessage")){
 				kreason = kreason + "\n" + s;
 			}
 			String IP = pinfo.getIP();
 			if(IP == null){
-				for(String s : Punishments.punishments.getStringList("Punishments.BanIP.Messages.NeverJoined", Arrays.asList(new String[]{"&4&lBans &8» &cThat player never joined!"}))){
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.BanIP.Messages.NeverJoined")){
 					sender.sendMessage(Utils.format(s));
 				}
 				return;
@@ -86,7 +77,7 @@ public class BanIPCommand extends Command {
 			BanAPI.addIPBan(bans + 1, sender.getName(), IP.replace("localhost", "127.0.0.1"), reason);
 		}
 		pinfo.addBan();
-		for(String s : Punishments.punishments.getStringList("Punishments.BanIP.Messages.Banned", Arrays.asList(new String[]{"&4&lBans &8» &b%ip% &ehas been banned! &bReason: &e%reason%"}))){
+		for(String s : Punishments.punishments.getFile().getStringList("Punishments.BanIP.Messages.Banned")){
 			sender.sendMessage(Utils.format(s.replace("%ip%", pinfo.getIP().replace("localhost", "127.0.0.1")).replace("%reason%", banreason)));
 		}
 	}
@@ -104,7 +95,7 @@ public class BanIPCommand extends Command {
 		if(sender.hasPermission("butilisals.banip") || sender.hasPermission("butilisals.*")){
 			executeBanIPCommand(sender, args);
 		} else {
-			for(String s : Punishments.punishments.getStringList("Punishments.Messages.NoPermission", Arrays.asList(new String[]{"&4&lPermissions &8» &cYou don't have the permission to use this command!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Messages.NoPermission")){
 				sender.sendMessage(Utils.format(s));
 			}
 		}

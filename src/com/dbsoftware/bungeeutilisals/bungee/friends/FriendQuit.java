@@ -29,7 +29,7 @@ public class FriendQuit implements Listener {
 			     ProxiedPlayer player = i.next();
 				 List<String> friends = FriendsAPI.getFriends(player.getName());
 				 if(friends.contains(p.getName())){
-					 player.sendMessage(Utils.format(Friends.friends.getString("Friends.Messages.FriendQuit", "").replace("&", "§").replace("%friend%", p.getName())));
+					 player.sendMessage(Utils.format(Friends.friends.getFile().getString("Friends.Messages.FriendQuit", "").replace("&", "§").replace("%friend%", p.getName())));
 				 }
 		     }
 		}

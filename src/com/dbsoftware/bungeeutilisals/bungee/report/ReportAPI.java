@@ -40,8 +40,8 @@ public class ReportAPI {
 	      ResultSet rs = null;
 	      rs = st.executeQuery("SELECT * FROM Reports");
 	      while (rs.next()) {
-	    	int reportnumber = rs.getInt("Number");
-	    	reports.add(reportnumber);
+	    	  int reportnumber = rs.getInt("Number");
+	    	  reports.add(reportnumber);
 	      }
 	    } catch (SQLException e) {
 	      System.out.println("[BungeeUtilisals]: An error occured while contacting the Database! " + e.getMessage());

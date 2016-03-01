@@ -2,9 +2,9 @@ package com.dbsoftware.bungeeutilisals.bungee.report;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import net.md_5.bungee.api.ProxyServer;
-
+import net.md_5.bungee.config.Configuration;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.managers.DatabaseManager;
 import com.dbsoftware.bungeeutilisals.bungee.managers.FileManager;
@@ -23,41 +23,42 @@ public class Reports {
     public static void registerReportSystem(){
     	reports = null;
     	reports = new FileManager( path );
-    	if(reports.getBoolean("Reports.Enabled", true)){
-    		ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.instance, new ReportCommand());
-    		ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.instance, new ReportListCommand());
+    	if(reports.getFile().getBoolean("Reports.Enabled", true)){
+    		ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new ReportCommand());
+    		ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new ReportListCommand());
 
         	setDefaults();
     	}
     }
     
     private static void setDefaults(){
-        List<String> check = reports.getConfigurationSection( "Reports" );
+        Configuration cs = reports.getFile().getSection( "Reports" );
+        Collection<String> check = cs.getKeys();
         if(!check.contains("Broadcast")){
-        	reports.setBoolean("Broadcast", true);
+        	reports.getFile().set("Broadcast", true);
         }
         if(!check.contains("Players")){
         	ArrayList<String> players = new ArrayList<String>();
         	players.add("didjee2");
-        	reports.setStringList("Players", players);
+        	reports.getFile().set("Players", players);
         }
         if(!check.contains("Cooldown")){
-        	reports.setInt("Cooldown", 60);
+        	reports.getFile().set("Cooldown", 60);
         }
         if(!check.contains("Messages")){
-        	reports.setString("Reports.Messages.WrongArgs", "&cPlease use /report (player) (reason).");
-        	reports.setString("Reports.Messages.NoPermission", "&cYou don't have the permission to use the Report Command!");
-        	reports.setString("Reports.Messages.NoPlayer", "&cYou can't report an offline player!");
-        	reports.setString("Reports.Messages.Reported", "&aYou have reported %player%!");
-        	reports.setString("Reports.Messages.Removed", "&cYou have removed report number %number%!");
-        	reports.setString("Reports.Messages.ReportListFormat", "&6%number%&b) &6%player% &bhas reported &6%reported% &bfor &6%reason%&b!");
-        	reports.setString("Reports.Messages.WrongListArgs", "&cPlease use /reports (page)!");
-        	reports.setString("Reports.Messages.NoReportNumberExist", "&cReport number %number% doesn't exist!");
-        	reports.setString("Reports.Messages.NoReportsOnThisPage", "&cThere are no reports on this page!");
-        	reports.setString("Reports.Messages.CooldownMessage", "&cYou need to wait &6%time% &cseconds untill you can report again!");
-			reports.setString("Reports.Messages.EnabledAlert", "&cNew reports will now be alerted!");
-			reports.setString("Reports.Messages.DisabledAlert", "&cNew reports will not be alerted anymore!");
-			reports.setString("Reports.Messages.WrongNumber", "&cPlease use use a valid number!");
+        	reports.getFile().set("Reports.Messages.WrongArgs", "&cPlease use /report (player) (reason).");
+        	reports.getFile().set("Reports.Messages.NoPermission", "&cYou don't have the permission to use the Report Command!");
+        	reports.getFile().set("Reports.Messages.NoPlayer", "&cYou can't report an offline player!");
+        	reports.getFile().set("Reports.Messages.Reported", "&aYou have reported %player%!");
+        	reports.getFile().set("Reports.Messages.Removed", "&cYou have removed report number %number%!");
+        	reports.getFile().set("Reports.Messages.ReportListFormat", "&6%number%&b) &6%player% &bhas reported &6%reported% &bfor &6%reason%&b!");
+        	reports.getFile().set("Reports.Messages.WrongListArgs", "&cPlease use /reports.getFile() (page)!");
+        	reports.getFile().set("Reports.Messages.NoReportNumberExist", "&cReport number %number% doesn't exist!");
+        	reports.getFile().set("Reports.Messages.NoReportsOnThisPage", "&cThere are no reports.getFile() on this page!");
+        	reports.getFile().set("Reports.Messages.CooldownMessage", "&cYou need to wait &6%time% &cseconds untill you can report again!");
+			reports.getFile().set("Reports.Messages.EnabledAlert", "&cNew reports.getFile() will now be alerted!");
+			reports.getFile().set("Reports.Messages.DisabledAlert", "&cNew reports.getFile() will not be alerted anymore!");
+			reports.getFile().set("Reports.Messages.WrongNumber", "&cPlease use use a valid number!");
     	}
     	reports.save();
     } 

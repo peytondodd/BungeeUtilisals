@@ -1,6 +1,7 @@
 package com.dbsoftware.bungeeutilisals.bungee.titleannouncer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -18,11 +19,11 @@ public class TitleAnnouncer {
 
     public static void loadAnnouncements() {
         setDefaults();
-        if ( TitleAnnouncements.titleannouncements.getBoolean("Announcements.Enabled", true) ) {
-            List<String> global = TitleAnnouncements.titleannouncements.getStringList( "Announcements.Global.Messages", new ArrayList<String>() );
+        if ( TitleAnnouncements.titleannouncements.getFile().getBoolean("Announcements.Enabled", true) ) {
+            List<String> global = TitleAnnouncements.titleannouncements.getFile().getStringList( "Announcements.Global.Messages");
             if ( !global.isEmpty() ) {
-            	if(TitleAnnouncements.titleannouncements.getBoolean( "Announcements.Global.Enabled", true)){
-                int interval = TitleAnnouncements.titleannouncements.getInt( "Announcements.Global.Interval", 0 );
+            	if(TitleAnnouncements.titleannouncements.getFile().getBoolean( "Announcements.Global.Enabled", true)){
+                int interval = TitleAnnouncements.titleannouncements.getFile().getInt( "Announcements.Global.Interval", 0 );
                 if ( interval > 0 ) {
                     GlobalTitleAnnouncements g = new GlobalTitleAnnouncements();
                     for ( String messages : global ) {
@@ -34,14 +35,14 @@ public class TitleAnnouncer {
             	}
             }
             for ( String server : proxy.getServers().keySet() ) {
-                List<String> servermessages = TitleAnnouncements.titleannouncements.getStringList( "Announcements." + server + ".Messages", new ArrayList<String>() );
+                List<String> servermessages = TitleAnnouncements.titleannouncements.getFile().getStringList( "Announcements." + server + ".Messages");
                 if ( !servermessages.isEmpty() ) {
-                	if(TitleAnnouncements.titleannouncements.getBoolean( "Announcements." + server + ".Enabled", false)){
-                    int interval = TitleAnnouncements.titleannouncements.getInt( "Announcements." + server + ".Interval", 0 );
+                	if(TitleAnnouncements.titleannouncements.getFile().getBoolean( "Announcements." + server + ".Enabled", false)){
+                    int interval = TitleAnnouncements.titleannouncements.getFile().getInt( "Announcements." + server + ".Interval", 0 );
                     if ( interval > 0 ) {
-                        int fadeIn = TitleAnnouncements.titleannouncements.getInt( "Announcements." + server + ".FadeIn", 30 );
-                        int stay = TitleAnnouncements.titleannouncements.getInt( "Announcements." + server + ".Stay", 60 );
-                        int fadeOut = TitleAnnouncements.titleannouncements.getInt( "Announcements." + server + ".FadeOut", 30 );
+                        int fadeIn = TitleAnnouncements.titleannouncements.getFile().getInt( "Announcements." + server + ".FadeIn", 30 );
+                        int stay = TitleAnnouncements.titleannouncements.getFile().getInt( "Announcements." + server + ".Stay", 60 );
+                        int fadeOut = TitleAnnouncements.titleannouncements.getFile().getInt( "Announcements." + server + ".FadeOut", 30 );
                         
                         ServerTitleAnnouncements s = new ServerTitleAnnouncements( proxy.getServerInfo( server ), fadeIn, stay, fadeOut);
                         for ( String messages : servermessages ) {
@@ -57,36 +58,36 @@ public class TitleAnnouncer {
     }
 
     private static void setDefaults() {
-        List<String> check = TitleAnnouncements.titleannouncements.getConfigurationSection( "Announcements" );
+        Collection<String> check = TitleAnnouncements.titleannouncements.getFile().getSection("Announcements").getKeys();
         if ( !check.contains( "Enabled" ) ) {
-            TitleAnnouncements.titleannouncements.setBoolean("Announcements.Enabled", true);
+            TitleAnnouncements.titleannouncements.getFile().set("Announcements.Enabled", true);
         }
         if ( !check.contains( "Global" ) ) {
-            TitleAnnouncements.titleannouncements.setBoolean("Announcements.Global.Enabled", true);
-            TitleAnnouncements.titleannouncements.setInt( "Announcements.Global.Interval", 150 );
+            TitleAnnouncements.titleannouncements.getFile().set("Announcements.Global.Enabled", true);
+            TitleAnnouncements.titleannouncements.getFile().set( "Announcements.Global.Interval", 150 );
             
-            TitleAnnouncements.titleannouncements.setInt( "Announcements.Global.FadeIn", 30 );
-            TitleAnnouncements.titleannouncements.setInt( "Announcements.Global.Stay", 60 );
-            TitleAnnouncements.titleannouncements.setInt( "Announcements.Global.FadeOut", 30 );
+            TitleAnnouncements.titleannouncements.getFile().set( "Announcements.Global.FadeIn", 30 );
+            TitleAnnouncements.titleannouncements.getFile().set( "Announcements.Global.Stay", 60 );
+            TitleAnnouncements.titleannouncements.getFile().set( "Announcements.Global.FadeOut", 30 );
             
             List<String> l = new ArrayList<String>();
             l.add( "&a&lWelcome to our network!" );
             l.add( "&aThis server is using%n&e&lBungeeUtilisals." );
-            TitleAnnouncements.titleannouncements.setStringList( "Announcements.Global.Messages", l );
+            TitleAnnouncements.titleannouncements.getFile().set( "Announcements.Global.Messages", l );
         }
         for ( String server : proxy.getServers().keySet() ) {
             if ( !check.contains( server ) ) {
-                TitleAnnouncements.titleannouncements.setBoolean("Announcements." + server + ".Enabled", false);
-                TitleAnnouncements.titleannouncements.setInt( "Announcements." + server + ".Interval", 75 );
+                TitleAnnouncements.titleannouncements.getFile().set("Announcements." + server + ".Enabled", false);
+                TitleAnnouncements.titleannouncements.getFile().set( "Announcements." + server + ".Interval", 75 );
                 
-                TitleAnnouncements.titleannouncements.setInt( "Announcements." + server + ".FadeIn", 30 );
-                TitleAnnouncements.titleannouncements.setInt( "Announcements." + server + ".Stay", 60 );
-                TitleAnnouncements.titleannouncements.setInt( "Announcements." + server + ".FadeOut", 30 );
+                TitleAnnouncements.titleannouncements.getFile().set( "Announcements." + server + ".FadeIn", 30 );
+                TitleAnnouncements.titleannouncements.getFile().set( "Announcements." + server + ".Stay", 60 );
+                TitleAnnouncements.titleannouncements.getFile().set( "Announcements." + server + ".FadeOut", 30 );
                 
                 List<String> l = new ArrayList<String>();
                 l.add( "&aHello %p%,%n&eWelcome to the &a" + server + " &eserver!" );
                 l.add( "&aThis server is using BungeeUtilisals!" );
-                TitleAnnouncements.titleannouncements.setStringList( "Announcements." + server + ".Messages", l );
+                TitleAnnouncements.titleannouncements.getFile().set( "Announcements." + server + ".Messages", l );
             }
         }
         TitleAnnouncements.titleannouncements.save();

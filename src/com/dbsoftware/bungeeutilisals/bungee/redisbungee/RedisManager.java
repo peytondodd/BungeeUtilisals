@@ -18,14 +18,17 @@ public class RedisManager {
 	public RedisManager(){
 		this.redis = RedisBungee.getApi();
 		
-		this.getRedis().registerPubSubChannels(ChannelNames.BU_ACTIONBAR.toString());
-		this.getRedis().registerPubSubChannels(ChannelNames.BU_CHAT.toString());
-		this.getRedis().registerPubSubChannels(ChannelNames.BU_TITLE.toString());
+		this.getRedis().registerPubSubChannels(ChannelNames.BU_ACTIONBAR.name);
+		this.getRedis().registerPubSubChannels(ChannelNames.BU_CHAT.name);
+		this.getRedis().registerPubSubChannels(ChannelNames.BU_TITLE.name);
+		this.getRedis().registerPubSubChannels(ChannelNames.BU_STAFFCHAT.name);
 
 		ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new Redisalert());
 		ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new Redisbigalert());
 		ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new Redisfind());
-		ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new Redisglist());
+		if(BungeeUtilisals.getInstance().getConfig().getBoolean("GList.Enabled")){
+			ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new Redisglist());
+		}
 
 		ProxyServer.getInstance().getPluginManager().registerListener(BungeeUtilisals.getInstance(), new PubSubMessageListener());
 	}
@@ -33,5 +36,4 @@ public class RedisManager {
 	public RedisBungeeAPI getRedis(){
 		return this.redis;
 	}
-
 }

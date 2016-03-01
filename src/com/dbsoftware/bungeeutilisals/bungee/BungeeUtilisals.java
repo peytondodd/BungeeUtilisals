@@ -1,6 +1,11 @@
 package com.dbsoftware.bungeeutilisals.bungee;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.concurrent.TimeUnit;
 
 import com.dbsoftware.bungeeutilisals.bungee.actionbarannouncer.ActionBarAnnouncer;
@@ -40,10 +45,14 @@ import com.dbsoftware.bungeeutilisals.bungee.tabmanager.TabManager;
 import com.dbsoftware.bungeeutilisals.bungee.titleannouncer.TitleAnnouncer;
 import com.dbsoftware.bungeeutilisals.bungee.updater.UpdateChecker;
 import com.dbsoftware.bungeeutilisals.bungee.utils.TPSRunnable;
+import com.google.common.io.ByteStreams;
 
-import net.craftminecraft.bungee.bungeeyaml.pluginapi.ConfigurablePlugin;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Listener;
+import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.config.Configuration;
+import net.md_5.bungee.config.ConfigurationProvider;
+import net.md_5.bungee.config.YamlConfiguration;
 
 /**
  * 
@@ -51,18 +60,26 @@ import net.md_5.bungee.api.plugin.Listener;
  *
  */
 
-public class BungeeUtilisals extends ConfigurablePlugin implements Listener {
+public class BungeeUtilisals extends Plugin implements Listener {
 
 	public static BungeeUtilisals instance;
     public static DatabaseManager dbmanager;
     public boolean chatMuted = false;
     public static boolean update;
     public RedisManager redisManager = null;
+    private File configfile;
+    private Configuration config;
 
 	public void onEnable(){
 		instance = this;
-	    saveDefaultConfig();
-	    
+
+		this.configfile = this.loadResource(this, "config.yml");
+	    try {
+			this.config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(this.configfile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	    			    
 	    loadCommands();
 	    registerEvents();
 	    Announcer.loadAnnouncements();
@@ -105,18 +122,31 @@ public class BungeeUtilisals extends ConfigurablePlugin implements Listener {
 			ProxyServer.getInstance().getScheduler().schedule(BungeeUtilisals.getInstance(), new Runnable(){
 
 				@Override
-				public void run() {
-					if(!dbmanager.isConnected()){
-						dbmanager.openConnection();
-					}
+				public void run(){
+					dbmanager.closeConnection();
+					dbmanager.openConnection();
 				}
 				
-			}, 10, TimeUnit.MINUTES);	
+			}, 0, 5, TimeUnit.MINUTES);	
 	    }
 	    
 	    TabManager.loadTab();
 	    
 	    ProxyServer.getInstance().getLogger().info("BungeeUtilisals is now Enabled!");
+	}
+	
+	public boolean reloadConfig(){
+		try {
+			this.config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(this.configfile);
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public Configuration getConfig(){
+		return this.config;
 	}
 	
     public static DatabaseManager getDatabaseManager(){
@@ -206,4 +236,40 @@ public class BungeeUtilisals extends ConfigurablePlugin implements Listener {
 	public static BungeeUtilisals getInstance(){
 		return instance;
 	}
+	
+    public File loadResource(Plugin plugin, String resource) {
+        File folder = plugin.getDataFolder();
+        if (!folder.exists()){
+            folder.mkdir();
+        }
+        File resourceFile = new File(folder, resource);
+        try {
+            if (!resourceFile.exists()) {
+                resourceFile.createNewFile();
+                try (InputStream in = plugin.getResourceAsStream(resource); OutputStream out = new FileOutputStream(resourceFile)){
+                	ByteStreams.copy(in, out);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resourceFile;
+    }
+    
+
+    public void convertFile(File f, File newFile){
+		try {
+			FileInputStream fis = new FileInputStream(f);
+			byte[] contents = new byte[fis.available()];
+			fis.read(contents, 0, contents.length);
+			String asString = new String(contents, "ISO8859_1");
+			byte[] newBytes = asString.getBytes("UTF8");
+			FileOutputStream fos = new FileOutputStream(newFile);
+			fos.write(newBytes);
+			fos.close();
+			fis.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+    }
 }

@@ -4,6 +4,7 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -18,11 +19,11 @@ public class Announcer {
 
     public static void loadAnnouncements() {
         setDefaults();
-        if ( Announcements.announcements.getBoolean("Announcements.Enabled", true) ) {
-            List<String> global = Announcements.announcements.getStringList( "Announcements.Global.Messages", new ArrayList<String>() );
+        if ( Announcements.announcements.getFile().getBoolean("Announcements.Enabled", true) ) {
+            List<String> global = Announcements.announcements.getFile().getStringList( "Announcements.Global.Messages");
             if ( !global.isEmpty() ) {
-            	if(Announcements.announcements.getBoolean( "Announcements.Global.Enabled", true)){
-                int interval = Announcements.announcements.getInt( "Announcements.Global.Interval", 0 );
+            	if(Announcements.announcements.getFile().getBoolean( "Announcements.Global.Enabled", true)){
+                int interval = Announcements.announcements.getFile().getInt( "Announcements.Global.Interval", 0 );
                 if ( interval > 0 ) {
                     GlobalAnnouncements g = new GlobalAnnouncements();
                     for ( String messages : global ) {
@@ -34,10 +35,10 @@ public class Announcer {
             	}
             }
             for ( String server : proxy.getServers().keySet() ) {
-                List<String> servermessages = Announcements.announcements.getStringList( "Announcements." + server + ".Messages", new ArrayList<String>() );
+                List<String> servermessages = Announcements.announcements.getFile().getStringList("Announcements." + server + ".Messages");
                 if ( !servermessages.isEmpty() ) {
-                	if(Announcements.announcements.getBoolean( "Announcements." + server + ".Enabled", false)){
-                    int interval = Announcements.announcements.getInt( "Announcements." + server + ".Interval", 0 );
+                	if(Announcements.announcements.getFile().getBoolean( "Announcements." + server + ".Enabled", false)){
+                    int interval = Announcements.announcements.getFile().getInt( "Announcements." + server + ".Interval", 0 );
                     if ( interval > 0 ) {
                         ServerAnnouncements s = new ServerAnnouncements( proxy.getServerInfo( server ));
                         for ( String messages : servermessages ) {
@@ -53,27 +54,27 @@ public class Announcer {
     }
 
     private static void setDefaults() {
-        List<String> check = Announcements.announcements.getConfigurationSection( "Announcements" );
+        Collection<String> check = Announcements.announcements.getFile().getSection( "Announcements" ).getKeys();
         if ( !check.contains( "Enabled" ) ) {
-            Announcements.announcements.setBoolean("Announcements.Enabled", true);
+            Announcements.announcements.getFile().set("Announcements.Enabled", true);
         }
         if ( !check.contains( "Global" ) ) {
-            Announcements.announcements.setBoolean("Announcements.Global.Enabled", true);
-            Announcements.announcements.setInt( "Announcements.Global.Interval", 150 );
+            Announcements.announcements.getFile().set("Announcements.Global.Enabled", true);
+            Announcements.announcements.getFile().set( "Announcements.Global.Interval", 150 );
             List<String> l = new ArrayList<String>();
             l.add( "&a&lWelcome to our network!" );
             l.add( "&aThis server is using BungeeUtilisals." );
             l.add( "&aDon't forget to take a little look at our website!" );
-            Announcements.announcements.setStringList( "Announcements.Global.Messages", l );
+            Announcements.announcements.getFile().set( "Announcements.Global.Messages", l );
         }
         for ( String server : proxy.getServers().keySet() ) {
             if ( !check.contains( server ) ) {
-                Announcements.announcements.setBoolean("Announcements." + server + ".Enabled", false);
-                Announcements.announcements.setInt( "Announcements." + server + ".Interval", 75 );
+                Announcements.announcements.getFile().set("Announcements." + server + ".Enabled", false);
+                Announcements.announcements.getFile().set( "Announcements." + server + ".Interval", 75 );
                 List<String> l = new ArrayList<String>();
                 l.add( "&aHello Everyone, &eWelcome to the &a" + server + " &eserver!" );
                 l.add( "&aThis server is using BungeeUtilisals!" );
-                Announcements.announcements.setStringList( "Announcements." + server + ".Messages", l );
+                Announcements.announcements.getFile().set( "Announcements." + server + ".Messages", l );
             }
         }
         Announcements.announcements.save();

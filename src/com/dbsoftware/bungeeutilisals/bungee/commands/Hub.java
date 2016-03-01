@@ -27,6 +27,7 @@ public class Hub extends Command {
 	public static void executeHubCommand(CommandSender sender, String[] args){
 		if (sender instanceof ProxiedPlayer){
 			ProxiedPlayer p = (ProxiedPlayer)sender;
+						
 			String server = instance.getConfig().getString("Hub.Server");
 			String playerserver = p.getServer().getInfo().getName();
 			if(!playerserver.equalsIgnoreCase(server)){

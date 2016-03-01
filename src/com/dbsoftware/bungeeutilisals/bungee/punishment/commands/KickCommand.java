@@ -1,11 +1,11 @@
 package com.dbsoftware.bungeeutilisals.bungee.punishment.commands;
 
-import java.util.Arrays;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PlayerInfo;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
+
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -20,14 +20,14 @@ public class KickCommand extends Command {
 
 	public static void executeKickCommand(CommandSender sender, String[] args) {
 		if(args.length < 2){
-			for(String s : Punishments.punishments.getStringList("Punishments.Kick.Messages.WrongArgs", Arrays.asList(new String[]{"&4&lBans &8» &ePlease use &b/kick (player) (reason) &e!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Kick.Messages.WrongArgs")){
 				sender.sendMessage(TextComponent.fromLegacyText(s.replace("&", "§")));
 			}
 			return;
 		}
 		ProxiedPlayer p = ProxyServer.getInstance().getPlayer(args[0]);
 		if(p == null){
-			for(String s : Punishments.punishments.getStringList("Punishments.Kick.Messages.NotOnline", Arrays.asList(new String[]{"&4&lBans &8» &eThat player is not online!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Kick.Messages.NotOnline")){
 				sender.sendMessage(Utils.format(s));
 			}
 			return;
@@ -38,18 +38,14 @@ public class KickCommand extends Command {
 			reason = reason + s + " ";
 		}
 		reason = reason.replace(p.getName() + " ", "");
-		for(String s : Punishments.punishments.getStringList("Punishments.Kick.Messages.KickMessage", Arrays.asList(new String[]{
-				"&cBungeeUtilisals &8» &7Kicked",
-				" ",
-				"&cReason &8» &7%reason%",
-			 	"&cKicked by &8» &7%kicker%"}))){
+		for(String s : Punishments.punishments.getFile().getStringList("Punishments.Kick.Messages.KickMessage")){
 			kreason = kreason + "\n" + s;
 		}
           
 		PlayerInfo pinfo = new PlayerInfo(p.getName());
 		pinfo.addKick();
 		p.disconnect(Utils.format(kreason.replace("%kicker%", sender.getName()).replace("%reason%", reason)));
-		for(String s : Punishments.punishments.getStringList("Punishments.Kick.Messages.Kicked", Arrays.asList(new String[]{"&4&lBans &8» &b%player% &ehas been kicked from the server!"}))){
+		for(String s : Punishments.punishments.getFile().getStringList("Punishments.Kick.Messages.Kicked")){
 			sender.sendMessage(Utils.format(s.replace("%player%", args[0])));
 		}
 	}
@@ -67,7 +63,7 @@ public class KickCommand extends Command {
 		if(sender.hasPermission("butilisals.kick") || sender.hasPermission("butilisals.*")){
 			executeKickCommand(sender, args);
 		} else {
-			for(String s : Punishments.punishments.getStringList("Punishments.Messages.NoPermission", Arrays.asList(new String[]{"&4&lPermissions &8» &cYou don't have the permission to use this command!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Messages.NoPermission")){
 				sender.sendMessage(Utils.format(s));
 			}
 		}

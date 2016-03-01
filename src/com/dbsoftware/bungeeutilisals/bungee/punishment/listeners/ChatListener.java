@@ -1,7 +1,6 @@
 package com.dbsoftware.bungeeutilisals.bungee.punishment.listeners;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.MuteAPI;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
@@ -20,7 +19,7 @@ public class ChatListener implements Listener {
 		}
 		if(event.isCommand()){
 			boolean blockedcmd = false;
-			for(String s : Punishments.punishments.getStringList("Punishments.Settings.Blocked-Cmds-While-Muted", Arrays.asList(new String[]{"/msg", "/w", "/tell"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Settings.Blocked-Cmds-While-Muted")){
 				if(event.getMessage().startsWith(s)){
 					blockedcmd = true;
 				}
@@ -45,19 +44,14 @@ public class ChatListener implements Listener {
 				SimpleDateFormat df2 = new SimpleDateFormat("kk:mm dd/MM/yyyy");
 				String date = df2.format(new Date(time));
 				
-				for(String s : Punishments.punishments.getStringList("Punishments.Tempmute.Messages.MuteMessage", Arrays.asList(new String[]{
-						"&4&lBans &8» &b%player% &ehas tempmuted you!",
-						"&4&lBans &8» &eReason: &b%reason%",
-						"&4&lBans &8» &eUnmute Time: &b%time%"}))){
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempmute.Messages.MuteMessage")){
 					p.sendMessage(Utils.format(s.replace("%player%", MuteAPI.getMutedBy(number)).replace("%reason%", reason).replace("%time%", date)));
 				}
 				event.setCancelled(true);
 				return;
 			} else {
 				String reason = MuteAPI.getReason(number);
-				for(String s : Punishments.punishments.getStringList("Punishments.Mute.Messages.MuteMessage", Arrays.asList(new String[]{
-						"&4&lBans &8» &b%player% &ehas muted you!",
-						"&4&lBans &8» &eReason: &b%reason%"}))){
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Mute.Messages.MuteMessage")){
 					p.sendMessage(Utils.format(s.replace("%player%", MuteAPI.getMutedBy(number)).replace("%reason%", reason)));
 				}
 				event.setCancelled(true);

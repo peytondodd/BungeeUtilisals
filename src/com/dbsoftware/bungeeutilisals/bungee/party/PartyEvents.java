@@ -1,22 +1,38 @@
 package com.dbsoftware.bungeeutilisals.bungee.party;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
+
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
+import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.event.ServerSwitchEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
 public class PartyEvents implements Listener {
 	
-	  @EventHandler
-	  public void onSwitch(ServerSwitchEvent e){
-		  if(Party.party.getBoolean("Party.Server-Switch", true)){
-			  ProxiedPlayer p = e.getPlayer();
-			  PartyManager.warpParty(p);
-		  }
-	  }
+	List<ProxiedPlayer> justLogged = new ArrayList<ProxiedPlayer>();
+	
+	@EventHandler
+	public void onJoin(PostLoginEvent event){
+		justLogged.add(event.getPlayer());
+	}
+	
+	@EventHandler
+	public void onSwitch(ServerSwitchEvent e){
+		if(justLogged.contains(e.getPlayer())){
+			justLogged.remove(e.getPlayer());
+			return;
+		}
+		if(Party.party.getFile().getBoolean("Party.Server-Switch", true)){
+			ProxiedPlayer p = e.getPlayer();
+			PartyManager.warpParty(p);
+		}
+	}
 	  
 	  @EventHandler
 	  public void leave(PlayerDisconnectEvent e){
@@ -37,7 +53,7 @@ public class PartyEvents implements Listener {
 					  e.setCancelled(true);
 				  } else {
 					  e.setCancelled(true);
-					  p.sendMessage(Utils.format(Party.party.getString("Party.Messages.NotInParty", "&cYou are not in a party!")));
+					  p.sendMessage(Utils.format(Party.party.getFile().getString("Party.Messages.NotInParty", "&cYou are not in a party!")));
 				  }
 			  } else {
 				  return;

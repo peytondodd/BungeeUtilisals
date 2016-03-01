@@ -2,7 +2,6 @@ package com.dbsoftware.bungeeutilisals.bungee.punishment.commands;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
@@ -26,14 +25,14 @@ public class PlayerInfoCommand extends Command {
 
 	public static void executeCheckBanCommand(final CommandSender sender, final String[] args) {
 		if(args.length != 1){
-			for(String s : Punishments.punishments.getStringList("Punishments.PlayerInfo.Messages.WrongArgs", Arrays.asList(new String[]{"&4&lBans &8» &ePlease use &b/pinfo (player)&e!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.PlayerInfo.Messages.WrongArgs")){
 				sender.sendMessage(TextComponent.fromLegacyText(s.replace("&", "§")));
 			}
 			return;
 		}
 		PlayerInfo pinfo = new PlayerInfo(args[0]);
 		if(!pinfo.isInTable()){
-			for(String s : Punishments.punishments.getStringList("Punishments.PlayerInfo.Messages.NeverJoined", Arrays.asList(new String[]{"&4&lBans &8» &eThat player never joined before!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.PlayerInfo.Messages.NeverJoined")){
 				sender.sendMessage(TextComponent.fromLegacyText(s.replace("&", "§")));
 			}
 			return;
@@ -76,41 +75,32 @@ public class PlayerInfoCommand extends Command {
 		String mutereason = MuteAPI.getReason(mutenumber);
 		
 		List<BaseComponent[]> messages = new ArrayList<BaseComponent[]>();
-		for(String s : Punishments.punishments.getStringList("Punishments.PlayerInfo.Messages.Info",
-					Arrays.asList(new String[]{"&4&lBans &8» &eInformation of &b%player%&e:",
-					" &eIP: &b%ip%",
-					" &eBans: &b%bans%",
-					" &eMutes: &b%mutes%",
-					" &eKicks: &b%kicks%",
-					" &eWarns: &b%warns%",
-					" &eCurrent Ban: &b%isbanned%",
-					" &eCurrent IPBan: &b%isIPbanned%",
-					" &eCurrent Mute: &b%ismuted%"}))){
+		for(String s : Punishments.punishments.getFile().getStringList("Punishments.PlayerInfo.Messages.Info")){
 			messages.add(Utils.format(s.replace("&", "§").replace("%ip%", IP.replace("localhost", "127.0.0.1"))
 						.replace("%player%", args[0])
 							.replace("%bans%", String.valueOf(pinfo.getBans()))
 							.replace("%mutes%", String.valueOf(pinfo.getMutes()))
 							.replace("%kicks%", String.valueOf(pinfo.getKicks()))
 							.replace("%warns%", String.valueOf(pinfo.getWarns()))
-							/**IS BANNED*/	.replace("%isbanned%", (isbanned ? Punishments.punishments.getString("Punishments.PlayerInfo.Messages.isBanned", "&cBanned by %banner% for %reason%. Unban time: %time%")
+							/**IS BANNED*/	.replace("%isbanned%", (isbanned ? Punishments.punishments.getFile().getString("Punishments.PlayerInfo.Messages.isBanned", "&cBanned by %banner% for %reason%. Unban time: %time%")
 														.replace("&", "§")
 														.replace("%banner%", bannedby).replace("%reason%", banreason)
 														.replace("%time%", (end == -1L ? "Never" : date))
 												
-							/**IS NOT BANNED*/			: Punishments.punishments.getString("Punishments.PlayerInfo.Messages.isNotBanned", "&cNot Banned"))
+							/**IS NOT BANNED*/			: Punishments.punishments.getFile().getString("Punishments.PlayerInfo.Messages.isNotBanned", "&cNot Banned"))
 												
-							/**IS IPBANNED*/).replace("%isIPbanned%", (isIPbanned ? Punishments.punishments.getString("Punishments.PlayerInfo.Messages.isIPBanned", "&cIPBanned by %banner% for %reason%.")
+							/**IS IPBANNED*/).replace("%isIPbanned%", (isIPbanned ? Punishments.punishments.getFile().getString("Punishments.PlayerInfo.Messages.isIPBanned", "&cIPBanned by %banner% for %reason%.")
 												.replace("&", "§")
 												.replace("%banner%", ipbannedby).replace("%reason%", ipbanreason)
 										
-					/**IS NOT IPBANNED*/		: Punishments.punishments.getString("Punishments.PlayerInfo.Messages.isNotIPBanned", "&cNot IPBanned"))
+					/**IS NOT IPBANNED*/		: Punishments.punishments.getFile().getString("Punishments.PlayerInfo.Messages.isNotIPBanned", "&cNot IPBanned"))
 										
-					/**IS MUTED*/			).replace("%ismuted%", (ismuted ? Punishments.punishments.getString("Punishments.PlayerInfo.Messages.isMuted", "&cMuted by %muter% for %reason%. Unmute time: %time%")
+					/**IS MUTED*/			).replace("%ismuted%", (ismuted ? Punishments.punishments.getFile().getString("Punishments.PlayerInfo.Messages.isMuted", "&cMuted by %muter% for %reason%. Unmute time: %time%")
 												.replace("&", "§")
 												.replace("%muter%", mutedby).replace("%reason%", mutereason)
 												.replace("%time%", (muteend == -1L ? "Never" : date))
 										
-					/**IS NOT MUTED*/			: Punishments.punishments.getString("Punishments.PlayerInfo.Messages.isNotMuted", "&cNot Muted")))));
+					/**IS NOT MUTED*/			: Punishments.punishments.getFile().getString("Punishments.PlayerInfo.Messages.isNotMuted", "&cNot Muted")))));
 		}
 		for(BaseComponent[] message : messages){
 			sender.sendMessage(message);
@@ -131,7 +121,7 @@ public class PlayerInfoCommand extends Command {
 		if(sender.hasPermission("butilisals.playerinfo") || sender.hasPermission("butilisals.*")){
 			executeCheckBanCommand(sender, args);
 		} else {
-			for(String s : Punishments.punishments.getStringList("Punishments.Messages.NoPermission", Arrays.asList(new String[]{"&4&lPermissions &8» &cYou don't have the permission to use this command!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Messages.NoPermission")){
 				sender.sendMessage(Utils.format(s));
 			}
 		}

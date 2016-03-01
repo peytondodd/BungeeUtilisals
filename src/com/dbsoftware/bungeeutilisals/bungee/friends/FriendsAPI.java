@@ -66,7 +66,7 @@ public class FriendsAPI{
   
 	public static void addFriendRequest(ProxiedPlayer requestSender, String requested){
 		if(requestSender.getName().equalsIgnoreCase(requested)){
-			requestSender.sendMessage(new TextComponent(Friends.friends.getString("Friends.Messages.Error", "&cYou can't add yourself as a friend.").replace("&", "§")));
+			requestSender.sendMessage(new TextComponent(Friends.friends.getFile().getString("Friends.Messages.Error", "&cYou can't add yourself as a friend.").replace("&", "§")));
 			return;
 		} else {
 			try {
@@ -84,7 +84,7 @@ public class FriendsAPI{
 			if(isInTable(sender.getName())) {
 				st.executeUpdate("DELETE FROM Requests WHERE Player='" + sender.getName() + "' AND Requests='" + requester + "'");
 			} else {
-				sender.sendMessage(new TextComponent(Friends.friends.getString("Friends.Messages.RequestRemoveError", "&cYou can't remove a request from someone who didn't requested!").replace("&", "§")));
+				sender.sendMessage(new TextComponent(Friends.friends.getFile().getString("Friends.Messages.RequestRemoveError", "&cYou can't remove a request from someone who didn't requested!").replace("&", "§")));
 				return;
 			}
 		} catch (SQLException e) {
@@ -122,7 +122,7 @@ public class FriendsAPI{
 				st.executeUpdate("DELETE FROM Friends WHERE Player='" + p.getName() + "' AND Friends='" + friend + "'");
 				st.executeUpdate("DELETE FROM Friends WHERE Player='" + friend + "' AND Friends='" + p.getName() + "'");
 			} else {
-				p.sendMessage(new TextComponent(Friends.friends.getString("Friends.Messages.NoFriends", "&cYou have no friends yet!").replace("&", "§")));
+				p.sendMessage(new TextComponent(Friends.friends.getFile().getString("Friends.Messages.NoFriends", "&cYou have no friends yet!").replace("&", "§")));
 			}
 		} catch (SQLException e) {
 			System.out.println("[BungeeUtilisals]: Can't remove Friend: " + friend + " from: " + p.getName() + ", " + e.getMessage());

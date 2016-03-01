@@ -5,7 +5,6 @@ import java.util.Collections;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
-import net.craftminecraft.bungee.bungeeyaml.bukkitapi.ConfigurationSection;
 import net.md_5.bungee.Util;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -14,6 +13,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
+import net.md_5.bungee.config.Configuration;
 
 public class Glist extends Command {
 	
@@ -29,27 +29,26 @@ public class Glist extends Command {
 	}
 	
 	private static void glist(CommandSender sender){
-		if(sender instanceof ProxiedPlayer){
 		if(!instance.getConfig().getBoolean("GList.Custom_GList")){
-	          ProxiedPlayer localProxiedPlayer1 = (ProxiedPlayer)sender;
-	          for (ServerInfo localServerInfo : ProxyServer.getInstance().getServers().values()) {
-	            if (localServerInfo.canAccess(sender)){
-	              ArrayList<String> localArrayList = new ArrayList<String>();
-	              for (ProxiedPlayer localProxiedPlayer2 : localServerInfo.getPlayers()) {
-	                localArrayList.add(localProxiedPlayer2.getDisplayName());
-	              }
-	              Collections.sort(localArrayList, String.CASE_INSENSITIVE_ORDER);
-	              localProxiedPlayer1.sendMessage(new ComponentBuilder(instance.getConfig().getString("GList.Format")
-	            		  .replace("%server%", localServerInfo.getName())
-	            		  .replace("%players%", localServerInfo.getPlayers().size() + "")
-	            		  .replace("%playerlist%", Util.format(localArrayList, instance.getConfig().getString("GList.PlayerListColor") + ", " + instance.getConfig().getString("GList.PlayerListColor")))
-	            		  .replaceAll("&", "§")).create());
-	            }
-	          }
-	          sender.sendMessage(new ComponentBuilder(instance.getConfig().getString("GList.Total").replace("%totalnum%", ProxyServer.getInstance().getPlayers().size() + "").replaceAll("&", "§")).create());
+			ProxiedPlayer localProxiedPlayer1 = (ProxiedPlayer)sender;
+			for (ServerInfo localServerInfo : ProxyServer.getInstance().getServers().values()) {
+				if (localServerInfo.canAccess(sender)){
+					ArrayList<String> localArrayList = new ArrayList<String>();
+					for (ProxiedPlayer localProxiedPlayer2 : localServerInfo.getPlayers()) {
+						localArrayList.add(localProxiedPlayer2.getDisplayName());
+					}
+					Collections.sort(localArrayList, String.CASE_INSENSITIVE_ORDER);
+					localProxiedPlayer1.sendMessage(new ComponentBuilder(instance.getConfig().getString("GList.Format")
+							.replace("%server%", localServerInfo.getName())
+							.replace("%players%", localServerInfo.getPlayers().size() + "")
+							.replace("%playerlist%", Util.format(localArrayList, instance.getConfig().getString("GList.PlayerListColor") + ", " + instance.getConfig().getString("GList.PlayerListColor")))
+							.replaceAll("&", "§")).create());
+				}
+			}
+			sender.sendMessage(new ComponentBuilder(instance.getConfig().getString("GList.Total").replace("%totalnum%", ProxyServer.getInstance().getPlayers().size() + "").replaceAll("&", "§")).create());
 		} else {
-			ConfigurationSection cs = instance.getConfig().getConfigurationSection("GList.Servers");
-			for(String s : cs.getKeys(false)){
+			Configuration cs = instance.getConfig().getSection("GList.Servers");
+			for(String s : cs.getKeys()){
 				int serverPlayers = 0;
 				ArrayList<String> localArrayList = new ArrayList<String>();
 				if(cs.getString(s).contains(",")){
@@ -78,11 +77,8 @@ public class Glist extends Command {
 						.replace("%playerlist%", Util.format(localArrayList, instance.getConfig().getString("GList.PlayerListColor") + ", " + instance.getConfig().getString("GList.PlayerListColor")))
 						.replace("%players%", serverPlayers + "")
 						.replaceAll("&", "§")));
-				}
-	          sender.sendMessage(new ComponentBuilder(instance.getConfig().getString("GList.Total").replace("%totalnum%", ProxyServer.getInstance().getPlayers().size() + "").replaceAll("&", "§")).create());
 			}
-		} else {
-			sender.sendMessage(new TextComponent("§cThat command can only be used ingame!"));
+			sender.sendMessage(new ComponentBuilder(instance.getConfig().getString("GList.Total").replace("%totalnum%", ProxyServer.getInstance().getPlayers().size() + "").replaceAll("&", "§")).create());
 		}
 	}
 	

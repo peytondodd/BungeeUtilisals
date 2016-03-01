@@ -29,9 +29,9 @@ public class GlobalTitleAnnouncements implements Runnable  {
 			return;
 		}
 		
-        int fadeIn = TitleAnnouncements.titleannouncements.getInt( "Announcements.Global.FadeIn", 30 );
-        int stay = TitleAnnouncements.titleannouncements.getInt( "Announcements.Global.Stay", 60 );
-        int fadeOut = TitleAnnouncements.titleannouncements.getInt( "Announcements.Global.FadeOut", 30 );
+        int fadeIn = TitleAnnouncements.titleannouncements.getFile().getInt( "Announcements.Global.FadeIn", 30 );
+        int stay = TitleAnnouncements.titleannouncements.getFile().getInt( "Announcements.Global.Stay", 60 );
+        int fadeOut = TitleAnnouncements.titleannouncements.getFile().getInt( "Announcements.Global.FadeOut", 30 );
 		
 		for(ProxiedPlayer player : players){
             for ( String line : list.get(count).split( "\n" ) ) {

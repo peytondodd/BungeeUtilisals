@@ -29,14 +29,14 @@ public class ClearChat extends Command {
 				String server = p.getServer().getInfo().getName();
 				for(ProxiedPlayer players : ProxyServer.getInstance().getServerInfo(server).getPlayers()){
 					for(int i = 0; i < 100; i++){
-						players.sendMessage(new TextComponent(" "));
+						players.sendMessage(Utils.format("&e"));
 					}
 					players.sendMessage(new TextComponent(instance.getConfig().getString("ClearChat.Local").replace("&", "§").replace("%player%", p.getName())));
 				}
 				return;
 			} if(args[0].equalsIgnoreCase("global") || args[0].equalsIgnoreCase("g")){
 				for(int i = 0; i < 100; i++){
-					ProxyServer.getInstance().broadcast(new TextComponent(" "));
+					ProxyServer.getInstance().broadcast(Utils.format("&6"));
 				}
 				ProxyServer.getInstance().broadcast(Utils.format(instance.getConfig().getString("ClearChat.Global").replace("%player%", sender.getName())));
 				return;

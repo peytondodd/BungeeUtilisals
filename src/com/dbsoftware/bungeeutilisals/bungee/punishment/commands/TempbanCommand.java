@@ -1,9 +1,7 @@
 package com.dbsoftware.bungeeutilisals.bungee.punishment.commands;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
-
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.BanAPI;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
@@ -26,14 +24,14 @@ public class TempbanCommand extends Command {
 	public static void executeTempBanCommand(CommandSender sender, String[] args) {
 		String banreason = "";
 		if(args.length < 3){
-			for(String s : Punishments.punishments.getStringList("Punishments.Tempban.Messages.WrongArgs", Arrays.asList(new String[]{"&4&lBans &8» &ePlease use &b/tempban (player) (time) (reason) &e!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempban.Messages.WrongArgs")){
 				sender.sendMessage(TextComponent.fromLegacyText(s.replace("&", "§")));
 			}
 			return;
 		}
 		int bans = BanAPI.getBanNumbers().size();
 		if(BanAPI.isBanned(args[0])){
-			for(String s : Punishments.punishments.getStringList("Punishments.Tempban.Messages.AlreadyBanned", Arrays.asList(new String[]{"&4&lBans &8» &cThat player is already banned!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempban.Messages.AlreadyBanned")){
 				sender.sendMessage(Utils.format(s));
 			}
 			return;
@@ -47,12 +45,7 @@ public class TempbanCommand extends Command {
 			}
 			reason = reason.replace(args[0] + " ", "").replace(args[1] + " ", "");
 			banreason = reason;
-			for(String s : Punishments.punishments.getStringList("Punishments.Tempban.Messages.KickMessage", Arrays.asList(new String[]{
-					"&cBungeeUtilisals &8» &7Tempbanned",
-					" ",
-					"&cReason &8» &7%reason%",
-					"&cUnban at &8» &7%unbantime%",
-				 	"&cBanned by &8» &7%banner%"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempban.Messages.KickMessage")){
 				kreason = kreason + "\n" + s;
 			}
 				
@@ -60,18 +53,18 @@ public class TempbanCommand extends Command {
 			try {
 				time = TimeUnit.parseDateDiff(args[1], true);
 			} catch(NumberFormatException e){
-				for(String s : Punishments.punishments.getStringList("Punishments.Tempban.Messages.WrongTime", Arrays.asList(new String[]{"&4&lBans &8» &ePlease use a good TimeUnit!"}))){
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempban.Messages.WrongTime")){
 					sender.sendMessage(Utils.format(s));
 				}
 				return;
 			} catch(Exception e){
-				for(String s : Punishments.punishments.getStringList("Punishments.Tempban.Messages.WrongTime", Arrays.asList(new String[]{"&4&lBans &8» &ePlease use a good TimeUnit!"}))){
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempban.Messages.WrongTime")){
 					sender.sendMessage(Utils.format(s));
 				}
 				return;
 			}
 			if(time == -1L){
-				for(String s : Punishments.punishments.getStringList("Punishments.Tempban.Messages.WrongTime", Arrays.asList(new String[]{"&4&lBans &8» &ePlease use a good TimeUnit!"}))){
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempban.Messages.WrongTime")){
 					sender.sendMessage(Utils.format(s));
 				}
 				return;
@@ -94,12 +87,7 @@ public class TempbanCommand extends Command {
 			}
 			reason = reason.replace(args[0] + " ", "").replace(args[1] + " ", "");
 			banreason = reason;
-			for(String s : Punishments.punishments.getStringList("Punishments.Tempban.Messages.KickMessage", Arrays.asList(new String[]{
-					"&cBungeeUtilisals &8» &7Tempbanned",
-					" ",
-					"&cReason &8» &7%reason%",
-					"&cUnban at &8» &7%unbantime%",
-				 	"&cBanned by &8» &7%banner%"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempban.Messages.KickMessage")){
 				kreason = kreason + "\n" + s;
 			}
 
@@ -107,18 +95,18 @@ public class TempbanCommand extends Command {
 			try {
 				time = TimeUnit.parseDateDiff(args[1], true);
 			} catch(NumberFormatException e){
-				for(String s : Punishments.punishments.getStringList("Punishments.Tempban.Messages.WrongTime", Arrays.asList(new String[]{"&4&lBans &8» &ePlease use a good TimeUnit!"}))){
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempban.Messages.WrongTime")){
 					sender.sendMessage(Utils.format(s));
 				}
 				return;
 			} catch(Exception e){
-				for(String s : Punishments.punishments.getStringList("Punishments.Tempban.Messages.WrongTime", Arrays.asList(new String[]{"&4&lBans &8» &ePlease use a good TimeUnit!"}))){
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempban.Messages.WrongTime")){
 					sender.sendMessage(Utils.format(s));
 				}
 				return;
 			}
 			if(time == -1L){
-				for(String s : Punishments.punishments.getStringList("Punishments.Tempban.Messages.WrongTime", Arrays.asList(new String[]{"&4&lBans &8» &ePlease use a good TimeUnit!"}))){
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempban.Messages.WrongTime")){
 					sender.sendMessage(Utils.format(s));
 				}
 				return;
@@ -127,7 +115,7 @@ public class TempbanCommand extends Command {
 		}
 		PlayerInfo pinfo = new PlayerInfo(args[0]);
 		pinfo.addBan();
-		for(String s : Punishments.punishments.getStringList("Punishments.Tempban.Messages.Banned", Arrays.asList(new String[]{"&4&lBans &8» &b%player% &ehas been tempbanned! &bReason: &e%reason%"}))){
+		for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempban.Messages.Banned")){
 			sender.sendMessage(Utils.format(s.replace("%player%", args[0]).replace("%reason%", banreason)));
 		}
 	}
@@ -145,7 +133,7 @@ public class TempbanCommand extends Command {
 		if(sender.hasPermission("butilisals.tempban") || sender.hasPermission("butilisals.*")){
 			executeTempBanCommand(sender, args);
 		} else {
-			for(String s : Punishments.punishments.getStringList("Punishments.Messages.NoPermission", Arrays.asList(new String[]{"&4&lPermissions &8» &cYou don't have the permission to use this command!"}))){
+			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Messages.NoPermission")){
 				sender.sendMessage(Utils.format(s));
 			}
 		}

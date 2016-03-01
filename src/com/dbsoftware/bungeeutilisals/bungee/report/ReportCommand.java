@@ -34,10 +34,10 @@ public class ReportCommand extends Command {
 		ProxiedPlayer p = (ProxiedPlayer)sender;
 		if(!players.contains(p)){
 			players.add(p);
-			p.sendMessage(TextComponent.fromLegacyText(getReports().getString("Reports.Messages.EnabledAlert", "&cNew reports will now be alerted!").replace("&", "§")));
+			p.sendMessage(TextComponent.fromLegacyText(getReports().getFile().getString("Reports.Messages.EnabledAlert", "&cNew reports will now be alerted!").replace("&", "§")));
 		} else {
 			players.remove(p);
-			p.sendMessage(TextComponent.fromLegacyText(getReports().getString("Reports.Messages.DisabledAlert", "&cNew reports will not be alerted anymore!").replace("&", "§")));
+			p.sendMessage(TextComponent.fromLegacyText(getReports().getFile().getString("Reports.Messages.DisabledAlert", "&cNew reports will not be alerted anymore!").replace("&", "§")));
 		}
 	}
 	
@@ -45,11 +45,11 @@ public class ReportCommand extends Command {
 		ProxiedPlayer p = (ProxiedPlayer)sender;
 		int number = Integer.valueOf(args[1]);
 		if(!ReportAPI.getReportNumbers().contains(number)){
-			p.sendMessage(TextComponent.fromLegacyText(getReports().getString("Reports.Messages.NoReportNumberExist", "&cReport number %number% doesn't exist!").replace("&", "§").replace("%number%", number + "")));
+			p.sendMessage(TextComponent.fromLegacyText(getReports().getFile().getString("Reports.Messages.NoReportNumberExist", "&cReport number %number% doesn't exist!").replace("&", "§").replace("%number%", number + "")));
 			return;
 		}
 		ReportAPI.removeReport(number);
-		p.sendMessage(TextComponent.fromLegacyText(getReports().getString("Reports.Messages.Removed", "&cYou have removed report number %number%!").replace("&", "§").replace("%number%", number + "")));
+		p.sendMessage(TextComponent.fromLegacyText(getReports().getFile().getString("Reports.Messages.Removed", "&cYou have removed report number %number%!").replace("&", "§").replace("%number%", number + "")));
 		return;
 	}
 	
@@ -60,7 +60,7 @@ public class ReportCommand extends Command {
 		}
 		ProxiedPlayer p = (ProxiedPlayer)sender;
 		if(args.length < 2){
-			p.sendMessage(TextComponent.fromLegacyText(getReports().getString("Reports.Messages.WrongArgs", "&cPlease use /report (player) (reason)").replace("&", "§")));
+			p.sendMessage(TextComponent.fromLegacyText(getReports().getFile().getString("Reports.Messages.WrongArgs", "&cPlease use /report (player) (reason)").replace("&", "§")));
 			return;
 		} else if(args.length == 1){
 			if(args[0].contains("toggle")){
@@ -69,8 +69,8 @@ public class ReportCommand extends Command {
 					return;
 				}
 				
-				if(!p.hasPermission("butilisals.report.toggle") && !p.hasPermission("butilisals.*") && !Reports.reports.getStringList("Players", new ArrayList<String>()).contains(p.getName())){
-					p.sendMessage(TextComponent.fromLegacyText(getReports().getString("Reports.Messages.NoPermission", "&cYou don't have the permission to use the Report Command!").replace("&", "§")));
+				if(!p.hasPermission("butilisals.report.toggle") && !p.hasPermission("butilisals.*") && !getReports().getFile().getStringList("Players").contains(p.getName())){
+					p.sendMessage(TextComponent.fromLegacyText(getReports().getFile().getString("Reports.Messages.NoPermission", "&cYou don't have the permission to use the Report Command!").replace("&", "§")));
 					return;
 				}
 				executeReportToggleCommand(sender, args);
@@ -83,7 +83,7 @@ public class ReportCommand extends Command {
 				return;
 			}
 			if(!p.hasPermission("butilisals.report.remove") && !p.hasPermission("butilisals.*")){
-				p.sendMessage(TextComponent.fromLegacyText(getReports().getString("Reports.Messages.NoPermission", "&cYou don't have the permission to use the Report Command!").replace("&", "§")));
+				p.sendMessage(TextComponent.fromLegacyText(getReports().getFile().getString("Reports.Messages.NoPermission", "&cYou don't have the permission to use the Report Command!").replace("&", "§")));
 				return;
 			}
 			executeReportDeleteCommand(sender, args);
@@ -93,10 +93,10 @@ public class ReportCommand extends Command {
 		if (lastUsage.containsKey(p.getName())) {
 			lastUsed = ((Long)lastUsage.get(p.getName())).longValue();
 		}
-		int cdmillis = Reports.reports.getInt("Cooldown", 60) * 1000;
+		int cdmillis = getReports().getFile().getInt("Cooldown", 60) * 1000;
 		if (System.currentTimeMillis() - lastUsed < cdmillis){
-			int timeLeft =  (int) (Reports.reports.getInt("Cooldown", 60) - (System.currentTimeMillis() - lastUsed) / 1000L);
-			p.sendMessage(TextComponent.fromLegacyText(getReports().getString("Reports.Messages.CooldownMessage", "&cYou need to wait &6%time% &cseconds untill you can report again!").replace("&", "§").replace("%time%", timeLeft + "")));
+			int timeLeft =  (int) (getReports().getFile().getInt("Cooldown", 60) - (System.currentTimeMillis() - lastUsed) / 1000L);
+			p.sendMessage(TextComponent.fromLegacyText(getReports().getFile().getString("Reports.Messages.CooldownMessage", "&cYou need to wait &6%time% &cseconds untill you can report again!").replace("&", "§").replace("%time%", timeLeft + "")));
 			return;
 		}
         lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
@@ -109,7 +109,7 @@ public class ReportCommand extends Command {
 		reason = reason.replaceFirst("report", "").replaceFirst(player, "");
 		ProxiedPlayer reported = ProxyServer.getInstance().getPlayer(player);
 		if(reported == null){
-			p.sendMessage(TextComponent.fromLegacyText(getReports().getString("Reports.Messages.NoPlayer", "&cYou can't report an offline player!").replace("&", "§")));
+			p.sendMessage(TextComponent.fromLegacyText(getReports().getFile().getString("Reports.Messages.NoPlayer", "&cYou can't report an offline player!").replace("&", "§")));
 			lastUsage.remove(p.getName());
 			return;
 		}
@@ -119,10 +119,10 @@ public class ReportCommand extends Command {
 			int highest = Collections.max(ReportAPI.getReportNumbers());
 			ReportAPI.addReport(highest + 1, p, reported, reason);
 		}
-		p.sendMessage(TextComponent.fromLegacyText(getReports().getString("Reports.Messages.Reported", "&aYou have reported %player%!").replace("&", "§").replace("%player%", reported.getName())));
+		p.sendMessage(TextComponent.fromLegacyText(getReports().getFile().getString("Reports.Messages.Reported", "&aYou have reported %player%!").replace("&", "§").replace("%player%", reported.getName())));
 		for(ProxiedPlayer pl : players){
 			if(pl != null){
-				pl.sendMessage(TextComponent.fromLegacyText(getReports().getString("Reports.Messages.ReportBroadcast", "&a%player% &ehas been reported by &a%reporter% &efor &a%reason%&e!").replace("&", "§").replace("%player%", reported.getName()).replace("%reporter%", p.getName()).replace("%reason%", reason)));
+				pl.sendMessage(TextComponent.fromLegacyText(getReports().getFile().getString("Reports.Messages.ReportBroadcast", "&a%player% &ehas been reported by &a%reporter% &efor &a%reason%&e!").replace("&", "§").replace("%player%", reported.getName()).replace("%reporter%", p.getName()).replace("%reason%", reason)));
 			}
 		}
 	}
@@ -140,7 +140,7 @@ public class ReportCommand extends Command {
 		if(sender.hasPermission("butilisals.report") || sender.hasPermission("butilisals.*")){
 			executeReportCommand(sender, args);
 		} else {
-			sender.sendMessage(TextComponent.fromLegacyText(getReports().getString("Reports.Messages.NoPermission", "&cYou don't have the permission to use the Report Command!").replace("&", "§")));
+			sender.sendMessage(TextComponent.fromLegacyText(getReports().getFile().getString("Reports.Messages.NoPermission", "&cYou don't have the permission to use the Report Command!").replace("&", "§")));
 			return;
 		}
 	}

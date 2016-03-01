@@ -40,8 +40,8 @@ public class TabUpdateTask implements Runnable {
 		}
 		for (ProxiedPlayer p : players) {
 			if (p.getServer() == null){
-				String sheader = ((String)headers.get(headercount)).replace("%p%", p.getName()).replace("%newline%", "\n");
-				String sfooter = ((String)footers.get(footercount)).replace("%p%", p.getName()).replace("%newline%", "\n");
+				String sheader = ((String)headers.get(headercount)).replace("%p%", p.getName()).replace("%newline%", "\n").replaceAll("%nl%", "\n");
+				String sfooter = ((String)footers.get(footercount)).replace("%p%", p.getName()).replace("%newline%", "\n").replaceAll("%nl%", "\n");
         
 				BaseComponent[] header = TextComponent.fromLegacyText(sheader);
 				BaseComponent[] footer = TextComponent.fromLegacyText(sfooter);
