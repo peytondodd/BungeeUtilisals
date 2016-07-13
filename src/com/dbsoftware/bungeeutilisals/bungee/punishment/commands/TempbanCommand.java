@@ -29,7 +29,6 @@ public class TempbanCommand extends Command {
 			}
 			return;
 		}
-		int bans = BanAPI.getBanNumbers().size();
 		if(BanAPI.isBanned(args[0])){
 			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempban.Messages.AlreadyBanned")){
 				sender.sendMessage(Utils.format(s));
@@ -70,15 +69,14 @@ public class TempbanCommand extends Command {
 				return;
 			}
 			
-			BanAPI.addBan(bans + 1, sender.getName(), p.getName(), time, reason);
+			BanAPI.addBan(sender.getName(), p.getName(), time, reason);
 
-			int number = BanAPI.getBanNumber(p.getName());
-			Long end = BanAPI.getBanTime(number);
+			Long end = BanAPI.getBanTime(p.getName());
 			
 			SimpleDateFormat df2 = new SimpleDateFormat("kk:mm dd/MM/yyyy");
 			String date = df2.format(new Date(end));
               
-			p.disconnect(Utils.format(kreason.replace("%banner%", BanAPI.getBannedBy(number)).replace("%unbantime%", (end == -1L ? "Never" : date)).replace("%reason%", BanAPI.getReason(number))));
+			p.disconnect(Utils.format(kreason.replace("%banner%", BanAPI.getBannedBy(p.getName())).replace("%unbantime%", (end == -1L ? "Never" : date)).replace("%reason%", BanAPI.getReason(p.getName()))));
 		} else {
 			String kreason = "";
 			String reason = "";
@@ -111,7 +109,7 @@ public class TempbanCommand extends Command {
 				}
 				return;
 			}
-			BanAPI.addBan(bans + 1, sender.getName(), args[0], time, reason);
+			BanAPI.addBan(sender.getName(), args[0], time, reason);
 		}
 		PlayerInfo pinfo = new PlayerInfo(args[0]);
 		pinfo.addBan();

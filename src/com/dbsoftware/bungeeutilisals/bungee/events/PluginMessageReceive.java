@@ -3,7 +3,6 @@ package com.dbsoftware.bungeeutilisals.bungee.events;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
-import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.commands.Alert;
 import com.dbsoftware.bungeeutilisals.bungee.commands.Bgc;
 import com.dbsoftware.bungeeutilisals.bungee.commands.Bigalert;
@@ -20,7 +19,7 @@ import com.dbsoftware.bungeeutilisals.bungee.friends.FriendsCommand;
 import com.dbsoftware.bungeeutilisals.bungee.party.PartyCommand;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.BanCommand;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.BanIPCommand;
-import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.PlayerInfoCommand;
+import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.BanInfoCommand;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.KickCommand;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.MuteCommand;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.TempbanCommand;
@@ -28,10 +27,6 @@ import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.TempmuteCommand
 import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.UnbanCommand;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.UnmuteCommand;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.WarnCommand;
-import com.dbsoftware.bungeeutilisals.bungee.redisbungee.commands.Redisalert;
-import com.dbsoftware.bungeeutilisals.bungee.redisbungee.commands.Redisbigalert;
-import com.dbsoftware.bungeeutilisals.bungee.redisbungee.commands.Redisfind;
-import com.dbsoftware.bungeeutilisals.bungee.redisbungee.commands.Redisglist;
 import com.dbsoftware.bungeeutilisals.bungee.report.ReportCommand;
 import com.dbsoftware.bungeeutilisals.bungee.report.ReportListCommand;
 import com.dbsoftware.bungeeutilisals.bungee.staffchat.StaffChatCommand;
@@ -75,18 +70,10 @@ public class PluginMessageReceive implements Listener {
 					if(command.equals("glag")){
 						Bgc.executeBgcCommand(sender, args);
 					} if(command.equals("alert")){
-						if(BungeeUtilisals.getInstance().useRedis()){
-							Redisalert.executeAlertCommand(sender, args);
-						} else {
-							Alert.executeAlertCommand(sender, args);
-						}
+						Alert.executeAlertCommand(sender, args);
 						return;
 					} if(command.equals("bigalert")){
-						if(BungeeUtilisals.getInstance().useRedis()){
-							Redisbigalert.executeBigalertCommand(sender, args);
-						} else {
-							Bigalert.executeBigalertCommand(sender, args);
-						}
+						Bigalert.executeBigalertCommand(sender, args);
 						return;
 					} if(command.equals("butilisals")){
 						Butilisals.executeButilisalsCommand(sender, args);
@@ -95,18 +82,10 @@ public class PluginMessageReceive implements Listener {
 						ClearChat.executeClearChatCommand(sender, args);
 						return;
 					} if(command.equals("find")){
-						if(BungeeUtilisals.getInstance().useRedis()){
-							Redisfind.executeFindCommand(sender, args);
-						} else {
-							Find.executeFindCommand(sender, args);
-						}
+						Find.executeFindCommand(sender, args);
 						return;
 					} if(command.equals("glist")){
-						if(BungeeUtilisals.getInstance().useRedis()){
-							Redisglist.executeGlistCommand(sender, args);
-						} else {
-							Glist.executeGlistCommand(sender, args);
-						}
+						Glist.executeGlistCommand(sender, args);
 						return;
 					} if(command.equals("hub")){
 						Hub.executeHubCommand(sender, args);
@@ -160,8 +139,8 @@ public class PluginMessageReceive implements Listener {
 					} if(command.equals("banip")){
 						BanIPCommand.executeBanIPCommand(sender, args);
 						return;
-					} if(command.equals("playerinfo")){
-						PlayerInfoCommand.executeCheckBanCommand(sender, args);
+					} if(command.equals("baninfo")){
+						BanInfoCommand.executeCheckBanCommand(sender, args);
 						return;
 					} if(command.equals("mute")){
 						MuteCommand.executeMuteCommand(sender, args);

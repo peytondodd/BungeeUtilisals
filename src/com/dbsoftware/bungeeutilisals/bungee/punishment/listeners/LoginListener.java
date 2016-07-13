@@ -5,6 +5,8 @@ import java.util.Date;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.BanAPI;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PlayerInfo;
+import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
+
 import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
@@ -15,26 +17,24 @@ public class LoginListener implements Listener {
 	public void onLogin(final LoginEvent event){
 		PlayerInfo info = new PlayerInfo(event.getConnection().getName());
 		if(!info.isInTable()){
-			info.putPlayerInTable(event.getConnection().getAddress().getHostName().replace("localhost", "127.0.0.1"), 0, 0, 0, 0);
+			info.putPlayerInTable(Utils.getAddress(event.getConnection().getAddress()), 0, 0, 0, 0);
 		}
 		
-		String IP = event.getConnection().getVirtualHost().getHostName();
+		String IP = Utils.getAddress(event.getConnection().getAddress());
 		if(BanAPI.isIPBanned(IP)){
-			int number = BanAPI.getIPBanNumber(IP);
 			String reason = "";
 			for(String s : Punishments.punishments.getFile().getStringList("Punishments.BanIP.Messages.KickMessage")){
 				reason = reason + "\n" + s;
 			}
 			
 			event.setCancelled(true);
-			event.setCancelReason(reason.replace("%banner%", BanAPI.getIPBannedBy(number)).replace("%unbantime%", "Never").replace("%reason%", BanAPI.getIPReason(number)).replaceAll("&", "§"));
+			event.setCancelReason(reason.replace("%banner%", BanAPI.getIPBannedBy(IP)).replace("%unbantime%", "Never").replace("%reason%", BanAPI.getIPReason(IP)).replaceAll("&", "§"));
 			return;
 		}
 		if(BanAPI.isBanned(event.getConnection().getName())){
-			int number = BanAPI.getBanNumber(event.getConnection().getName());
-			Long time = BanAPI.getBanTime(number);
+			Long time = BanAPI.getBanTime(event.getConnection().getName());
 			if(time < System.currentTimeMillis() && time != -1){
-				BanAPI.removeBan(number);
+				BanAPI.removeBan(event.getConnection().getName());
 				return;
 			}
 			if(time != -1){
@@ -45,7 +45,7 @@ public class LoginListener implements Listener {
 					String date = df2.format(new Date(time));
 					
 					event.setCancelled(true);
-					event.setCancelReason(reason.replace("%banner%", BanAPI.getBannedBy(number)).replace("%unbantime%", (time == -1L ? "Never" : date)).replace("%reason%", BanAPI.getReason(number)).replaceAll("&", "§"));
+					event.setCancelReason(reason.replace("%banner%", BanAPI.getBannedBy(event.getConnection().getName())).replace("%unbantime%", (time == -1L ? "Never" : date)).replace("%reason%", BanAPI.getReason(event.getConnection().getName())).replaceAll("&", "§"));
 				}
 				return;
 			}
@@ -57,7 +57,7 @@ public class LoginListener implements Listener {
 			String date = df2.format(new Date(time));
 			
 			event.setCancelled(true);
-			event.setCancelReason(reason.replace("%banner%", BanAPI.getBannedBy(number)).replace("%unbantime%", (time == -1L ? "Never" : date)).replace("%reason%", BanAPI.getReason(number)).replaceAll("&", "§"));
+			event.setCancelReason(reason.replace("%banner%", BanAPI.getBannedBy(event.getConnection().getName())).replace("%unbantime%", (time == -1L ? "Never" : date)).replace("%reason%", BanAPI.getReason(event.getConnection().getName())).replaceAll("&", "§"));
 		}
 	}
 }

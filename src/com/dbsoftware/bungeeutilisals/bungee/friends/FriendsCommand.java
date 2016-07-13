@@ -76,9 +76,6 @@ public class FriendsCommand	extends Command {
 	}
 		
 	public static void executeFriendCommand(CommandSender sender, String[] args){
-      if(!BungeeUtilisals.getDatabaseManager().isConnected()){
-    	  Friends.dbmanager.openConnection();
-      }
 		if(!(sender instanceof ProxiedPlayer)){
 			sender.sendMessage(Utils.format("This message can only be executed in the console."));
 			return;

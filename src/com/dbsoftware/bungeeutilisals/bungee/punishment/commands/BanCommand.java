@@ -28,7 +28,6 @@ public class BanCommand extends Command {
 			}
 			return;
 		}
-		int bans = BanAPI.getBanNumbers().size();
 		if(BanAPI.isBanned(args[0])){
 			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Ban.Messages.AlreadyBanned")){
 				sender.sendMessage(Utils.format(s));
@@ -42,32 +41,31 @@ public class BanCommand extends Command {
 			for(String s : args){
 				reason = reason + s + " ";
 			}
-			reason = reason.replace(p.getName() + " ", "");
+			reason = reason.replaceFirst(p.getName() + " ", "");
 			banreason = reason;
 			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Ban.Messages.KickMessage")){
 				kreason = kreason + "\n" + s;
 			}
-			BanAPI.addBan(bans + 1, sender.getName(), p.getName(), -1L, reason);
+			BanAPI.addBan(sender.getName(), p.getName(), -1L, reason);
 
-			int number = BanAPI.getBanNumber(p.getName());
-			Long end = BanAPI.getBanTime(number);
+			Long end = BanAPI.getBanTime(p.getName());
 			
 			SimpleDateFormat df2 = new SimpleDateFormat("kk:mm dd/MM/yyyy");
 			String date = df2.format(new Date(end));
               
-			p.disconnect(Utils.format(kreason.replace("%banner%", BanAPI.getBannedBy(number)).replace("%unbantime%", (end == -1L ? "Never" : date)).replace("%reason%", BanAPI.getReason(number))));
+			p.disconnect(Utils.format(kreason.replace("%banner%", BanAPI.getBannedBy(p.getName())).replace("%unbantime%", (end == -1L ? "Never" : date)).replace("%reason%", BanAPI.getReason(p.getName()))));
 		} else {
 			String kreason = "";
 			String reason = "";
 			for(String s : args){
 				reason = reason + s + " ";
 			}
-			reason = reason.replace(args[0] + " ", "");
+			reason = reason.replaceFirst(args[0] + " ", "");
 			banreason = reason;
 			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Ban.Messages.KickMessage")){
 				kreason = kreason + "\n" + s;
 			}
-			BanAPI.addBan(bans + 1, sender.getName(), args[0], -1L, reason);
+			BanAPI.addBan(sender.getName(), args[0], -1L, reason);
 		}
 		PlayerInfo pinfo = new PlayerInfo(args[0]);
 		pinfo.addBan();
@@ -87,7 +85,7 @@ public class BanCommand extends Command {
 			return;
 		}
 		if(sender.hasPermission("butilisals.ban") || sender.hasPermission("butilisals.*")){
-			executeBanCommand(sender, args);
+			executeBanCommand(sender, args);		
 		} else {
 			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Messages.NoPermission")){
 				sender.sendMessage(Utils.format(s));

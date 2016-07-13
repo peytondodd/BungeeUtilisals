@@ -5,7 +5,6 @@ import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PlayerInfo;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
-
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -50,6 +49,7 @@ public class KickCommand extends Command {
 		}
 	}
 	
+
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		if(!(sender instanceof ProxiedPlayer)){

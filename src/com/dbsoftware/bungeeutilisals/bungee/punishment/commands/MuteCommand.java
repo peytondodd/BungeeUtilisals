@@ -6,7 +6,6 @@ import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PlayerInfo;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
-
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -27,7 +26,6 @@ public class MuteCommand extends Command {
 			}
 			return;
 		}
-		int mutes = MuteAPI.getMuteNumbers().size();
 		if(MuteAPI.isMuted(args[0])){
 			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Mute.Messages.AlreadyBanned")){
 				sender.sendMessage(Utils.format(s));
@@ -45,7 +43,7 @@ public class MuteCommand extends Command {
 			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Mute.Messages.MuteMessage")){
 				p.sendMessage(Utils.format(s.replace("%player%", sender.getName()).replace("%reason%", reason)));
 			}
-			MuteAPI.addMute(mutes + 1, sender.getName(), args[0], -1L, reason);
+			MuteAPI.addMute(sender.getName(), args[0], -1L, reason);
 		} else {
 			String reason = "";
 			for(String s : args){
@@ -53,7 +51,7 @@ public class MuteCommand extends Command {
 			}
 			reason = reason.replace(args[0] + " ", "");
 			mutereason = reason;
-			MuteAPI.addMute(mutes + 1, sender.getName(), args[0], -1L, reason);
+			MuteAPI.addMute(sender.getName(), args[0], -1L, reason);
 		}
 		PlayerInfo pinfo = new PlayerInfo(args[0]);
 		pinfo.addMute();
@@ -62,6 +60,7 @@ public class MuteCommand extends Command {
 		}
 	}
 	
+
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		if(!(sender instanceof ProxiedPlayer)){

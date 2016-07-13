@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
-import com.dbsoftware.bungeeutilisals.bungee.managers.DatabaseManager;
 import com.dbsoftware.bungeeutilisals.bungee.managers.FileManager;
 import net.md_5.bungee.api.ProxyServer;
 
@@ -12,7 +11,6 @@ public class Party {
 	
     private static String path = File.separator + "plugins" + File.separator + "BungeeUtilisals" + File.separator + "party.yml";
     public static FileManager party = new FileManager( path );
-    public static DatabaseManager dbmanager = BungeeUtilisals.getDatabaseManager();
 
     public static void reloadPartyData() {
         party = null;
@@ -31,6 +29,9 @@ public class Party {
     
     private static void setDefaults(){
         Collection<String> check = party.getFile().getSection( "Party" ).getKeys();
+        if(!check.contains("Enabled")){
+        	party.getFile().set("Party.Enabled", true);
+        }
         if(!check.contains("Party-Limit")){
         	party.getFile().set("Party.Party-Limit", 0);
         }

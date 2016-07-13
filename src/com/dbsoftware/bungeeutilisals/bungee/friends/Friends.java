@@ -8,9 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
-import com.dbsoftware.bungeeutilisals.bungee.managers.DatabaseManager;
 import com.dbsoftware.bungeeutilisals.bungee.managers.FileManager;
 
 public class Friends {
@@ -18,8 +16,7 @@ public class Friends {
     private static String path = File.separator + "plugins" + File.separator + "BungeeUtilisals" + File.separator + "friends.yml";
     public static FileManager friends = new FileManager( path );
     public static HashMap<ProxiedPlayer, ProxiedPlayer> msging = new HashMap<ProxiedPlayer, ProxiedPlayer>();
-    public static DatabaseManager dbmanager = BungeeUtilisals.getDatabaseManager();
-
+	
     public static void reloadFriendsData() {
         friends = null;
         friends = new FileManager( path );

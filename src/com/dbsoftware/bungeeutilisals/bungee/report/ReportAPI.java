@@ -13,7 +13,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ReportAPI {
 	
-	private static DatabaseManager dbmanager = BungeeUtilisals.getDatabaseManager();
+	private static DatabaseManager dbmanager = BungeeUtilisals.getInstance().getDatabaseManager();
 	
 	public static void addReport(int number, ProxiedPlayer reporter, ProxiedPlayer reported, String reason){
 		try {

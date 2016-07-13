@@ -6,7 +6,6 @@ import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PlayerInfo;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
-
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -34,7 +33,7 @@ public class UnbanCommand extends Command {
 			return;
 		}
 		if(BanAPI.isBanned(args[0])){
-			BanAPI.removeBan(BanAPI.getBanNumber(args[0]));
+			BanAPI.removeBan(args[0]);
 			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Unban.Messages.Unbanned")){
 				sender.sendMessage(Utils.format(s.replace("%player%", args[0])));
 			}
@@ -46,13 +45,14 @@ public class UnbanCommand extends Command {
 			return;
 		}
 		if(BanAPI.isIPBanned(ip)){
-			BanAPI.removeIPBan(BanAPI.getIPBanNumber(ip));
+			BanAPI.removeIPBan(ip);
 			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Unban.Messages.Unbanned")){
 				sender.sendMessage(Utils.format(s.replace("%player%", args[0])));
 			}
 		}
 	}
 	
+
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		if(!(sender instanceof ProxiedPlayer)){

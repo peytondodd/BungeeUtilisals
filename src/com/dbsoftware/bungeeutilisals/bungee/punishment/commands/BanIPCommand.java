@@ -26,7 +26,6 @@ public class BanIPCommand extends Command {
 			}
 			return;
 		}
-		int bans = BanAPI.getIPBanNumbers().size();
 		if(BanAPI.isBanned(args[0])){
 			for(String s : Punishments.punishments.getFile().getStringList("Punishments.BanIP.Messages.AlreadyBanned")){
 				sender.sendMessage(Utils.format(s));
@@ -53,8 +52,7 @@ public class BanIPCommand extends Command {
 				}
 				return;
 			}
-			BanAPI.addIPBan(bans + 1, sender.getName(), IP.replace("localhost", "127.0.0.1"), reason);
-              
+			BanAPI.addIPBan(sender.getName(), IP.replace("localhost", "127.0.0.1"), reason);
 			p.disconnect(Utils.format(kreason.replace("%banner%", sender.getName()).replace("%reason%", reason)));
 		} else {
 			String kreason = "";
@@ -74,7 +72,7 @@ public class BanIPCommand extends Command {
 				}
 				return;
 			}
-			BanAPI.addIPBan(bans + 1, sender.getName(), IP.replace("localhost", "127.0.0.1"), reason);
+			BanAPI.addIPBan(sender.getName(), IP.replace("localhost", "127.0.0.1"), reason);
 		}
 		pinfo.addBan();
 		for(String s : Punishments.punishments.getFile().getStringList("Punishments.BanIP.Messages.Banned")){

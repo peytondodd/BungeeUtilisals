@@ -7,9 +7,11 @@ import java.sql.Statement;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.managers.DatabaseManager;
 
+import net.md_5.bungee.api.ProxyServer;
+
 public class PlayerInfo {
-//st.executeUpdate("CREATE TABLE IF NOT EXISTS PlayerInfo (Player VARCHAR(32) NOT NULL, IP VARCHAR(32) NOT NULL, Bans INT NOT NULL, Warns INT NOT NULL, Mutes, INT NOT NULL, Kicks INT NOT NULL)");
-	DatabaseManager dbmanager = BungeeUtilisals.getDatabaseManager();
+
+	DatabaseManager dbmanager = BungeeUtilisals.getInstance().getDatabaseManager();
 	String player;
 	
 	public PlayerInfo(String player){
@@ -50,6 +52,9 @@ public class PlayerInfo {
 	
 	public String getIP(){
 		String ip = null;
+		if(ProxyServer.getInstance().getPlayer(player) != null){
+			return Utils.getAddress(ProxyServer.getInstance().getPlayer(player).getAddress());
+		}
 		if(this.player.contains(".")){
 			return this.player;
 		}

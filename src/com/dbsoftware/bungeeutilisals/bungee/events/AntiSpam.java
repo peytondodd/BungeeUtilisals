@@ -40,6 +40,7 @@ public class AntiSpam implements Listener {
 					p.sendMessage(new TextComponent(plugin.getConfig().getString("AntiSpam.Message").replace("%time%", plugin.getConfig().getInt("AntiSpam.Seconds") + "").replace("&", "§")));
 					event.setCancelled(true);
 				}
+				return;
 			} else {
 				chatspam.add(p.getName());
 				ProxyServer.getInstance().getScheduler().schedule(plugin , new Runnable(){

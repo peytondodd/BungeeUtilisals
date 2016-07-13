@@ -30,9 +30,6 @@ public class DatabaseManager {
       try {
         Class.forName("com.mysql.jdbc.Driver");
         connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
-        System.out.println("[BungeeUtilisals]: Connected to database: ");
-        System.out.println("[BungeeUtilisals]: Host: " + host);
-        System.out.println("[BungeeUtilisals]: Database name: " + database);
         this.prepareDatabase();
       } catch (SQLException ex1) {
         System.out.println("[BungeeUtilisals]: Can't connect to database: " + ex1.getMessage());
@@ -52,12 +49,10 @@ public class DatabaseManager {
         st.executeUpdate("CREATE TABLE IF NOT EXISTS Friends (Player VARCHAR(32) NOT NULL, Friends VARCHAR(32) NOT NULL)");
         st.executeUpdate("CREATE TABLE IF NOT EXISTS Requests (Player VARCHAR(32) NOT NULL, Requests VARCHAR(32) NOT NULL)");
         st.executeUpdate("CREATE TABLE IF NOT EXISTS Reports (Number INT NOT NULL, Reporter VARCHAR(32) NOT NULL, Player VARCHAR(32) NOT NULL, Reason TEXT NOT NULL)");
-        st.executeUpdate("CREATE TABLE IF NOT EXISTS PlayerInfo (Player VARCHAR(32) NOT NULL, IP VARCHAR(32) NOT NULL, Bans INT NOT NULL, Warns INT NOT NULL, Mutes INT NOT NULL, Kicks INT NOT NULL)");
-        st.executeUpdate("CREATE TABLE IF NOT EXISTS Bans (Number INT NOT NULL, BannedBy VARCHAR(32) NOT NULL, Banned VARCHAR(32) NOT NULL, BanTime LONG NOT NULL, Reason TEXT NOT NULL)");
-        st.executeUpdate("CREATE TABLE IF NOT EXISTS Mutes (Number INT NOT NULL, MutedBy VARCHAR(32) NOT NULL, Muted VARCHAR(32) NOT NULL, MuteTime LONG NOT NULL, Reason TEXT NOT NULL)");
-        st.executeUpdate("CREATE TABLE IF NOT EXISTS IPBans (Number INT NOT NULL, BannedBy VARCHAR(32) NOT NULL, Banned VARCHAR(32) NOT NULL, Reason TEXT NOT NULL)");
-        
-        System.out.println("[BungeeUtilisals]: Prepared database!");
+        st.executeUpdate("CREATE TABLE IF NOT EXISTS PlayerInfo (Player VARCHAR(32) NOT NULL, IP VARCHAR(120) NOT NULL, Bans INT NOT NULL, Warns INT NOT NULL, Mutes INT NOT NULL, Kicks INT NOT NULL)");
+        st.executeUpdate("CREATE TABLE IF NOT EXISTS Bans (Server VARCHAR(32) NOT NULL, BannedBy VARCHAR(32) NOT NULL, Banned VARCHAR(32) NOT NULL, BanTime LONG NOT NULL, Reason TEXT NOT NULL)");
+        st.executeUpdate("CREATE TABLE IF NOT EXISTS Mutes (Server VARCHAR(32) NOT NULL, MutedBy VARCHAR(32) NOT NULL, Muted VARCHAR(32) NOT NULL, MuteTime LONG NOT NULL, Reason TEXT NOT NULL)");
+        st.executeUpdate("CREATE TABLE IF NOT EXISTS IPBans (Server VARCHAR(32) NOT NULL, BannedBy VARCHAR(32) NOT NULL, Banned VARCHAR(32) NOT NULL, Reason TEXT NOT NULL)");
       } catch (SQLException e) {
     	  System.out.println("[BungeeUtilisals]: Can't prepare database: " + e.getMessage());
       }

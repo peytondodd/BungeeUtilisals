@@ -209,7 +209,18 @@ ChatOptions:
   point-after-sentence: true
   # Setting this to true will change the first letter of a message in a capital letter.
   first-letter-uppercase: true
-
+  # All UTF Characters will be removed due to this option. (Due to this Wurst update: https://www.wurst-client.tk/news/2016-01-29-Wurst-2-14/, this option disables that!)
+  only-letters-and-numbers:
+    enabled: true
+    message: '&cYou cannot use unicode letters!'
+    replace:
+      # For example: 'Å' is the letter that has to be replaced by 'A'
+      'Å': 'A'
+      'Ä': 'A'
+      'Ö': 'O'
+      'å': 'a'
+      'ä': 'a'
+      'ö': 'o'
 GList:
   Enabled: true
   # This is the Format for the /glist command!

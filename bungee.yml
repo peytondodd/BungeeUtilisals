@@ -2,5 +2,4 @@ name: BungeeUtilisals
 main: com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals
 version: 2.1.4
 author: didjee2
-depends: ['BungeeYAML']
-softDepends: ['RedisBungee']
+softDepends: ['RedisBungee', 'WebServers']

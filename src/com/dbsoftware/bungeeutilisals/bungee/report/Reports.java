@@ -6,14 +6,12 @@ import java.util.Collection;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.config.Configuration;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
-import com.dbsoftware.bungeeutilisals.bungee.managers.DatabaseManager;
 import com.dbsoftware.bungeeutilisals.bungee.managers.FileManager;
 
 public class Reports {
 	
     private static String path = File.separator + "plugins" + File.separator + "BungeeUtilisals" + File.separator + "reports.yml";
     public static FileManager reports = new FileManager( path );
-    public static DatabaseManager dbmanager = BungeeUtilisals.getDatabaseManager();
 
     public static void reloadReportsData() {
         reports = null;
@@ -52,12 +50,12 @@ public class Reports {
         	reports.getFile().set("Reports.Messages.Reported", "&aYou have reported %player%!");
         	reports.getFile().set("Reports.Messages.Removed", "&cYou have removed report number %number%!");
         	reports.getFile().set("Reports.Messages.ReportListFormat", "&6%number%&b) &6%player% &bhas reported &6%reported% &bfor &6%reason%&b!");
-        	reports.getFile().set("Reports.Messages.WrongListArgs", "&cPlease use /reports.getFile() (page)!");
+        	reports.getFile().set("Reports.Messages.WrongListArgs", "&cPlease use /reports (page)!");
         	reports.getFile().set("Reports.Messages.NoReportNumberExist", "&cReport number %number% doesn't exist!");
-        	reports.getFile().set("Reports.Messages.NoReportsOnThisPage", "&cThere are no reports.getFile() on this page!");
+        	reports.getFile().set("Reports.Messages.NoReportsOnThisPage", "&cThere are no reports on this page!");
         	reports.getFile().set("Reports.Messages.CooldownMessage", "&cYou need to wait &6%time% &cseconds untill you can report again!");
-			reports.getFile().set("Reports.Messages.EnabledAlert", "&cNew reports.getFile() will now be alerted!");
-			reports.getFile().set("Reports.Messages.DisabledAlert", "&cNew reports.getFile() will not be alerted anymore!");
+			reports.getFile().set("Reports.Messages.EnabledAlert", "&cNew reports will now be alerted!");
+			reports.getFile().set("Reports.Messages.DisabledAlert", "&cNew reports will not be alerted anymore!");
 			reports.getFile().set("Reports.Messages.WrongNumber", "&cPlease use use a valid number!");
     	}
     	reports.save();

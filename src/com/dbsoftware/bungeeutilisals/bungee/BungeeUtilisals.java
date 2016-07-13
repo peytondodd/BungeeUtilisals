@@ -1,13 +1,11 @@
 package com.dbsoftware.bungeeutilisals.bungee;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.concurrent.TimeUnit;
-
 import com.dbsoftware.bungeeutilisals.bungee.actionbarannouncer.ActionBarAnnouncer;
 import com.dbsoftware.bungeeutilisals.bungee.announcer.Announcer;
 import com.dbsoftware.bungeeutilisals.bungee.commands.Alert;
@@ -38,7 +36,6 @@ import com.dbsoftware.bungeeutilisals.bungee.managers.DatabaseManager;
 import com.dbsoftware.bungeeutilisals.bungee.metrics.Metrics;
 import com.dbsoftware.bungeeutilisals.bungee.party.Party;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
-import com.dbsoftware.bungeeutilisals.bungee.redisbungee.RedisManager;
 import com.dbsoftware.bungeeutilisals.bungee.report.Reports;
 import com.dbsoftware.bungeeutilisals.bungee.staffchat.StaffChat;
 import com.dbsoftware.bungeeutilisals.bungee.tabmanager.TabManager;
@@ -46,9 +43,7 @@ import com.dbsoftware.bungeeutilisals.bungee.titleannouncer.TitleAnnouncer;
 import com.dbsoftware.bungeeutilisals.bungee.updater.UpdateChecker;
 import com.dbsoftware.bungeeutilisals.bungee.utils.TPSRunnable;
 import com.google.common.io.ByteStreams;
-
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
@@ -60,16 +55,15 @@ import net.md_5.bungee.config.YamlConfiguration;
  *
  */
 
-public class BungeeUtilisals extends Plugin implements Listener {
+public class BungeeUtilisals extends Plugin {
 
 	public static BungeeUtilisals instance;
     public static DatabaseManager dbmanager;
     public boolean chatMuted = false;
     public static boolean update;
-    public RedisManager redisManager = null;
     private File configfile;
     private Configuration config;
-
+    
 	public void onEnable(){
 		instance = this;
 
@@ -86,9 +80,6 @@ public class BungeeUtilisals extends Plugin implements Listener {
 	    TitleAnnouncer.loadAnnouncements();
 	    ActionBarAnnouncer.loadAnnouncements();
 	    StaffChat.registerStaffChat();
-		if(getConfig().getBoolean("Use-RedisBungee")){
-			this.redisManager = new RedisManager();
-		}
 		
 	    ProxyServer.getInstance().getScheduler().schedule(BungeeUtilisals.getInstance(), new TPSRunnable(), 50, TimeUnit.MILLISECONDS);
 	    	    
@@ -114,11 +105,6 @@ public class BungeeUtilisals extends Plugin implements Listener {
 			String password = getConfig().getString("MySQL.Password", "password");
 			dbmanager = new DatabaseManager(host, port, database, username, password);
 			dbmanager.openConnection();
-			
-		    Friends.registerFriendsAddons();
-		    Reports.registerReportSystem();
-			Punishments.registerPunishmentSystem();
-		    
 			ProxyServer.getInstance().getScheduler().schedule(BungeeUtilisals.getInstance(), new Runnable(){
 
 				@Override
@@ -127,10 +113,14 @@ public class BungeeUtilisals extends Plugin implements Listener {
 					dbmanager.openConnection();
 				}
 				
-			}, 0, 5, TimeUnit.MINUTES);	
+			}, 5, 5, TimeUnit.MINUTES);				
+		    Friends.registerFriendsAddons();
+		    Reports.registerReportSystem();
+			Punishments.registerPunishmentSystem();
 	    }
 	    
 	    TabManager.loadTab();
+	    
 	    
 	    ProxyServer.getInstance().getLogger().info("BungeeUtilisals is now Enabled!");
 	}
@@ -149,28 +139,18 @@ public class BungeeUtilisals extends Plugin implements Listener {
 		return this.config;
 	}
 	
-    public static DatabaseManager getDatabaseManager(){
+    public DatabaseManager getDatabaseManager(){
     	return dbmanager;
-    }
-    
-    public RedisManager getRedisManager(){
-    	return this.redisManager;
-    }
-    
-    public boolean useRedis(){
-    	return (this.getRedisManager() != null);
     }
 	
 	private void loadCommands(){
-		if(!this.useRedis()){
-		    ProxyServer.getInstance().getPluginManager().registerCommand(this, new Alert());
-		    ProxyServer.getInstance().getPluginManager().registerCommand(this, new Bigalert());
-		    if(getConfig().getBoolean("GList.Enabled")){
-		    	ProxyServer.getInstance().getPluginManager().registerCommand(this, new Glist());
-		    }
-		    ProxyServer.getInstance().getPluginManager().registerCommand(this, new Find());
+		ProxyServer.getInstance().getPluginManager().registerCommand(this, new Alert());
+		ProxyServer.getInstance().getPluginManager().registerCommand(this, new Bigalert());
+		if(getConfig().getBoolean("GList.Enabled")){
+			ProxyServer.getInstance().getPluginManager().registerCommand(this, new Glist());
 		}
-	    ProxyServer.getInstance().getPluginManager().registerCommand(this, new Bgc());
+		ProxyServer.getInstance().getPluginManager().registerCommand(this, new Find());
+		ProxyServer.getInstance().getPluginManager().registerCommand(this, new Bgc());
 	    ProxyServer.getInstance().getPluginManager().registerCommand(this, new Butilisals());
 	    ProxyServer.getInstance().getPluginManager().registerCommand(this, new Server());
 	    
@@ -254,22 +234,5 @@ public class BungeeUtilisals extends Plugin implements Listener {
             e.printStackTrace();
         }
         return resourceFile;
-    }
-    
-
-    public void convertFile(File f, File newFile){
-		try {
-			FileInputStream fis = new FileInputStream(f);
-			byte[] contents = new byte[fis.available()];
-			fis.read(contents, 0, contents.length);
-			String asString = new String(contents, "ISO8859_1");
-			byte[] newBytes = asString.getBytes("UTF8");
-			FileOutputStream fos = new FileOutputStream(newFile);
-			fos.write(newBytes);
-			fos.close();
-			fis.close();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
     }
 }

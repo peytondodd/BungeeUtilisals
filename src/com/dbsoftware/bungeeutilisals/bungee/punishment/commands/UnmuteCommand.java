@@ -24,7 +24,7 @@ public class UnmuteCommand extends Command {
 			return;
 		}
 		if(MuteAPI.isMuted(args[0])){
-			MuteAPI.removeMute(MuteAPI.getMuteNumber(args[0]));
+			MuteAPI.removeMute(args[0]);
 			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Unmute.Messages.Unmuted")){
 				sender.sendMessage(Utils.format(s.replace("%player%", args[0])));
 			}

@@ -29,7 +29,6 @@ public class TempmuteCommand extends Command {
 			}
 			return;
 		}
-		int mutes = MuteAPI.getMuteNumbers().size();
 		if(MuteAPI.isMuted(args[0])){
 			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempmute.Messages.AlreadyMuted")){
 				sender.sendMessage(Utils.format(s));
@@ -73,7 +72,7 @@ public class TempmuteCommand extends Command {
 				p.sendMessage(Utils.format(s.replace("%player%", sender.getName()).replace("%reason%", mutereason).replace("%time%", date)));
 			}
 			
-			MuteAPI.addMute(mutes + 1, sender.getName(), p.getName(), time, reason);
+			MuteAPI.addMute(sender.getName(), p.getName(), time, reason);
 		} else {
 			String reason = "";
 			for(String s : args){
@@ -102,7 +101,7 @@ public class TempmuteCommand extends Command {
 				}
 				return;
 			}
-			MuteAPI.addMute(mutes + 1, sender.getName(), args[0], time, reason);
+			MuteAPI.addMute(sender.getName(), args[0], time, reason);
 		}
 		PlayerInfo pinfo = new PlayerInfo(args[0]);
 		pinfo.addMute();
@@ -111,6 +110,7 @@ public class TempmuteCommand extends Command {
 		}
 	}
 	
+
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		if(!(sender instanceof ProxiedPlayer)){

@@ -3,14 +3,15 @@ package com.dbsoftware.bungeeutilisals.bungee.punishment;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.managers.DatabaseManager;
 import com.dbsoftware.bungeeutilisals.bungee.managers.FileManager;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.BanCommand;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.BanIPCommand;
+import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.BanInfoCommand;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.KickCommand;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.MuteCommand;
-import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.PlayerInfoCommand;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.TempbanCommand;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.TempmuteCommand;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.UnbanCommand;
@@ -24,11 +25,33 @@ public class Punishments {
 	
     private static String path = File.separator + "plugins" + File.separator + "BungeeUtilisals" + File.separator + "bans.yml";
     public static FileManager punishments = new FileManager( path );
-    public static DatabaseManager dbmanager = BungeeUtilisals.getDatabaseManager();
+    public static DatabaseManager dbmanager = BungeeUtilisals.getInstance().getDatabaseManager();
+    
+    public static HashMap<String, BanInfo> bans = new HashMap<String, BanInfo>();
+    public static HashMap<String, MuteInfo> mutes = new HashMap<String, MuteInfo>();
+    public static HashMap<String, BanIPInfo> ipbans = new HashMap<String, BanIPInfo>();
 
     public static void reloadPunishmentData() {
         punishments = null;
         punishments = new FileManager( path );
+    }
+    
+    public static BanInfo getBanInfo(String player){
+    	for(BanInfo info : bans.values()){
+    		if(info.getPlayer().equals(player)){
+    			return info;
+    		}
+    	}
+    	return null;
+    }
+    
+    public static BanIPInfo getIPBanInfo(String ip){
+    	for(BanIPInfo info : ipbans.values()){
+    		if(info.getIP().equals(ip)){
+    			return info;
+    		}
+    	}
+    	return null;
     }
     
     public static void registerPunishmentSystem(){
@@ -36,24 +59,86 @@ public class Punishments {
     	punishments = new FileManager( path );
     	if(punishments.getFile().getBoolean("Punishments.Enabled", true)){
         	setDefaults();
-        	ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new BanCommand());
-        	ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new UnbanCommand());
-        	ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new KickCommand());
-        	ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new TempbanCommand());
-        	ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new BanIPCommand());
-        	ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new PlayerInfoCommand());
-        	ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new MuteCommand());
-        	ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new TempmuteCommand());
-        	ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new UnmuteCommand());
-        	ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new WarnCommand());
+        	if(punishments.getFile().getBoolean("Punishments.Commands.Ban")){
+            	ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new BanCommand());
+        	}
+        	if(punishments.getFile().getBoolean("Punishments.Commands.Unban")){
+            	ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new UnbanCommand());
+        	}
+        	if(punishments.getFile().getBoolean("Punishments.Commands.Kick")){
+            	ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new KickCommand());
+        	}
+        	if(punishments.getFile().getBoolean("Punishments.Commands.Tempban")){
+            	ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new TempbanCommand());
+        	}
+        	if(punishments.getFile().getBoolean("Punishments.Commands.BanIP")){
+            	ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new BanIPCommand());
+        	}
+        	if(punishments.getFile().getBoolean("Punishments.Commands.BanInfo")){
+            	ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new BanInfoCommand());
+        	}
+        	if(punishments.getFile().getBoolean("Punishments.Commands.Mute")){
+            	ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new MuteCommand());
+        	}
+        	if(punishments.getFile().getBoolean("Punishments.Commands.Tempmute")){
+            	ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new TempmuteCommand());
+        	}
+        	if(punishments.getFile().getBoolean("Punishments.Commands.Unmute")){
+            	ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new UnmuteCommand());
+        	}
+        	if(punishments.getFile().getBoolean("Punishments.Commands.Warn")){
+            	ProxyServer.getInstance().getPluginManager().registerCommand(BungeeUtilisals.getInstance(), new WarnCommand());
+        	}
         	
         	ProxyServer.getInstance().getPluginManager().registerListener(BungeeUtilisals.getInstance(), new LoginListener());
         	ProxyServer.getInstance().getPluginManager().registerListener(BungeeUtilisals.getInstance(), new ChatListener());
+        	
+        	ProxyServer.getInstance().getScheduler().runAsync(BungeeUtilisals.getInstance(), new Runnable(){
+				@Override
+				public void run() {
+		        	for(String s : BanAPI.getBans()){
+		        		BanInfo baninfo = new BanInfo(s, BanAPI.getBannedBy(s), BanAPI.getBanTime(s), BanAPI.getReason(s));
+		        		bans.put(s, baninfo);
+		        	}					
+				}
+        	});
+        	
+        	ProxyServer.getInstance().getScheduler().runAsync(BungeeUtilisals.getInstance(), new Runnable(){
+				@Override
+				public void run() {
+		        	for(String s : BanAPI.getIPBans()){
+		        		BanIPInfo banipinfo = new BanIPInfo(s, BanAPI.getIPBannedBy(s), BanAPI.getIPReason(s));
+		        		ipbans.put(s, banipinfo);
+		        	}					
+				}
+        	});
+        	
+        	ProxyServer.getInstance().getScheduler().runAsync(BungeeUtilisals.getInstance(), new Runnable(){
+				@Override
+				public void run() {
+		        	for(String s : MuteAPI.getMutes()){
+		        		MuteInfo muteinfo = new MuteInfo(s, MuteAPI.getMutedBy(s), MuteAPI.getMuteTime(s), MuteAPI.getReason(s));
+		        		mutes.put(s, muteinfo);
+		        	}					
+				}
+        	});
     	}
     }
     
     private static void setDefaults(){
-        Collection<String> check = punishments.getFile().getSection("Punishments").getKeys();
+        Collection<String> check = punishments.getFile().getSection( "Punishments" ).getKeys();
+        if(!check.contains("Commands")){
+        	punishments.getFile().set("Punishments.Commands.Ban", true);
+        	punishments.getFile().set("Punishments.Commands.Unban", true);
+        	punishments.getFile().set("Punishments.Commands.Kick", true);
+        	punishments.getFile().set("Punishments.Commands.Tempban", true);
+        	punishments.getFile().set("Punishments.Commands.BanIP", true);
+        	punishments.getFile().set("Punishments.Commands.BanInfo", true);
+        	punishments.getFile().set("Punishments.Commands.Mute", true);
+        	punishments.getFile().set("Punishments.Commands.Tempmute", true);
+        	punishments.getFile().set("Punishments.Commands.Unmute", true);
+        	punishments.getFile().set("Punishments.Commands.Warn", true);
+        }
         if(!check.contains("Settings")){
         	punishments.getFile().set("Punishments.Settings.Blocked-Cmds-While-Muted", Arrays.asList(new String[]{"/msg", "/w", "/tell"}));
         }

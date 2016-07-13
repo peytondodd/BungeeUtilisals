@@ -19,7 +19,7 @@ public class Store extends Command {
 		}
 	}
 	
-	private static BungeeUtilisals instance = (BungeeUtilisals)BungeeUtilisals.getInstance();
+	private static BungeeUtilisals instance = BungeeUtilisals.getInstance();
 
 	@SuppressWarnings("deprecation")
 	public static void executeStoreCommand(CommandSender sender, String[] args){

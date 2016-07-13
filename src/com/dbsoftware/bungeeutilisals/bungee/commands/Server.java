@@ -37,7 +37,7 @@ public class Server
 					if(p.getServer().getInfo().getName() == server.getName()){
 						p.sendMessage(new TextComponent(instance.getConfig().getString("Main-messages.already-connected").replace("&", "§")));
 						return;
-					} 
+					}
 					p.connect(server);
 					p.sendMessage(new TextComponent(instance.getConfig().getString("Main-messages.sended-message").replace("&", "§").replace("%player%", sender.getName()).replace("%server%", server.getName())));
 				} else {

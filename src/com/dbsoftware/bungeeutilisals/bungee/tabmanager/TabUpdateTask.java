@@ -1,7 +1,7 @@
 package com.dbsoftware.bungeeutilisals.bungee.tabmanager;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -48,8 +48,7 @@ public class TabUpdateTask implements Runnable {
         
 				p.setTabHeader(header, footer);
 			} else {
-				String count = (BungeeUtilisals.getInstance().useRedis() ? String.valueOf(BungeeUtilisals.getInstance().getRedisManager().getRedis().getPlayerCount()) : 
-					String.valueOf(ProxyServer.getInstance().getPlayers().size()));
+				String count = String.valueOf(ProxyServer.getInstance().getPlayers().size());
 				
 				String sheader = (headers.get(headercount)).replace("%newline%", "\n").replace("%p%", p.getName())
 						.replace("%globalonline%", count).replace("%server%", p.getServer().getInfo().getName());
