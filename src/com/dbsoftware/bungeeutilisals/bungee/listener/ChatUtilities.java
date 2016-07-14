@@ -1,4 +1,4 @@
-package com.dbsoftware.bungeeutilisals.bungee.events;
+package com.dbsoftware.bungeeutilisals.bungee.listener;
 
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;

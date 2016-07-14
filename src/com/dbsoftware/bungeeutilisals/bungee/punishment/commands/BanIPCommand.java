@@ -1,10 +1,13 @@
 package com.dbsoftware.bungeeutilisals.bungee.punishment.commands;
 
+import java.util.UUID;
+
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.BanAPI;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PlayerInfo;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
+import com.dbsoftware.bungeeutilisals.bungee.utils.UUIDFetcher;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -33,7 +36,18 @@ public class BanIPCommand extends Command {
 			return;
 		}
 		ProxiedPlayer p = ProxyServer.getInstance().getPlayer(args[0]);
-		PlayerInfo pinfo = new PlayerInfo(args[0]);
+		
+		UUID uuid = UUIDFetcher.getUUIDOf(args[0]);
+		if(uuid == null){
+			return;
+		}
+		
+		PlayerInfo pinfo;
+		if(BungeeUtilisals.getInstance().getConfigData().UUIDSTORAGE){
+			pinfo = new PlayerInfo(uuid.toString());
+		} else {
+			pinfo = new PlayerInfo(args[0]);
+		}
 		if(p != null){
 			String kreason = "";
 			String reason = "";
@@ -52,7 +66,7 @@ public class BanIPCommand extends Command {
 				}
 				return;
 			}
-			BanAPI.addIPBan(sender.getName(), IP.replace("localhost", "127.0.0.1"), reason);
+			BanAPI.addIPBan(sender.getName(), IP, reason);
 			p.disconnect(Utils.format(kreason.replace("%banner%", sender.getName()).replace("%reason%", reason)));
 		} else {
 			String kreason = "";
@@ -72,11 +86,11 @@ public class BanIPCommand extends Command {
 				}
 				return;
 			}
-			BanAPI.addIPBan(sender.getName(), IP.replace("localhost", "127.0.0.1"), reason);
+			BanAPI.addIPBan(sender.getName(), IP, reason);
 		}
 		pinfo.addBan();
 		for(String s : Punishments.punishments.getFile().getStringList("Punishments.BanIP.Messages.Banned")){
-			sender.sendMessage(Utils.format(s.replace("%ip%", pinfo.getIP().replace("localhost", "127.0.0.1")).replace("%reason%", banreason)));
+			sender.sendMessage(Utils.format(s.replace("%ip%", pinfo.getIP()).replace("%reason%", banreason)));
 		}
 	}
 	

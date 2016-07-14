@@ -1,10 +1,13 @@
 package com.dbsoftware.bungeeutilisals.bungee.punishment.commands;
 
+import java.util.UUID;
+
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.BanAPI;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PlayerInfo;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
+import com.dbsoftware.bungeeutilisals.bungee.utils.UUIDFetcher;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -24,8 +27,24 @@ public class UnbanCommand extends Command {
 			}
 			return;
 		}
-		PlayerInfo pinfo = new PlayerInfo(args[0]);
+		UUID uuid = UUIDFetcher.getUUIDOf(args[0]);
+		if(uuid == null){
+			return;
+		}
+		PlayerInfo pinfo;
+		if(BungeeUtilisals.getInstance().getConfigData().UUIDSTORAGE){
+			pinfo = new PlayerInfo(uuid.toString());
+			if(BanAPI.isBanned(uuid.toString())){
+				BanAPI.removeBan(uuid.toString());
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Unban.Messages.Unbanned")){
+					sender.sendMessage(Utils.format(s.replace("%player%", args[0])));
+				}
+			}
+		}
+		pinfo = new PlayerInfo(args[0]);
+			
 		String ip = pinfo.getIP();
+			
 		if(!BanAPI.isBanned(args[0]) && ip != null && !BanAPI.isIPBanned(ip)){
 			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Unban.Messages.NotBanned")){
 				sender.sendMessage(Utils.format(s));

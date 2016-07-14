@@ -18,14 +18,16 @@
 # Otherways, BungeeUtilisals isn't able to override those commands as it's a module.
 #_________________________________________________________________________________#
 
+# Do you want to store the players with their UUID or name? To have name storage, set to false, to use UUID storage, set on true.
+# UUID Storage is highly recommended for premium servers, because of name changes.
+# Name storage is recommended for cracked servers.
+UUID-Storage: false
+
 # This is the Prefix, for the most messages & alert prefix!
 Prefix: '&e&lBungeeUtilisals &8» &r'
 
 # This is a system that allows you to connect to the Bukkit server you are in to ask if you have the permission!
 Bukkit-Permissions: false
-
-# This loads support for redisbungee when needed, it changes glist, but also some other commands like alert over the proxy's
-Use-RedisBungee: false
 
 # If enabled, the persons with the permission "butilisals.notify"
 # Will get a Message if there is an available update.
@@ -34,16 +36,11 @@ UpdateChecker: true
 # VERY IMPORTANT! MYSQL NEEDS TO BE ENABLED AND GOOD THINGS NEED TO BE FILLED IN!
 # While MySQL being disabled, the Ban, Report & Friend system will not be loaded!
 MySQL:
-
   Enabled: false
   Host: '127.0.0.1'
-
   Port: 3306
-
   Database: 'database'
-
   Username: 'username'
-
   Password: 'password'
 
 # This are the main message, for the main & oldest commands (like /alert).
@@ -89,6 +86,16 @@ BigAlert:
     FadeIn: 30
     Stay: 60
     FadeOut: 30
+	
+PrivateMessages:
+  MSGAliases:
+  - gtell
+  - gw
+  - gwhisper
+  ReplyAliases:
+  - gr
+  SpyAliases:
+  - gsocialspy
 
 # This is the format of the StaffChat command.
 StaffChat:

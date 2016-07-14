@@ -5,7 +5,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import com.dbsoftware.bungeeutilisals.bungee.actionbarannouncer.ActionBarAnnouncer;
 import com.dbsoftware.bungeeutilisals.bungee.announcer.Announcer;
 import com.dbsoftware.bungeeutilisals.bungee.commands.Alert;
@@ -16,22 +20,27 @@ import com.dbsoftware.bungeeutilisals.bungee.commands.ClearChat;
 import com.dbsoftware.bungeeutilisals.bungee.commands.Find;
 import com.dbsoftware.bungeeutilisals.bungee.commands.Glist;
 import com.dbsoftware.bungeeutilisals.bungee.commands.Hub;
+import com.dbsoftware.bungeeutilisals.bungee.commands.MSGCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.ReplyCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.Rules;
 import com.dbsoftware.bungeeutilisals.bungee.commands.Server;
+import com.dbsoftware.bungeeutilisals.bungee.commands.SpyCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.Store;
 import com.dbsoftware.bungeeutilisals.bungee.commands.Vote;
-import com.dbsoftware.bungeeutilisals.bungee.events.AntiAd;
-import com.dbsoftware.bungeeutilisals.bungee.events.AntiCaps;
-import com.dbsoftware.bungeeutilisals.bungee.events.AntiSpam;
-import com.dbsoftware.bungeeutilisals.bungee.events.AntiSwear;
-import com.dbsoftware.bungeeutilisals.bungee.events.ChatLock;
-import com.dbsoftware.bungeeutilisals.bungee.events.ChatUtilities;
-import com.dbsoftware.bungeeutilisals.bungee.events.DisconnectEvent;
-import com.dbsoftware.bungeeutilisals.bungee.events.LoginEvent;
-import com.dbsoftware.bungeeutilisals.bungee.events.MessageLimiter;
-import com.dbsoftware.bungeeutilisals.bungee.events.PluginMessageReceive;
-import com.dbsoftware.bungeeutilisals.bungee.events.ServerSwitch;
 import com.dbsoftware.bungeeutilisals.bungee.friends.Friends;
+import com.dbsoftware.bungeeutilisals.bungee.listener.AntiAd;
+import com.dbsoftware.bungeeutilisals.bungee.listener.AntiCaps;
+import com.dbsoftware.bungeeutilisals.bungee.listener.AntiSpam;
+import com.dbsoftware.bungeeutilisals.bungee.listener.AntiSwear;
+import com.dbsoftware.bungeeutilisals.bungee.listener.ChatLock;
+import com.dbsoftware.bungeeutilisals.bungee.listener.ChatUtilities;
+import com.dbsoftware.bungeeutilisals.bungee.listener.DisconnectEvent;
+import com.dbsoftware.bungeeutilisals.bungee.listener.JoinListener;
+import com.dbsoftware.bungeeutilisals.bungee.listener.LoginEvent;
+import com.dbsoftware.bungeeutilisals.bungee.listener.MessageLimiter;
+import com.dbsoftware.bungeeutilisals.bungee.listener.PluginMessageReceive;
+import com.dbsoftware.bungeeutilisals.bungee.listener.PrivateMessageListener;
+import com.dbsoftware.bungeeutilisals.bungee.listener.ServerSwitch;
 import com.dbsoftware.bungeeutilisals.bungee.managers.DatabaseManager;
 import com.dbsoftware.bungeeutilisals.bungee.metrics.Metrics;
 import com.dbsoftware.bungeeutilisals.bungee.party.Party;
@@ -43,7 +52,9 @@ import com.dbsoftware.bungeeutilisals.bungee.titleannouncer.TitleAnnouncer;
 import com.dbsoftware.bungeeutilisals.bungee.updater.UpdateChecker;
 import com.dbsoftware.bungeeutilisals.bungee.utils.TPSRunnable;
 import com.google.common.io.ByteStreams;
+
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
@@ -63,6 +74,9 @@ public class BungeeUtilisals extends Plugin {
     public static boolean update;
     private File configfile;
     private Configuration config;
+    private ConfigData configdata;
+    public HashMap<String, String> pmcache = new HashMap<String, String>();
+    public List<BungeeUser> users = new ArrayList<BungeeUser>();
     
 	public void onEnable(){
 		instance = this;
@@ -70,10 +84,12 @@ public class BungeeUtilisals extends Plugin {
 		this.configfile = this.loadResource(this, "config.yml");
 	    try {
 			this.config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(this.configfile);
-		} catch (IOException e) {
+			this.saveConfig();
+	    } catch (IOException e) {
 			e.printStackTrace();
-		}
-	    			    
+	    }
+		this.configdata = new ConfigData();
+		
 	    loadCommands();
 	    registerEvents();
 	    Announcer.loadAnnouncements();
@@ -83,7 +99,7 @@ public class BungeeUtilisals extends Plugin {
 		
 	    ProxyServer.getInstance().getScheduler().schedule(BungeeUtilisals.getInstance(), new TPSRunnable(), 50, TimeUnit.MILLISECONDS);
 	    	    
-	    if(getConfig().getBoolean("UpdateChecker")){
+	    if(this.getConfigData().UPDATECHECKER){
 	    	UpdateChecker.checkUpdate(instance.getDescription().getVersion());
 	    	UpdateRunnable();
 	    }
@@ -125,9 +141,33 @@ public class BungeeUtilisals extends Plugin {
 	    ProxyServer.getInstance().getLogger().info("BungeeUtilisals is now Enabled!");
 	}
 	
+	public BungeeUser getUser(ProxiedPlayer p){
+		for(BungeeUser user : users){
+			if(user.getPlayer().equals(p)){
+				return user;
+			}
+		}
+		return null;
+	}
+	
+	public ConfigData getConfigData(){
+		return this.configdata;
+	}
+	
+	public boolean saveConfig(){
+		try {
+			ConfigurationProvider.getProvider(YamlConfiguration.class).save(config, configfile);
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	public boolean reloadConfig(){
 		try {
 			this.config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(this.configfile);
+			this.configdata = new ConfigData();
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -153,7 +193,10 @@ public class BungeeUtilisals extends Plugin {
 		ProxyServer.getInstance().getPluginManager().registerCommand(this, new Bgc());
 	    ProxyServer.getInstance().getPluginManager().registerCommand(this, new Butilisals());
 	    ProxyServer.getInstance().getPluginManager().registerCommand(this, new Server());
-	    
+	    ProxyServer.getInstance().getPluginManager().registerCommand(this, new MSGCommand());
+	    ProxyServer.getInstance().getPluginManager().registerCommand(this, new ReplyCommand());
+	    ProxyServer.getInstance().getPluginManager().registerCommand(this, new SpyCommand());
+
 	    if(getConfig().getBoolean("ClearChat.Enabled")){
 	    	ProxyServer.getInstance().getPluginManager().registerCommand(this, new ClearChat());
 	    }
@@ -205,6 +248,8 @@ public class BungeeUtilisals extends Plugin {
 	    ProxyServer.getInstance().getPluginManager().registerListener(this, new AntiAd(this));
 	    ProxyServer.getInstance().getPluginManager().registerListener(this, new ServerSwitch(this));
 	    ProxyServer.getInstance().getPluginManager().registerListener(this, new PluginMessageReceive());
+	    ProxyServer.getInstance().getPluginManager().registerListener(this, new JoinListener());
+	    ProxyServer.getInstance().getPluginManager().registerListener(this, new PrivateMessageListener());
 	}
 	
 	public void onDisable(){
@@ -234,5 +279,19 @@ public class BungeeUtilisals extends Plugin {
             e.printStackTrace();
         }
         return resourceFile;
+    }
+    
+    public class ConfigData {
+    	
+    	public Boolean UUIDSTORAGE, BUKKITPERMISSIONS, UPDATECHECKER;
+    	public String PREFIX;
+    	
+    	public ConfigData(){
+    		this.UUIDSTORAGE = BungeeUtilisals.getInstance().getConfig().getBoolean("UUID-Storage");
+    		this.BUKKITPERMISSIONS = BungeeUtilisals.getInstance().getConfig().getBoolean("Bukkit-Permissions");
+    		this.UPDATECHECKER = BungeeUtilisals.getInstance().getConfig().getBoolean("UpdateChecker");
+    		this.PREFIX = BungeeUtilisals.getInstance().getConfig().getString("Prefix");
+    	}
+    	
     }
 }

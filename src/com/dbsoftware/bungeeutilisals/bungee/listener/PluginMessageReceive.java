@@ -1,8 +1,9 @@
-package com.dbsoftware.bungeeutilisals.bungee.events;
+package com.dbsoftware.bungeeutilisals.bungee.listener;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+
 import com.dbsoftware.bungeeutilisals.bungee.commands.Alert;
 import com.dbsoftware.bungeeutilisals.bungee.commands.Bgc;
 import com.dbsoftware.bungeeutilisals.bungee.commands.Bigalert;
@@ -11,8 +12,11 @@ import com.dbsoftware.bungeeutilisals.bungee.commands.ClearChat;
 import com.dbsoftware.bungeeutilisals.bungee.commands.Find;
 import com.dbsoftware.bungeeutilisals.bungee.commands.Glist;
 import com.dbsoftware.bungeeutilisals.bungee.commands.Hub;
+import com.dbsoftware.bungeeutilisals.bungee.commands.MSGCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.ReplyCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.Rules;
 import com.dbsoftware.bungeeutilisals.bungee.commands.Server;
+import com.dbsoftware.bungeeutilisals.bungee.commands.SpyCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.Store;
 import com.dbsoftware.bungeeutilisals.bungee.commands.Vote;
 import com.dbsoftware.bungeeutilisals.bungee.friends.FriendsCommand;
@@ -31,6 +35,7 @@ import com.dbsoftware.bungeeutilisals.bungee.report.ReportCommand;
 import com.dbsoftware.bungeeutilisals.bungee.report.ReportListCommand;
 import com.dbsoftware.bungeeutilisals.bungee.staffchat.StaffChatCommand;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
+
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -69,6 +74,12 @@ public class PluginMessageReceive implements Listener {
 					}
 					if(command.equals("glag")){
 						Bgc.executeBgcCommand(sender, args);
+					} if(command.equals("msg")){
+						MSGCommand.executeMSGCommand(sender, args);
+					} if(command.equals("reply")){
+						ReplyCommand.executeReplyCommand(sender, args);
+					} if(command.equals("spy")){
+						SpyCommand.executeSpyCommand(sender, args);
 					} if(command.equals("alert")){
 						Alert.executeAlertCommand(sender, args);
 						return;

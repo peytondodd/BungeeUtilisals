@@ -1,5 +1,5 @@
 
-package com.dbsoftware.bungeeutilisals.bungee.events;
+package com.dbsoftware.bungeeutilisals.bungee.listener;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

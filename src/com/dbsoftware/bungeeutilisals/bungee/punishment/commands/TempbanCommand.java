@@ -2,12 +2,15 @@ package com.dbsoftware.bungeeutilisals.bungee.punishment.commands;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
+
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.BanAPI;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.TimeUnit;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PlayerInfo;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
+import com.dbsoftware.bungeeutilisals.bungee.utils.UUIDFetcher;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -29,12 +32,26 @@ public class TempbanCommand extends Command {
 			}
 			return;
 		}
-		if(BanAPI.isBanned(args[0])){
-			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempban.Messages.AlreadyBanned")){
-				sender.sendMessage(Utils.format(s));
-			}
+		UUID uuid = UUIDFetcher.getUUIDOf(args[0]);
+		if(uuid == null){
 			return;
 		}
+		if(BungeeUtilisals.getInstance().getConfigData().UUIDSTORAGE){
+			if(BanAPI.isBanned(uuid.toString())){
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempban.Messages.AlreadyBanned")){
+					sender.sendMessage(Utils.format(s));
+				}
+				return;
+			}
+		} else {
+			if(BanAPI.isBanned(args[0])){
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempban.Messages.AlreadyBanned")){
+					sender.sendMessage(Utils.format(s));
+				}
+				return;
+			}
+		}
+
 		ProxiedPlayer p = ProxyServer.getInstance().getPlayer(args[0]);
 		if(p != null){
 			String kreason = "";
@@ -69,14 +86,18 @@ public class TempbanCommand extends Command {
 				return;
 			}
 			
-			BanAPI.addBan(sender.getName(), p.getName(), time, reason);
+			if(BungeeUtilisals.getInstance().getConfigData().UUIDSTORAGE){
+				BanAPI.addBan(sender.getName(), uuid.toString(), time, reason);
+			} else {
+				BanAPI.addBan(sender.getName(), p.getName(), time, reason);
+			}
 
-			Long end = BanAPI.getBanTime(p.getName());
+			Long end = time;
 			
 			SimpleDateFormat df2 = new SimpleDateFormat("kk:mm dd/MM/yyyy");
 			String date = df2.format(new Date(end));
               
-			p.disconnect(Utils.format(kreason.replace("%banner%", BanAPI.getBannedBy(p.getName())).replace("%unbantime%", (end == -1L ? "Never" : date)).replace("%reason%", BanAPI.getReason(p.getName()))));
+			p.disconnect(Utils.format(kreason.replace("%banner%", sender.getName()).replace("%unbantime%", (end == -1L ? "Never" : date)).replace("%reason%", reason)));
 		} else {
 			String kreason = "";
 			String reason = "";
@@ -109,10 +130,19 @@ public class TempbanCommand extends Command {
 				}
 				return;
 			}
-			BanAPI.addBan(sender.getName(), args[0], time, reason);
+			if(BungeeUtilisals.getInstance().getConfigData().UUIDSTORAGE){
+				BanAPI.addBan(sender.getName(), uuid.toString(), time, reason);
+			} else {
+				BanAPI.addBan(sender.getName(), args[0], time, reason);
+			}
 		}
-		PlayerInfo pinfo = new PlayerInfo(args[0]);
-		pinfo.addBan();
+		PlayerInfo info;
+		if(BungeeUtilisals.getInstance().getConfigData().UUIDSTORAGE){
+			info = new PlayerInfo(uuid.toString());
+		} else {
+			info = new PlayerInfo(args[0]);
+		}
+		info.addBan();
 		for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempban.Messages.Banned")){
 			sender.sendMessage(Utils.format(s.replace("%player%", args[0]).replace("%reason%", banreason)));
 		}

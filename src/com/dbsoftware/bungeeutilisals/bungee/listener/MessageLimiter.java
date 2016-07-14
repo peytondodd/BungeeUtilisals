@@ -1,4 +1,4 @@
-package com.dbsoftware.bungeeutilisals.bungee.events;
+package com.dbsoftware.bungeeutilisals.bungee.listener;
 
 import java.util.HashMap;
 import java.util.Map;

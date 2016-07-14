@@ -2,12 +2,15 @@ package com.dbsoftware.bungeeutilisals.bungee.punishment.commands;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
+
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.MuteAPI;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.TimeUnit;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PlayerInfo;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
+import com.dbsoftware.bungeeutilisals.bungee.utils.UUIDFetcher;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -29,11 +32,24 @@ public class TempmuteCommand extends Command {
 			}
 			return;
 		}
-		if(MuteAPI.isMuted(args[0])){
-			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempmute.Messages.AlreadyMuted")){
-				sender.sendMessage(Utils.format(s));
-			}
+		UUID uuid = UUIDFetcher.getUUIDOf(args[0]);
+		if(uuid == null){
 			return;
+		}
+		if(BungeeUtilisals.getInstance().getConfigData().UUIDSTORAGE){
+			if(MuteAPI.isMuted(uuid.toString())){
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempmute.Messages.AlreadyMuted")){
+					sender.sendMessage(Utils.format(s));
+				}
+				return;
+			}
+		} else {
+			if(MuteAPI.isMuted(args[0])){
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempmute.Messages.AlreadyMuted")){
+					sender.sendMessage(Utils.format(s));
+				}
+				return;
+			}
 		}
 		ProxiedPlayer p = ProxyServer.getInstance().getPlayer(args[0]);
 		if(p != null){
@@ -72,7 +88,11 @@ public class TempmuteCommand extends Command {
 				p.sendMessage(Utils.format(s.replace("%player%", sender.getName()).replace("%reason%", mutereason).replace("%time%", date)));
 			}
 			
-			MuteAPI.addMute(sender.getName(), p.getName(), time, reason);
+			if(BungeeUtilisals.getInstance().getConfigData().UUIDSTORAGE){
+				MuteAPI.addMute(sender.getName(), uuid.toString(), time, reason);
+			} else {
+				MuteAPI.addMute(sender.getName(), p.getName(), time, reason);
+			}
 		} else {
 			String reason = "";
 			for(String s : args){
@@ -101,10 +121,19 @@ public class TempmuteCommand extends Command {
 				}
 				return;
 			}
-			MuteAPI.addMute(sender.getName(), args[0], time, reason);
+			if(BungeeUtilisals.getInstance().getConfigData().UUIDSTORAGE){
+				MuteAPI.addMute(sender.getName(), uuid.toString(), time, reason);
+			} else {
+				MuteAPI.addMute(sender.getName(), args[0], time, reason);
+			}
 		}
-		PlayerInfo pinfo = new PlayerInfo(args[0]);
-		pinfo.addMute();
+		PlayerInfo info;
+		if(BungeeUtilisals.getInstance().getConfigData().UUIDSTORAGE){
+			info = new PlayerInfo(uuid.toString());
+		} else {
+			info = new PlayerInfo(args[0]);
+		}
+		info.addMute();
 		for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempmute.Messages.Muted")){
 			sender.sendMessage(Utils.format(s.replace("%player%", args[0]).replace("%reason%", mutereason)));
 		}

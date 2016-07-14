@@ -2,6 +2,8 @@ package com.dbsoftware.bungeeutilisals.bungee.punishment.listeners;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.BanAPI;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PlayerInfo;
@@ -15,7 +17,12 @@ public class LoginListener implements Listener {
 	
 	@EventHandler
 	public void onLogin(final LoginEvent event){
-		PlayerInfo info = new PlayerInfo(event.getConnection().getName());
+		PlayerInfo info;
+		if(BungeeUtilisals.getInstance().getConfigData().UUIDSTORAGE){
+			info = new PlayerInfo(event.getConnection().getUniqueId().toString());
+		} else {
+			info = new PlayerInfo(event.getConnection().getName());
+		}
 		if(!info.isInTable()){
 			info.putPlayerInTable(Utils.getAddress(event.getConnection().getAddress()), 0, 0, 0, 0);
 		}
@@ -30,6 +37,40 @@ public class LoginListener implements Listener {
 			event.setCancelled(true);
 			event.setCancelReason(reason.replace("%banner%", BanAPI.getIPBannedBy(IP)).replace("%unbantime%", "Never").replace("%reason%", BanAPI.getIPReason(IP)).replaceAll("&", "§"));
 			return;
+		}
+		if(BungeeUtilisals.getInstance().getConfigData().UUIDSTORAGE){
+			if(BanAPI.isBanned(event.getConnection().getUniqueId().toString())){
+				Long time = BanAPI.getBanTime(event.getConnection().getUniqueId().toString());
+				if(time < System.currentTimeMillis() && time != -1){
+					BanAPI.removeBan(event.getConnection().getUniqueId().toString());
+					return;
+				}
+				if(time != -1){
+					String reason = "";
+					for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempban.Messages.KickMessage")){
+						reason = reason + "\n" + s;
+						SimpleDateFormat df2 = new SimpleDateFormat("kk:mm dd/MM/yyyy");
+						String date = df2.format(new Date(time));
+						
+						event.setCancelled(true);
+						event.setCancelReason(reason.replace("%banner%", BanAPI.getBannedBy(event.getConnection().getUniqueId().toString()))
+								.replace("%unbantime%", (time == -1L ? "Never" : date))
+								.replace("%reason%", BanAPI.getReason(event.getConnection().getUniqueId().toString())).replaceAll("&", "§"));
+					}
+					return;
+				}
+				String reason = "";
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Ban.Messages.KickMessage")){
+					reason = reason + "\n" + s;
+				}
+				SimpleDateFormat df2 = new SimpleDateFormat("kk:mm dd/MM/yyyy");
+				String date = df2.format(new Date(time));
+				
+				event.setCancelled(true);
+				event.setCancelReason(reason.replace("%banner%", BanAPI.getBannedBy(event.getConnection().getUniqueId().toString()))
+						.replace("%unbantime%", (time == -1L ? "Never" : date))
+						.replace("%reason%", BanAPI.getReason(event.getConnection().getUniqueId().toString())).replaceAll("&", "§"));
+			}
 		}
 		if(BanAPI.isBanned(event.getConnection().getName())){
 			Long time = BanAPI.getBanTime(event.getConnection().getName());

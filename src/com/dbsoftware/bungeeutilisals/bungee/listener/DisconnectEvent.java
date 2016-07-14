@@ -1,4 +1,4 @@
-package com.dbsoftware.bungeeutilisals.bungee.events;
+package com.dbsoftware.bungeeutilisals.bungee.listener;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;

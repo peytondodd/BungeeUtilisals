@@ -1,9 +1,12 @@
 package com.dbsoftware.bungeeutilisals.bungee.punishment.commands;
 
+import java.util.UUID;
+
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.MuteAPI;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
+import com.dbsoftware.bungeeutilisals.bungee.utils.UUIDFetcher;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -22,6 +25,23 @@ public class UnmuteCommand extends Command {
 				sender.sendMessage(TextComponent.fromLegacyText(s.replace("&", "§")));
 			}
 			return;
+		}
+		UUID uuid = UUIDFetcher.getUUIDOf(args[0]);
+		if(uuid == null){
+			return;
+		}
+		if(BungeeUtilisals.getInstance().getConfigData().UUIDSTORAGE){
+			if(MuteAPI.isMuted(uuid.toString())){
+				MuteAPI.removeMute(uuid.toString());
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Unmute.Messages.Unmuted")){
+					sender.sendMessage(Utils.format(s.replace("%player%", args[0])));
+				}
+			} else {
+				for(String s : Punishments.punishments.getFile().getStringList("Punishments.Unmute.Messages.NotMuted")){
+					sender.sendMessage(Utils.format(s));
+				}
+				return;
+			}
 		}
 		if(MuteAPI.isMuted(args[0])){
 			MuteAPI.removeMute(args[0]);
