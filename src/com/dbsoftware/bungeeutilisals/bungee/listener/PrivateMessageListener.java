@@ -11,7 +11,7 @@ public class PrivateMessageListener implements Listener {
 	
 	@EventHandler
 	public void onPrivateMessage(PrivateMessageEvent event){
-        String message = "&8[" + event.getSender().getPlayer().getName() + " &c» " + event.getReceiver().getPlayer().getName() + "&8] &r" + event.getMessage();
+        String message = "&8[&c" + event.getSender().getPlayer().getName() + " &c» " + event.getReceiver().getPlayer().getName() + "&8] &r" + event.getMessage();
 		for(BungeeUser user : BungeeUtilisals.getInstance().users){
 			if(user.isSocialSpy()){
 				user.sendMessage(message);

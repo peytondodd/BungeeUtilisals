@@ -86,7 +86,7 @@ BigAlert:
     FadeIn: 30
     Stay: 60
     FadeOut: 30
-	
+
 PrivateMessages:
   MSGAliases:
   - gtell

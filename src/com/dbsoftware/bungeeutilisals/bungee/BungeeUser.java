@@ -11,6 +11,7 @@ public class BungeeUser {
 	
 	public BungeeUser(ProxiedPlayer p){
 		this.p = p;
+		this.socialspy = false;
 	}
 	
 	public void sendMessage(String message){
