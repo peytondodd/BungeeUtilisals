@@ -11,7 +11,7 @@ import net.md_5.bungee.api.plugin.Command;
 public class SpyCommand extends Command {
 	
 	public SpyCommand() {
-		super("gspy", "", BungeeUtilisals.getInstance().getConfig().getStringList("PrivateMessages.SpyAliases").toArray(new String[]{}));
+		super("gspy", "", BungeeUtilisals.getInstance().getConfig().getStringList("PrivateMessages.Spy.Aliases").toArray(new String[]{}));
 	}
 
 	public static void executeSpyCommand(CommandSender sender, String[] args){
@@ -22,16 +22,16 @@ public class SpyCommand extends Command {
         ProxiedPlayer p = (ProxiedPlayer)sender;
         BungeeUser user = BungeeUtilisals.getInstance().getUser(p);
         if(args.length > 0){
-        	p.sendMessage(Utils.format("&4Please use /gspy!"));
+        	p.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("PrivateMessages.Spy.Messages.WrongUsage")));
         	return;
         }
         
         if(user.isSocialSpy()){
         	user.setSocialSpy(false);
-        	user.sendMessage("&6Your Socialspy has been &bdisabled&6!");
+        	user.sendMessage(BungeeUtilisals.getInstance().getConfig().getString("PrivateMessages.Spy.Messages.Disabled"));
         } else {
         	user.setSocialSpy(true);
-        	user.sendMessage("&6Your Socialspy has been &benabled&6!");
+        	user.sendMessage(BungeeUtilisals.getInstance().getConfig().getString("PrivateMessages.Spy.Messages.Enabled"));
         }
 	}
 

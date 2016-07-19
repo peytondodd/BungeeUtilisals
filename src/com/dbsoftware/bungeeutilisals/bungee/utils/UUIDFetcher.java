@@ -12,11 +12,12 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
 import com.google.common.collect.ImmutableList;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -25,7 +26,8 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
 	
     private static final double PROFILES_PER_REQUEST = 100;
     private static final String PROFILE_URL = "https://api.mojang.com/profiles/minecraft";
-    private final JSONParser jsonParser = new JSONParser();
+    private final JsonParser jsonParser = new JsonParser();
+    //private final JSONParser jsonParser = new JSONParser();
     private final List<String> names;
     private final boolean rateLimiting;
 
@@ -37,19 +39,49 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
     public UUIDFetcher(List<String> names) {
         this(names, true);
     }
+    
 
-    public Map<String, UUID> call() throws Exception {
+    /**public Map<String, UUID> call() throws Exception {
         Map<String, UUID> uuidMap = new HashMap<String, UUID>();
         int requests = (int) Math.ceil(names.size() / PROFILES_PER_REQUEST);
         for (int i = 0; i < requests; i++) {
             HttpURLConnection connection = createConnection();
-            String body = JSONArray.toJSONString(names.subList(i * 100, Math.min((i + 1) * 100, names.size())));
+            
+            String body = gson.toJson(names.subList(i * 100, Math.min((i + 1) * 100, names.size())));
             writeBody(connection, body);
             JSONArray array = (JSONArray) jsonParser.parse(new InputStreamReader(connection.getInputStream()));
             for (Object profile : array) {
                 JSONObject jsonProfile = (JSONObject) profile;
                 String id = (String) jsonProfile.get("id");
                 String name = (String) jsonProfile.get("name");
+                UUID uuid = UUIDFetcher.getUUID(id);
+                uuidMap.put(name, uuid);
+            }
+            if (rateLimiting && i != requests - 1) {
+                Thread.sleep(100L);
+            }
+        }
+        return uuidMap;
+    }*/
+
+
+    public Map<String, UUID> call() throws Exception {
+        Map<String, UUID> uuidMap = new HashMap<String, UUID>();
+        int requests = (int) Math.ceil(names.size() / PROFILES_PER_REQUEST);
+        for (int i = 0; i < requests; i++) {
+            HttpURLConnection connection = createConnection();
+            
+            //String body = JSONArray.toJSONString(names.subList(i * 100, Math.min((i + 1) * 100, names.size())));
+            
+            String body = new Gson().toJson(names.subList(i * 100, Math.min((i + 1) * 100, names.size())));
+            
+            writeBody(connection, body);
+            JsonArray array = jsonParser.parse(new InputStreamReader(connection.getInputStream())).getAsJsonArray();
+            for (JsonElement profile : array) {
+            	
+                JsonObject jsonProfile = profile.getAsJsonObject();
+                String id = jsonProfile.get("id").getAsString();
+                String name = jsonProfile.get("name").getAsString();
                 UUID uuid = UUIDFetcher.getUUID(id);
                 uuidMap.put(name, uuid);
             }

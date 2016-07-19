@@ -17,7 +17,7 @@ import net.md_5.bungee.api.plugin.Command;
 public class MSGCommand extends Command {
 	
 	public MSGCommand() {
-		super("gmsg", "", BungeeUtilisals.getInstance().getConfig().getStringList("PrivateMessages.MSGAliases").toArray(new String[]{}));
+		super("gmsg", "", BungeeUtilisals.getInstance().getConfig().getStringList("PrivateMessages.MSG.Aliases").toArray(new String[]{}));
 	}
 
 	public static void executeMSGCommand(CommandSender sender, String[] args){
@@ -27,13 +27,13 @@ public class MSGCommand extends Command {
         }
         ProxiedPlayer p = (ProxiedPlayer)sender;
         if(args.length < 2){
-        	p.sendMessage(Utils.format("&4Please use /gmsg (player) (message)!"));
+        	p.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("PrivateMessages.MSG.Messages.WrongUsage")));
         	return;
         }
         String target = args[0];
         ProxiedPlayer pl = ProxyServer.getInstance().getPlayer(target);
         if(pl == null){
-        	p.sendMessage(Utils.format("&4That player is not online!"));
+        	p.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("PrivateMessages.MSG.Messages.OfflineTarget")));
         	return;
         }
         List<String> newargs = new ArrayList<String>();
@@ -59,8 +59,10 @@ public class MSGCommand extends Command {
         }
         BungeeUtilisals.getInstance().pmcache.put(p.getName().toLowerCase(), pl.getName().toLowerCase());
         BungeeUtilisals.getInstance().pmcache.put(pl.getName().toLowerCase(), p.getName().toLowerCase());
-        p.sendMessage(Utils.format("&8[&6Me &c» &6" + pl.getName() + "&8] &r" + message));
-        pl.sendMessage(Utils.format("&8[&6" + p.getName() + " &c» &6Me&8] &r" + message));
+        p.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("PrivateMessages.MSG.Messages.Format.Sending")
+        		.replace("%player%", pl.getName()).replace("%message%", message)));
+        pl.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("PrivateMessages.MSG.Messages.Format.Receiving")
+        		.replace("%player%", p.getName()).replace("%message%", message)));
 	}
 
 	@Override

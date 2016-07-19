@@ -15,9 +15,9 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.config.Configuration;
 
-public class Glist extends Command {
+public class GlistCommand extends Command {
 	
-	public Glist() {
+	public GlistCommand() {
 		super("glist", "", instance.getConfig().getString("GList.Aliase"));{
 		}
 	}

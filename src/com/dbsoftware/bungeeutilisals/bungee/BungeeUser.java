@@ -7,11 +7,12 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 public class BungeeUser {
 	
 	ProxiedPlayer p;
-	Boolean socialspy;
+	Boolean socialspy,localspy;
 	
 	public BungeeUser(ProxiedPlayer p){
 		this.p = p;
 		this.socialspy = false;
+		this.localspy = false;
 	}
 	
 	public void sendMessage(String message){
@@ -32,6 +33,14 @@ public class BungeeUser {
 	
 	public void setSocialSpy(Boolean b){
 		this.socialspy = b;
+	}
+	
+	public Boolean isLocalSpy(){
+		return localspy;
+	}
+	
+	public void setLocalSpy(Boolean b){
+		this.localspy = b;
 	}
 	
 }

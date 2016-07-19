@@ -87,15 +87,45 @@ BigAlert:
     Stay: 60
     FadeOut: 30
 
+LocalSpy:
+  Aliases:
+  - commandspy
+  Messages:
+    Usage: '&4Please use /localspy'
+    Format: '&b%player% &6executed the command &b%command%'
+    Enabled: '&6Your localspy has been &benabled&6!'
+    Disabled: '&6Your localspy has been &bdisabled&6!'
+
 PrivateMessages:
-  MSGAliases:
-  - gtell
-  - gw
-  - gwhisper
-  ReplyAliases:
-  - gr
-  SpyAliases:
-  - gsocialspy
+  MSG:
+    Aliases:
+    - gtell
+    - gw
+    - gwhisper
+    Messages:
+      WrongUsage: '&4Please use /gmsg (player) (message)!'
+      OfflineTarget: '&4That player is not online!'
+      Format:
+        Receiving: '&8[&6%player% &c» &6Me&8] &r%message%'
+        Sending: '&8[&6Me &c» &6%player%&8] &r%message%'
+  Reply:
+    Aliases:
+    - gr
+    Messages:
+      WrongUsage: '&4Please use /greply (message)!'
+      NoTarget: '&4You have nobody to reply to!'
+      OfflineTarget: '&4That player is not online anymore!'
+      Format:
+        Receiving: '&8[&6%sender% &c» &6Me&8] &r%message%'
+        Sending: '&8[&6Me &c» &6%sender%&8] &r%message%'
+  Spy:
+    Aliases:
+    - gsocialspy
+    Messages:
+      WrongUsage: '&4Please use /gspy!'
+      Enabled: '&6Your socialspy has been &benabled&6!'
+      Disabled: '&6Your socialspy has been &bdisabled&6!'
+      Format: '&8[&6%sender% &c» &6%receiver%&8] &r%message%'
 
 # This is the format of the StaffChat command.
 StaffChat:
@@ -114,6 +144,10 @@ ChatLock:
   Lock: '&7The Chat has been Locked.'
   Unlock: '&7The Chat has been unlocked.'
   Locked: '&7The Chat has been locked. You cannot talk right now.'
+  # Set to true to enable /chat lock.
+  ChatCommand:
+    Enabled: true
+    WrongArgs: '&cPlease use /chat lock'
   Broadcast:
     Enabled: true
     Lock:
@@ -122,7 +156,7 @@ ChatLock:
       - '&4------------------------------------------'
     UnLock:
       - '&4------------------------------------------'
-      - '&c      The Chat has been UnLocked!         '
+      - '&c      The Chat has been Unlocked!         '
       - '&4------------------------------------------'
 
 # Hub Command Section

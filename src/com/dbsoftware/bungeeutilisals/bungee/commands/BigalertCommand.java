@@ -14,9 +14,9 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
-public class Bigalert extends Command {
+public class BigalertCommand extends Command {
 	
-	public Bigalert() {
+	public BigalertCommand() {
 		super("bigalert");{
 		}
 	}

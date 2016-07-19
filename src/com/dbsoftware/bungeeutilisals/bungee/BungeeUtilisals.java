@@ -12,28 +12,32 @@ import java.util.concurrent.TimeUnit;
 
 import com.dbsoftware.bungeeutilisals.bungee.actionbarannouncer.ActionBarAnnouncer;
 import com.dbsoftware.bungeeutilisals.bungee.announcer.Announcer;
-import com.dbsoftware.bungeeutilisals.bungee.commands.Alert;
-import com.dbsoftware.bungeeutilisals.bungee.commands.Bgc;
-import com.dbsoftware.bungeeutilisals.bungee.commands.Bigalert;
-import com.dbsoftware.bungeeutilisals.bungee.commands.Butilisals;
-import com.dbsoftware.bungeeutilisals.bungee.commands.ClearChat;
-import com.dbsoftware.bungeeutilisals.bungee.commands.Find;
-import com.dbsoftware.bungeeutilisals.bungee.commands.Glist;
-import com.dbsoftware.bungeeutilisals.bungee.commands.Hub;
+import com.dbsoftware.bungeeutilisals.bungee.commands.AlertCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.BgcCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.BigalertCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.ButilisalsCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.ChatCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.ClearChatCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.FindCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.GlistCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.HubCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.LocalSpyCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.MSGCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.ReplyCommand;
-import com.dbsoftware.bungeeutilisals.bungee.commands.Rules;
-import com.dbsoftware.bungeeutilisals.bungee.commands.Server;
+import com.dbsoftware.bungeeutilisals.bungee.commands.RulesCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.ServerCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.SpyCommand;
-import com.dbsoftware.bungeeutilisals.bungee.commands.Store;
-import com.dbsoftware.bungeeutilisals.bungee.commands.Vote;
+import com.dbsoftware.bungeeutilisals.bungee.commands.StoreCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.VoteCommand;
 import com.dbsoftware.bungeeutilisals.bungee.friends.Friends;
 import com.dbsoftware.bungeeutilisals.bungee.listener.AntiAd;
 import com.dbsoftware.bungeeutilisals.bungee.listener.AntiCaps;
 import com.dbsoftware.bungeeutilisals.bungee.listener.AntiSpam;
 import com.dbsoftware.bungeeutilisals.bungee.listener.AntiSwear;
+import com.dbsoftware.bungeeutilisals.bungee.listener.ChatListener;
 import com.dbsoftware.bungeeutilisals.bungee.listener.ChatLock;
 import com.dbsoftware.bungeeutilisals.bungee.listener.ChatUtilities;
+import com.dbsoftware.bungeeutilisals.bungee.listener.CommandListener;
 import com.dbsoftware.bungeeutilisals.bungee.listener.DisconnectEvent;
 import com.dbsoftware.bungeeutilisals.bungee.listener.JoinListener;
 import com.dbsoftware.bungeeutilisals.bungee.listener.LoginEvent;
@@ -184,21 +188,25 @@ public class BungeeUtilisals extends Plugin {
     }
 	
 	private void loadCommands(){
-		ProxyServer.getInstance().getPluginManager().registerCommand(this, new Alert());
-		ProxyServer.getInstance().getPluginManager().registerCommand(this, new Bigalert());
+		ProxyServer.getInstance().getPluginManager().registerCommand(this, new AlertCommand());
+		ProxyServer.getInstance().getPluginManager().registerCommand(this, new BigalertCommand());
 		if(getConfig().getBoolean("GList.Enabled")){
-			ProxyServer.getInstance().getPluginManager().registerCommand(this, new Glist());
+			ProxyServer.getInstance().getPluginManager().registerCommand(this, new GlistCommand());
 		}
-		ProxyServer.getInstance().getPluginManager().registerCommand(this, new Find());
-		ProxyServer.getInstance().getPluginManager().registerCommand(this, new Bgc());
-	    ProxyServer.getInstance().getPluginManager().registerCommand(this, new Butilisals());
-	    ProxyServer.getInstance().getPluginManager().registerCommand(this, new Server());
+		ProxyServer.getInstance().getPluginManager().registerCommand(this, new FindCommand());
+		ProxyServer.getInstance().getPluginManager().registerCommand(this, new BgcCommand());
+	    ProxyServer.getInstance().getPluginManager().registerCommand(this, new ButilisalsCommand());
+	    ProxyServer.getInstance().getPluginManager().registerCommand(this, new ServerCommand());
 	    ProxyServer.getInstance().getPluginManager().registerCommand(this, new MSGCommand());
 	    ProxyServer.getInstance().getPluginManager().registerCommand(this, new ReplyCommand());
 	    ProxyServer.getInstance().getPluginManager().registerCommand(this, new SpyCommand());
+	    ProxyServer.getInstance().getPluginManager().registerCommand(this, new LocalSpyCommand());
+	    if(getConfig().getBoolean("ChatLock.ChatCommand.Enabled")){
+	    	ProxyServer.getInstance().getPluginManager().registerCommand(this, new ChatCommand());
+	    }
 
 	    if(getConfig().getBoolean("ClearChat.Enabled")){
-	    	ProxyServer.getInstance().getPluginManager().registerCommand(this, new ClearChat());
+	    	ProxyServer.getInstance().getPluginManager().registerCommand(this, new ClearChatCommand());
 	    }
 	    if(getConfig().getBoolean("Hub.Enabled")){
 	    	String cmd = getConfig().getString("Hub.Command");
@@ -212,19 +220,19 @@ public class BungeeUtilisals extends Plugin {
 	    			cmds = new String[]{ncmd};
 	    		}
 	    		
-	    		ProxyServer.getInstance().getPluginManager().registerCommand(this, new Hub(c, cmds));
+	    		ProxyServer.getInstance().getPluginManager().registerCommand(this, new HubCommand(c, cmds));
 	    	} else {
-		    	ProxyServer.getInstance().getPluginManager().registerCommand(this, new Hub(cmd));
+		    	ProxyServer.getInstance().getPluginManager().registerCommand(this, new HubCommand(cmd));
 	    	}
 	    }
 	    if(getConfig().getBoolean("Vote.Enabled")){
-	    	ProxyServer.getInstance().getPluginManager().registerCommand(this, new Vote());
+	    	ProxyServer.getInstance().getPluginManager().registerCommand(this, new VoteCommand());
 	    }
 	    if(getConfig().getBoolean("Store.Enabled")){
-	    	ProxyServer.getInstance().getPluginManager().registerCommand(this, new Store());
+	    	ProxyServer.getInstance().getPluginManager().registerCommand(this, new StoreCommand());
 	    }
 	    if(getConfig().getBoolean("Rules.Enabled")){
-	    	ProxyServer.getInstance().getPluginManager().registerCommand(this, new Rules());
+	    	ProxyServer.getInstance().getPluginManager().registerCommand(this, new RulesCommand());
 	    }
 	}
 	
@@ -243,13 +251,16 @@ public class BungeeUtilisals extends Plugin {
 	    ProxyServer.getInstance().getPluginManager().registerListener(this, new AntiSpam(this));
 	    ProxyServer.getInstance().getPluginManager().registerListener(this, new ChatLock(this));
 	    ProxyServer.getInstance().getPluginManager().registerListener(this, new ChatUtilities(this));
-	    ProxyServer.getInstance().getPluginManager().registerListener(this, new AntiSwear(this));
+	    ProxyServer.getInstance().getPluginManager().registerListener(this, new AntiSwear());
 	    ProxyServer.getInstance().getPluginManager().registerListener(this, new AntiCaps(this));
 	    ProxyServer.getInstance().getPluginManager().registerListener(this, new AntiAd(this));
 	    ProxyServer.getInstance().getPluginManager().registerListener(this, new ServerSwitch(this));
 	    ProxyServer.getInstance().getPluginManager().registerListener(this, new PluginMessageReceive());
 	    ProxyServer.getInstance().getPluginManager().registerListener(this, new JoinListener());
 	    ProxyServer.getInstance().getPluginManager().registerListener(this, new PrivateMessageListener());
+	    ProxyServer.getInstance().getPluginManager().registerListener(this, new CommandListener());
+	    ProxyServer.getInstance().getPluginManager().registerListener(this, new ChatListener());
+	
 	}
 	
 	public void onDisable(){

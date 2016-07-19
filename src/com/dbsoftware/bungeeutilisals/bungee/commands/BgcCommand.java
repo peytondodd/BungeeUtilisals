@@ -14,9 +14,9 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
-public class Bgc extends Command {
+public class BgcCommand extends Command {
 	
-	public Bgc() {
+	public BgcCommand() {
 		super("bgc", "", new String[]{"glag", "gtps", "blag"});
 	}
 

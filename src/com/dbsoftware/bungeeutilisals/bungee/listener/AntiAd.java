@@ -1,4 +1,3 @@
-
 package com.dbsoftware.bungeeutilisals.bungee.listener;
 
 import java.util.regex.Matcher;

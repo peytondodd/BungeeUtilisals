@@ -23,7 +23,7 @@ import net.md_5.bungee.api.plugin.Command;
 public class BanInfoCommand extends Command {
 
 	public BanInfoCommand() {
-		super("baninfo", "", "binfo");
+		super("baninfo", "", "binfo", "pinfo");
 	}
 
 	public static void executeCheckBanCommand(final CommandSender sender, final String[] args) {

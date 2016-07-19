@@ -10,10 +10,10 @@ import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 
-public class Server
+public class ServerCommand
 	extends Command {
 	
-	public Server() {
+	public ServerCommand() {
 		super("server");{
 		}
 	}

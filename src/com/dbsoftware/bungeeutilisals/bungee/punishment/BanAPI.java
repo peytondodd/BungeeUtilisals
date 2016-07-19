@@ -14,6 +14,10 @@ public class BanAPI {
 	private static DatabaseManager dbmanager = BungeeUtilisals.getInstance().getDatabaseManager();
 		
 	public static boolean isIPBanned(String IP){
+		BanIPInfo info = Punishments.getIPBanInfo(IP);
+		if(info != null){
+			return true;
+		}
 		try {
 		    PreparedStatement preparedStatement = dbmanager.getConnection().prepareStatement("SELECT `Reason` FROM `IPBans` WHERE `Banned` = ?;");
 		    preparedStatement.setString(1, IP);
@@ -51,7 +55,7 @@ public class BanAPI {
 			
 			preparedStatement.executeUpdate();
 			
-			Punishments.ipbans.put(banned, new BanIPInfo(banned, banned_by, reason));
+			Punishments.ipbans.add(new BanIPInfo(banned, banned_by, reason));
 		} catch (SQLException e) {
 			BungeeUtilisals.getInstance().getLogger().info("An error occured while connecting to the database!" + e.getMessage());
 		}
@@ -64,13 +68,20 @@ public class BanAPI {
 			
 			preparedStatement.executeUpdate();
 			
-			Punishments.ipbans.remove(player);
+			BanIPInfo info = Punishments.getIPBanInfo(player);
+			if(info != null){
+				Punishments.ipbans.remove(info);
+			}
 		} catch (SQLException e) {
 			BungeeUtilisals.getInstance().getLogger().info("An error occured while connecting to the database!" + e.getMessage());
 		}
 	}
 	
 	public static String getIPBannedBy(String player){
+		BanIPInfo info = Punishments.getIPBanInfo(player);
+		if(info != null){
+			return info.getBy();
+		}
 		String playername = "";
 		try {
 			PreparedStatement preparedStatement = dbmanager.getConnection().prepareStatement("SELECT `BannedBy` FROM `IPBans` WHERE `Banned` = ?;");
@@ -87,6 +98,10 @@ public class BanAPI {
 	}
 	
 	public static String getIPReason(String player){
+		BanIPInfo info = Punishments.getIPBanInfo(player);
+		if(info != null){
+			return info.getReason();
+		}
 		String reason = "";
 		try {
 			PreparedStatement preparedStatement = dbmanager.getConnection().prepareStatement("SELECT `Reason` FROM `IPBans` WHERE `Banned` = ?;");
@@ -103,6 +118,10 @@ public class BanAPI {
 	}
 	
 	public static boolean isBanned(String player){
+		BanInfo info = Punishments.getBanInfo(player);
+		if(info != null){
+			return true;
+		}
 		try {
 		    PreparedStatement preparedStatement = dbmanager.getConnection().prepareStatement("SELECT `Reason` FROM `Bans` WHERE `Banned` = ?;");
 			preparedStatement.setString(1, player);
@@ -141,7 +160,7 @@ public class BanAPI {
 			
 			preparedStatement.executeUpdate();
 			
-			Punishments.bans.put(banned, new BanInfo(banned, banned_by, ban_time, reason));
+			Punishments.bans.add(new BanInfo(banned, banned_by, ban_time, reason));
 		} catch (SQLException e) {
 			BungeeUtilisals.getInstance().getLogger().info("An error occured while connecting to the database!" + e.getMessage());
 		}
@@ -154,13 +173,20 @@ public class BanAPI {
 			
 			preparedStatement.executeUpdate();
 			
-			Punishments.bans.remove(player);
+			BanInfo info = Punishments.getBanInfo(player);
+			if(info != null){
+				Punishments.bans.remove(info);
+			}
 		} catch (SQLException e) {
 			BungeeUtilisals.getInstance().getLogger().info("An error occured while connecting to the database!" + e.getMessage());
 		}
 	}
 	
 	public static String getBannedBy(String player){
+		BanInfo info = Punishments.getBanInfo(player);
+		if(info != null){
+			return info.getBy();
+		}
 		String playername = "";
 		try {
 			PreparedStatement preparedStatement = dbmanager.getConnection().prepareStatement("SELECT `BannedBy` FROM `Bans` WHERE `Banned` = ?;");
@@ -177,6 +203,10 @@ public class BanAPI {
 	}
 	
 	public static Long getBanTime(String player){
+		BanInfo info = Punishments.getBanInfo(player);
+		if(info != null){
+			return info.getTime();
+		}
 		long bantime = -1;
 		try {
 			PreparedStatement preparedStatement = dbmanager.getConnection().prepareStatement("SELECT `BanTime` FROM `Bans` WHERE `Banned` = ?;");
@@ -193,6 +223,10 @@ public class BanAPI {
 	}
 	
 	public static String getReason(String player){
+		BanInfo info = Punishments.getBanInfo(player);
+		if(info != null){
+			return info.getReason();
+		}
 		String reason = "";
 		try {
 			PreparedStatement preparedStatement = dbmanager.getConnection().prepareStatement("SELECT `Reason` FROM `Bans` WHERE `Banned` = ?;");

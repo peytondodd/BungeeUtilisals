@@ -9,9 +9,9 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
-public class Find extends Command {
+public class FindCommand extends Command {
 	
-	public Find() {
+	public FindCommand() {
 		super("find");
 	}
 

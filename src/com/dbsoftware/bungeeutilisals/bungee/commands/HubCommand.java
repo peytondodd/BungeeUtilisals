@@ -9,17 +9,17 @@ import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 
-public class Hub extends Command {
+public class HubCommand extends Command {
 	
 	private static BungeeUtilisals instance = (BungeeUtilisals)BungeeUtilisals.getInstance();
 
 	
-	public Hub(String cmd) {
+	public HubCommand(String cmd) {
 		super(cmd);{
 		}
 	}
 	
-	public Hub(String cm, String[] cmd){
+	public HubCommand(String cm, String[] cmd){
 		super(cm, "", cmd);
 	}
 	

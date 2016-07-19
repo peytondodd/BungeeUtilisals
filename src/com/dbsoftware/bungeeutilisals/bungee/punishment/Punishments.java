@@ -1,9 +1,11 @@
 package com.dbsoftware.bungeeutilisals.bungee.punishment;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.List;
+
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.managers.DatabaseManager;
 import com.dbsoftware.bungeeutilisals.bungee.managers.FileManager;
@@ -19,6 +21,7 @@ import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.UnmuteCommand;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.WarnCommand;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.listeners.ChatListener;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.listeners.LoginListener;
+
 import net.md_5.bungee.api.ProxyServer;
 
 public class Punishments {
@@ -27,9 +30,9 @@ public class Punishments {
     public static FileManager punishments = new FileManager( path );
     public static DatabaseManager dbmanager = BungeeUtilisals.getInstance().getDatabaseManager();
     
-    public static HashMap<String, BanInfo> bans = new HashMap<String, BanInfo>();
-    public static HashMap<String, MuteInfo> mutes = new HashMap<String, MuteInfo>();
-    public static HashMap<String, BanIPInfo> ipbans = new HashMap<String, BanIPInfo>();
+    public static List<BanInfo> bans = new ArrayList<BanInfo>();
+    public static List<MuteInfo> mutes = new ArrayList<MuteInfo>();
+    public static List<BanIPInfo> ipbans = new ArrayList<BanIPInfo>();
 
     public static void reloadPunishmentData() {
         punishments = null;
@@ -37,7 +40,7 @@ public class Punishments {
     }
     
     public static BanInfo getBanInfo(String player){
-    	for(BanInfo info : bans.values()){
+    	for(BanInfo info : bans){
     		if(info.getPlayer().equals(player)){
     			return info;
     		}
@@ -46,8 +49,17 @@ public class Punishments {
     }
     
     public static BanIPInfo getIPBanInfo(String ip){
-    	for(BanIPInfo info : ipbans.values()){
+    	for(BanIPInfo info : ipbans){
     		if(info.getIP().equals(ip)){
+    			return info;
+    		}
+    	}
+    	return null;
+    }
+    
+    public static MuteInfo getMuteInfo(String player){
+    	for(MuteInfo info : mutes){
+    		if(info.getPlayer().equals(player)){
     			return info;
     		}
     	}
@@ -98,7 +110,7 @@ public class Punishments {
 				public void run() {
 		        	for(String s : BanAPI.getBans()){
 		        		BanInfo baninfo = new BanInfo(s, BanAPI.getBannedBy(s), BanAPI.getBanTime(s), BanAPI.getReason(s));
-		        		bans.put(s, baninfo);
+		        		bans.add(baninfo);
 		        	}					
 				}
         	});
@@ -108,7 +120,7 @@ public class Punishments {
 				public void run() {
 		        	for(String s : BanAPI.getIPBans()){
 		        		BanIPInfo banipinfo = new BanIPInfo(s, BanAPI.getIPBannedBy(s), BanAPI.getIPReason(s));
-		        		ipbans.put(s, banipinfo);
+		        		ipbans.add(banipinfo);
 		        	}					
 				}
         	});
@@ -118,7 +130,7 @@ public class Punishments {
 				public void run() {
 		        	for(String s : MuteAPI.getMutes()){
 		        		MuteInfo muteinfo = new MuteInfo(s, MuteAPI.getMutedBy(s), MuteAPI.getMuteTime(s), MuteAPI.getReason(s));
-		        		mutes.put(s, muteinfo);
+		        		mutes.add(muteinfo);
 		        	}					
 				}
         	});

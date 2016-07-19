@@ -32,6 +32,7 @@ public class UnbanCommand extends Command {
 			return;
 		}
 		PlayerInfo pinfo;
+		pinfo = new PlayerInfo(args[0]);
 		if(BungeeUtilisals.getInstance().getConfigData().UUIDSTORAGE){
 			pinfo = new PlayerInfo(uuid.toString());
 			if(BanAPI.isBanned(uuid.toString())){
@@ -41,8 +42,6 @@ public class UnbanCommand extends Command {
 				}
 			}
 		}
-		pinfo = new PlayerInfo(args[0]);
-			
 		String ip = pinfo.getIP();
 			
 		if(!BanAPI.isBanned(args[0]) && ip != null && !BanAPI.isIPBanned(ip)){

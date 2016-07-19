@@ -1,5 +1,5 @@
 name: BungeeUtilisals
 main: com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals
-version: 216
+version: 219
 author: didjee2
 softDepends: ['RedisBungee', 'WebServers']

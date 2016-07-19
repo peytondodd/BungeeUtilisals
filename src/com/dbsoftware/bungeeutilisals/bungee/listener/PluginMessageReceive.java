@@ -4,21 +4,23 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-import com.dbsoftware.bungeeutilisals.bungee.commands.Alert;
-import com.dbsoftware.bungeeutilisals.bungee.commands.Bgc;
-import com.dbsoftware.bungeeutilisals.bungee.commands.Bigalert;
-import com.dbsoftware.bungeeutilisals.bungee.commands.Butilisals;
-import com.dbsoftware.bungeeutilisals.bungee.commands.ClearChat;
-import com.dbsoftware.bungeeutilisals.bungee.commands.Find;
-import com.dbsoftware.bungeeutilisals.bungee.commands.Glist;
-import com.dbsoftware.bungeeutilisals.bungee.commands.Hub;
+import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
+import com.dbsoftware.bungeeutilisals.bungee.commands.AlertCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.BgcCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.BigalertCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.ButilisalsCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.ClearChatCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.FindCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.GlistCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.HubCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.LocalSpyCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.MSGCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.ReplyCommand;
-import com.dbsoftware.bungeeutilisals.bungee.commands.Rules;
-import com.dbsoftware.bungeeutilisals.bungee.commands.Server;
+import com.dbsoftware.bungeeutilisals.bungee.commands.RulesCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.ServerCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.SpyCommand;
-import com.dbsoftware.bungeeutilisals.bungee.commands.Store;
-import com.dbsoftware.bungeeutilisals.bungee.commands.Vote;
+import com.dbsoftware.bungeeutilisals.bungee.commands.StoreCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.VoteCommand;
 import com.dbsoftware.bungeeutilisals.bungee.friends.FriendsCommand;
 import com.dbsoftware.bungeeutilisals.bungee.party.PartyCommand;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.BanCommand;
@@ -69,11 +71,13 @@ public class PluginMessageReceive implements Listener {
 					}
 					CommandSender sender = (CommandSender)p;
 					if(!hasperm){
-						p.sendMessage(Utils.format("&cYou don't have the permission to execute this Command!"));
+						p.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("Main-messages.no-permission")));
 						return;
 					}
 					if(command.equals("glag")){
-						Bgc.executeBgcCommand(sender, args);
+						BgcCommand.executeBgcCommand(sender, args);
+					} if(command.equals("localspy")){
+						LocalSpyCommand.executeSpyCommand(sender, args);
 					} if(command.equals("msg")){
 						MSGCommand.executeMSGCommand(sender, args);
 					} if(command.equals("reply")){
@@ -81,37 +85,37 @@ public class PluginMessageReceive implements Listener {
 					} if(command.equals("spy")){
 						SpyCommand.executeSpyCommand(sender, args);
 					} if(command.equals("alert")){
-						Alert.executeAlertCommand(sender, args);
+						AlertCommand.executeAlertCommand(sender, args);
 						return;
 					} if(command.equals("bigalert")){
-						Bigalert.executeBigalertCommand(sender, args);
+						BigalertCommand.executeBigalertCommand(sender, args);
 						return;
 					} if(command.equals("butilisals")){
-						Butilisals.executeButilisalsCommand(sender, args);
+						ButilisalsCommand.executeButilisalsCommand(sender, args);
 						return;
 					} if(command.equals("clearchat")){
-						ClearChat.executeClearChatCommand(sender, args);
+						ClearChatCommand.executeClearChatCommand(sender, args);
 						return;
 					} if(command.equals("find")){
-						Find.executeFindCommand(sender, args);
+						FindCommand.executeFindCommand(sender, args);
 						return;
 					} if(command.equals("glist")){
-						Glist.executeGlistCommand(sender, args);
+						GlistCommand.executeGlistCommand(sender, args);
 						return;
 					} if(command.equals("hub")){
-						Hub.executeHubCommand(sender, args);
+						HubCommand.executeHubCommand(sender, args);
 						return;
 					} if(command.equals("rules")){
-						Rules.executeRulesCommand(sender, args);
+						RulesCommand.executeRulesCommand(sender, args);
 						return;
 					} if(command.equals("server")){
-						Server.executeServerCommand(sender, args);
+						ServerCommand.executeServerCommand(sender, args);
 						return;
 					} if(command.equals("store")){
-						Store.executeStoreCommand(sender, args);
+						StoreCommand.executeStoreCommand(sender, args);
 						return;
 					} if(command.equals("vote")){
-						Vote.executeVoteCommand(sender, args);
+						VoteCommand.executeVoteCommand(sender, args);
 						return;
 					} if(command.equals("report")){
 						if(args[0] != null && args[0].contains("toggle")){

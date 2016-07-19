@@ -12,9 +12,9 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
-public class Store extends Command {
+public class StoreCommand extends Command {
 		
-	public Store() {
+	public StoreCommand() {
 			super("store");{
 		}
 	}
