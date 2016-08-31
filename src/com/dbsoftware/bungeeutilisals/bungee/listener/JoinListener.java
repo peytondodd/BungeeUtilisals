@@ -11,6 +11,9 @@ public class JoinListener implements Listener {
 	
 	@EventHandler
 	public void onJoin(PostLoginEvent event){
+		if(BungeeUtilisals.getInstance().getUser(event.getPlayer()) != null){
+			return;
+		}
 		BungeeUtilisals.getInstance().users.add(new BungeeUser(event.getPlayer()));
 	}
 	

@@ -13,7 +13,7 @@ import net.md_5.bungee.api.plugin.Command;
 public class ReplyCommand extends Command {
 	
 	public ReplyCommand() {
-		super("greply", "", BungeeUtilisals.getInstance().getConfig().getStringList("PrivateMessages.MSG.Aliases").toArray(new String[]{}));
+		super("greply", "", BungeeUtilisals.getInstance().getConfig().getStringList("PrivateMessages.Reply.Aliases").toArray(new String[]{}));
 	}
 
 	public static void executeReplyCommand(CommandSender sender, String[] args){

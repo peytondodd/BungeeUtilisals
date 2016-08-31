@@ -246,7 +246,7 @@ public class BungeeUtilisals extends Plugin {
 	
 	private void registerEvents(){
 	    ProxyServer.getInstance().getPluginManager().registerListener(this, new MessageLimiter(this));
-	    ProxyServer.getInstance().getPluginManager().registerListener(this, new DisconnectEvent(this));
+	    ProxyServer.getInstance().getPluginManager().registerListener(this, new DisconnectEvent());
 	    ProxyServer.getInstance().getPluginManager().registerListener(this, new LoginEvent(this));
 	    ProxyServer.getInstance().getPluginManager().registerListener(this, new AntiSpam(this));
 	    ProxyServer.getInstance().getPluginManager().registerListener(this, new ChatLock(this));

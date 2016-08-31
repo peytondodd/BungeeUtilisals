@@ -112,19 +112,18 @@ public class MuteAPI {
 		if(info != null){
 			return info.getTime();
 		}
-		long mutetime = -1;
 		try {
 			PreparedStatement preparedStatement = dbmanager.getConnection().prepareStatement("SELECT `MuteTime` FROM `Mutes` WHERE `Muted` = ?;");
 			preparedStatement.setString(1, player);
 
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
-				mutetime = rs.getLong("MuteTime");
+				return rs.getLong("MuteTime");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return mutetime;
+		return -1L;
 	}
 
 	public static String getReason(String player) {

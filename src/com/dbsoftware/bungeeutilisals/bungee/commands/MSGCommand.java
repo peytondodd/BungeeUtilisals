@@ -11,6 +11,7 @@ import com.google.common.base.Joiner;
 
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
@@ -59,10 +60,9 @@ public class MSGCommand extends Command {
         }
         BungeeUtilisals.getInstance().pmcache.put(p.getName().toLowerCase(), pl.getName().toLowerCase());
         BungeeUtilisals.getInstance().pmcache.put(pl.getName().toLowerCase(), p.getName().toLowerCase());
-        p.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("PrivateMessages.MSG.Messages.Format.Sending")
-        		.replace("%player%", pl.getName()).replace("%message%", message)));
-        pl.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("PrivateMessages.MSG.Messages.Format.Receiving")
-        		.replace("%player%", p.getName()).replace("%message%", message)));
+        
+        p.sendMessage(TextComponent.fromLegacyText(BungeeUtilisals.getInstance().getConfig().getString("PrivateMessages.MSG.Messages.Format.Sending").replace("%player%", pl.getName()).replace("&", "§").replace("%message%", message)));
+        pl.sendMessage(TextComponent.fromLegacyText(BungeeUtilisals.getInstance().getConfig().getString("PrivateMessages.MSG.Messages.Format.Receiving").replace("%player%", p.getName()).replace("&", "§").replace("%message%", message)));
 	}
 
 	@Override

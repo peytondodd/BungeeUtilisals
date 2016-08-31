@@ -9,6 +9,7 @@ import com.dbsoftware.bungeeutilisals.bungee.commands.AlertCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.BgcCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.BigalertCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.ButilisalsCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.ChatCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.ClearChatCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.FindCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.GlistCommand;
@@ -80,6 +81,8 @@ public class PluginMessageReceive implements Listener {
 						LocalSpyCommand.executeSpyCommand(sender, args);
 					} if(command.equals("msg")){
 						MSGCommand.executeMSGCommand(sender, args);
+					} if(command.equals("chat")){
+						ChatCommand.executeChatCommand(sender, args);
 					} if(command.equals("reply")){
 						ReplyCommand.executeReplyCommand(sender, args);
 					} if(command.equals("spy")){
@@ -118,10 +121,10 @@ public class PluginMessageReceive implements Listener {
 						VoteCommand.executeVoteCommand(sender, args);
 						return;
 					} if(command.equals("report")){
-						if(args[0] != null && args[0].contains("toggle")){
+						if(args.length >= 1 && args[0].contains("toggle")){
 							ReportCommand.executeReportToggleCommand(sender, args);
 							return;
-						} if(args[0] != null && args[0].contains("remove") || args[0].contains("delete")){
+						} if(args.length >= 1 && args[0].contains("remove") || args[0].contains("delete")){
 							ReportCommand.executeReportDeleteCommand(sender, args);
 							return;
 						}

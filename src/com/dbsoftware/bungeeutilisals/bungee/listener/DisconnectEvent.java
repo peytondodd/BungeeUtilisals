@@ -5,15 +5,7 @@ import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
-import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
-
 public class DisconnectEvent implements Listener {
-
-	public BungeeUtilisals plugin;
-	  
-	public DisconnectEvent(BungeeUtilisals plugin){
-		this.plugin = plugin;
-	}
 	  
 	@EventHandler
 	public void onQuit(PlayerDisconnectEvent event){

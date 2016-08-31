@@ -74,7 +74,7 @@ public class AntiSwear implements Listener {
 							}
 						}
 						if(b){
-							p.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("AntiSwear.Message")));
+							p.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("AntiSwear.Message").replace("&", "§")));
 						}
 					}
 				}

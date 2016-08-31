@@ -32,17 +32,7 @@ public class AntiAd implements Listener {
 		boolean found = false;
 		ProxiedPlayer p = (ProxiedPlayer)event.getSender();
 		if(BungeeUtilisals.instance.getConfig().getBoolean("AntiAd.Enabled")){
-			if(event.getMessage().startsWith("/ban") ||
-					event.getMessage().startsWith("/banip") ||
-					event.getMessage().startsWith("/checkban") || 
-					event.getMessage().startsWith("/kick") ||
-					event.getMessage().startsWith("/mute") ||
-					event.getMessage().startsWith("/pinfo") ||
-					event.getMessage().startsWith("/playerinfo") ||
-					event.getMessage().startsWith("/tempban") ||
-					event.getMessage().startsWith("/unban") ||
-					event.getMessage().startsWith("/tempmute") ||
-					event.getMessage().startsWith("/warn")){
+			if(event.isCommand()){
 				return;
 			}
 			for(String whitelist : BungeeUtilisals.instance.getConfig().getStringList("AntiAd.Whitelist")){
