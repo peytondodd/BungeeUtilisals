@@ -1,6 +1,8 @@
 package com.dbsoftware.bungeeutilisals.bungee.staffchat;
 
+import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
+
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -23,7 +25,8 @@ public class StaffChatEvent implements Listener {
 			if(StaffChat.inchat.contains(p.getName()) && !event.isCommand()){
 				event.setCancelled(true);
 				for(ProxiedPlayer pl : BungeeUtilisals.instance.getProxy().getPlayers()){
-					if(StaffChat.inchat.contains(pl.getName())){
+					BungeeUser user = BungeeUtilisals.getInstance().getUser(pl);
+					if(user.isStaff() || StaffChat.inchat.contains(pl.getName())){
 						BaseComponent[] message = TextComponent.fromLegacyText(BungeeUtilisals.instance.getConfig().getString("StaffChat.Format")
 								.replace("&", "§")
 								.replace("%message%", event.getMessage())

@@ -366,3 +366,8 @@ AntiAd:
   - 'play.centrixpvp.com'
   - 'play.skybattle.net'
   Message: '&cPlease do not advertise!'
+  # Message that will be sent on advertise. To ignore, set no people to staff or set it to:
+  # StaffMessage:
+  StaffMessage:
+  - '&b%name% &6tried to advertise at &b%server%&6, but has been blocked!'
+  - '&bMessage: &6%message%'

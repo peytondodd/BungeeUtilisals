@@ -1,5 +1,6 @@
 package com.dbsoftware.bungeeutilisals.bungee.staffchat;
 
+import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
@@ -31,8 +32,14 @@ public class StaffChatCommand extends Command {
 			sender.sendMessage(Utils.format("Only players can work with Bukkit permissions!"));
 			return;
 		}
+		ProxiedPlayer p = (ProxiedPlayer)sender;
+		BungeeUser user = BungeeUtilisals.getInstance().getUser(p);
+		if(BungeeUtilisals.getInstance().getStaff().contains(user)){
+			executeStaffChatCommand(sender, args);
+			return;
+		}
 		if(BungeeUtilisals.getInstance().getConfig().getBoolean("Bukkit-Permissions")){
-			PluginMessageChannel.sendPermissionCheckPluginMessage("hasPermission", "butilisals.staffchat", "staffchat", args, ((ProxiedPlayer)sender));
+			PluginMessageChannel.sendPermissionCheckPluginMessage("hasPermission", "butilisals.staffchat", "staffchat", args, p);
 			return;
 		}
 		if(sender.hasPermission("butilisals.staffchat") || sender.hasPermission("butilisals.*")){

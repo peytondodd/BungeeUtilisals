@@ -12,6 +12,7 @@ import com.dbsoftware.bungeeutilisals.bungee.commands.ButilisalsCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.ChatCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.ClearChatCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.FindCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.GRankCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.GlistCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.HubCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.LocalSpyCommand;
@@ -87,6 +88,8 @@ public class PluginMessageReceive implements Listener {
 						ReplyCommand.executeReplyCommand(sender, args);
 					} if(command.equals("spy")){
 						SpyCommand.executeSpyCommand(sender, args);
+					} if(command.equals("grank")){
+						GRankCommand.executeGRankCommand(sender, args);
 					} if(command.equals("alert")){
 						AlertCommand.executeAlertCommand(sender, args);
 						return;

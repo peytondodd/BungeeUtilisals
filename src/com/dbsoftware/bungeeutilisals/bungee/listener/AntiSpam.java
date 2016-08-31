@@ -33,24 +33,24 @@ public class AntiSpam implements Listener {
 		}
 		if(plugin.getConfig().getBoolean("AntiSpam.Enabled") && !(norepeat.containsKey(p) && norepeat.containsValue(event.getMessage()))){
 			if(chatspam.contains(p.getName())){
-				if(!event.getMessage().startsWith("/")){
+				if(!event.isCommand()){
 					p.sendMessage(new TextComponent(plugin.getConfig().getString("AntiSpam.Message").replace("%time%", plugin.getConfig().getInt("AntiSpam.Seconds") + "").replace("&", "§")));
 					event.setCancelled(true); 	  
-				} else if (event.getMessage().startsWith("/r") || event.getMessage().startsWith("/msg") || event.getMessage().startsWith("/m") || event.getMessage().startsWith("/t") || event.getMessage().startsWith("/w")) {
+				} else if (event.getMessage().startsWith("/r ") || event.getMessage().startsWith("/msg ") || event.getMessage().startsWith("/m ") || event.getMessage().startsWith("/t ") || event.getMessage().startsWith("/w ")) {
 					p.sendMessage(new TextComponent(plugin.getConfig().getString("AntiSpam.Message").replace("%time%", plugin.getConfig().getInt("AntiSpam.Seconds") + "").replace("&", "§")));
 					event.setCancelled(true);
 				}
 				return;
 			} else {
 				chatspam.add(p.getName());
-				ProxyServer.getInstance().getScheduler().schedule(plugin , new Runnable(){
+				ProxyServer.getInstance().getScheduler().schedule(plugin, new Runnable(){
 					public void run() {
 						chatspam.remove(p.getName());
 					}
 				}, plugin.getConfig().getInt("AntiSpam.Seconds"), TimeUnit.SECONDS);
 			}
 		} if(plugin.getConfig().getBoolean("Norepeat.Enabled")){
-			if(!event.getMessage().startsWith("/")){
+			if(!event.isCommand()){
 				if(norepeat.containsKey(p) && norepeat.get(p).toLowerCase().equalsIgnoreCase(event.getMessage().toLowerCase())){
 					event.setCancelled(true);
 			    	p.sendMessage(new TextComponent(plugin.getConfig().getString("Norepeat.Message").replace("&", "§")));

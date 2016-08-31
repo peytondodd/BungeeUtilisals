@@ -3,6 +3,7 @@ package com.dbsoftware.bungeeutilisals.bungee.listener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 
 import net.md_5.bungee.api.chat.TextComponent;
@@ -55,6 +56,13 @@ public class AntiAd implements Listener {
 				if(found){
 					found = false;
 					p.sendMessage(new TextComponent(plugin.getConfig().getString("AntiAd.Message").replace("&", "§")));
+					
+					for(BungeeUser user : BungeeUtilisals.getInstance().getStaff()){
+						for(String s : BungeeUtilisals.getInstance().getConfig().getStringList("AntiAd.StaffMessage")){
+							user.sendMessage(s);
+						}
+					}
+					
 					event.setCancelled(true);
 					return;
 				}

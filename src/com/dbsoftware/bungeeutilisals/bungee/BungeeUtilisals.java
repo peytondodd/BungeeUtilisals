@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -19,6 +18,7 @@ import com.dbsoftware.bungeeutilisals.bungee.commands.ButilisalsCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.ChatCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.ClearChatCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.FindCommand;
+import com.dbsoftware.bungeeutilisals.bungee.commands.GRankCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.GlistCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.HubCommand;
 import com.dbsoftware.bungeeutilisals.bungee.commands.LocalSpyCommand;
@@ -55,8 +55,11 @@ import com.dbsoftware.bungeeutilisals.bungee.tabmanager.TabManager;
 import com.dbsoftware.bungeeutilisals.bungee.titleannouncer.TitleAnnouncer;
 import com.dbsoftware.bungeeutilisals.bungee.updater.UpdateChecker;
 import com.dbsoftware.bungeeutilisals.bungee.utils.TPSRunnable;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.io.ByteStreams;
 
+import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -79,8 +82,8 @@ public class BungeeUtilisals extends Plugin {
     private File configfile;
     private Configuration config;
     private ConfigData configdata;
-    public HashMap<String, String> pmcache = new HashMap<String, String>();
-    public List<BungeeUser> users = new ArrayList<BungeeUser>();
+    public HashMap<String, String> pmcache = Maps.newHashMap();
+    public List<BungeeUser> users = Lists.newArrayList();
     
 	public void onEnable(){
 		instance = this;
@@ -137,12 +140,25 @@ public class BungeeUtilisals extends Plugin {
 		    Friends.registerFriendsAddons();
 		    Reports.registerReportSystem();
 			Punishments.registerPunishmentSystem();
+			BungeeCord.getInstance().getPluginManager().registerCommand(this, new GRankCommand());
 	    }
 	    
 	    TabManager.loadTab();
 	    
 	    
 	    ProxyServer.getInstance().getLogger().info("BungeeUtilisals is now Enabled!");
+	}
+	
+	public List<BungeeUser> getStaff(){
+		List<BungeeUser> list = Lists.newArrayList();
+		
+		for(BungeeUser user : users){
+			if(user.isStaff()){
+				list.add(user);
+			}
+		}
+		
+		return list;
 	}
 	
 	public BungeeUser getUser(ProxiedPlayer p){

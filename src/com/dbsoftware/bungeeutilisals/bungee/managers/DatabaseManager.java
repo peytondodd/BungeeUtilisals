@@ -54,6 +54,7 @@ public class DatabaseManager {
 				st.executeUpdate("CREATE TABLE IF NOT EXISTS Bans (BannedBy VARCHAR(32) NOT NULL, Banned TEXT NOT NULL, BanTime LONG NOT NULL, Reason TEXT NOT NULL)");
 				st.executeUpdate("CREATE TABLE IF NOT EXISTS Mutes (MutedBy VARCHAR(32) NOT NULL, Muted TEXT NOT NULL, MuteTime LONG NOT NULL, Reason TEXT NOT NULL)");
 				st.executeUpdate("CREATE TABLE IF NOT EXISTS IPBans (BannedBy VARCHAR(32) NOT NULL, Banned TEXT NOT NULL, Reason TEXT NOT NULL)");
+				st.executeUpdate("CREATE TABLE IF NOT EXISTS Staffs (Name VARCHAR(32) NOT NULL)");
 			} catch (SQLException e) {
 				System.out.println("[BungeeUtilisals]: Can't prepare database: " + e.getMessage());
 			}
