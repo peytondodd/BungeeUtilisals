@@ -56,9 +56,9 @@ public class ReplyCommand extends Command {
         BungeeUtilisals.getInstance().pmcache.put(p.getName().toLowerCase(), pl.getName().toLowerCase());
         BungeeUtilisals.getInstance().pmcache.put(pl.getName().toLowerCase(), p.getName().toLowerCase());
         p.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("PrivateMessages.Reply.Messages.Format.Sending")
-        		.replace("%player%", pl.getName()).replace("%message%", message)));
+        		.replace("%player%", pl.getName()).replace("%server%", pl.getServer().getInfo().getName()).replace("%message%", message)));
         pl.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("PrivateMessages.Reply.Messages.Format.Receiving")
-        		.replace("%player%", p.getName()).replace("%message%", message)));
+        		.replace("%player%", p.getName()).replace("%server%", p.getServer().getInfo().getName()).replace("%message%", message)));
 	}
 
 	@Override

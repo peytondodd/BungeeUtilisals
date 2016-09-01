@@ -15,9 +15,22 @@ public class BungeeUser {
 	
 	public BungeeUser(ProxiedPlayer p){
 		this.p = p;
-		this.socialspy = false;
+		try {
+			ResultSet rs = MySQL.getInstance().select().table("Staffs").column("Name").wheretype(WhereType.EQUALS).where("Name").wherereq(p.getName().toLowerCase()).select();
+			if(rs.next()){
+				rank = BungeeRank.STAFF;
+			} else {
+				rank = BungeeRank.GUEST;
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		if(this.getRank().equals(BungeeRank.STAFF)){
+			this.socialspy = true;
+		} else {
+			this.socialspy = false;
+		}
 		this.localspy = false;
-		loadRank();
 	}
 	
 	public void sendMessage(String message){
@@ -72,26 +85,6 @@ public class BungeeUser {
 				}
 			}
 			
-		};
-		BungeeCord.getInstance().getScheduler().runAsync(BungeeUtilisals.getInstance(), r);
-	}
-	
-	public void loadRank(){
-		Runnable r = new Runnable(){
-
-			@Override
-			public void run() {
-				try {
-					ResultSet rs = MySQL.getInstance().select().table("Staffs").column("Name").wheretype(WhereType.EQUALS).where("Name").wherereq(p.getName().toLowerCase()).select();
-					if(rs.next()){
-						rank = BungeeRank.STAFF;
-					} else {
-						rank = BungeeRank.GUEST;
-					}
-				} catch(Exception e){
-					e.printStackTrace();
-				}
-			}
 		};
 		BungeeCord.getInstance().getScheduler().runAsync(BungeeUtilisals.getInstance(), r);
 	}

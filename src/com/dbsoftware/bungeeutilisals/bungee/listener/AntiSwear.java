@@ -1,5 +1,6 @@
 package com.dbsoftware.bungeeutilisals.bungee.listener;
 
+import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 
@@ -15,6 +16,7 @@ public class AntiSwear implements Listener {
 	@EventHandler(priority = EventPriority.HIGH)
 	public void Anticurse(ChatEvent event) {
 		ProxiedPlayer p = (ProxiedPlayer) event.getSender();
+		Boolean foundSwear = false;
 		String msg = event.getMessage().toLowerCase();
 		BaseComponent[] antiswear = Utils.format(BungeeUtilisals.getInstance().getConfig().getString("AntiSwear.Message"));
 		if (BungeeUtilisals.getInstance().getConfig().getBoolean("AntiSwear.Enabled")) {
@@ -33,9 +35,11 @@ public class AntiSwear implements Listener {
 						if (!replacewith.isEmpty()) {
 							event.setMessage(event.getMessage().replace(word, replacewith));
 							p.sendMessage(antiswear);
+							foundSwear = true;
 						} else {
 							event.setCancelled(true);
 							p.sendMessage(antiswear);
+							foundSwear = true;
 						}
 					}
 					continue;
@@ -46,9 +50,11 @@ public class AntiSwear implements Listener {
 							if (!replacewith.isEmpty()) {
 								event.setMessage(event.getMessage().toLowerCase().replace(word.toLowerCase(), replacewith));
 								p.sendMessage(antiswear);
+								foundSwear = true;
 							} else {
 								event.setCancelled(true);
 								p.sendMessage(antiswear);
+								foundSwear = true;
 							}
 						}
 						continue;
@@ -58,6 +64,7 @@ public class AntiSwear implements Listener {
 						String words = msg.split(" ")[i];
 						if (words.toLowerCase().equalsIgnoreCase(word.toLowerCase())) {
 							b = true;
+							foundSwear = true;
 							break;
 						}
 					}
@@ -71,6 +78,13 @@ public class AntiSwear implements Listener {
 					}
 				}
 			}
+		}
+		if(foundSwear){
+			for(BungeeUser user : BungeeUtilisals.getInstance().getStaff()){
+				for(String s : BungeeUtilisals.getInstance().getConfig().getStringList("AntiSwear.StaffMessage")){
+					user.sendMessage(s.replace("%name%", p.getName()).replace("%server%", p.getServer().getInfo().getName()).replace("%message", event.getMessage()));
+				}
+			}	
 		}
 	}
 }

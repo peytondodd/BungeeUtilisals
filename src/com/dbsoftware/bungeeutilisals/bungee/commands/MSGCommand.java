@@ -61,8 +61,8 @@ public class MSGCommand extends Command {
         BungeeUtilisals.getInstance().pmcache.put(p.getName().toLowerCase(), pl.getName().toLowerCase());
         BungeeUtilisals.getInstance().pmcache.put(pl.getName().toLowerCase(), p.getName().toLowerCase());
         
-        p.sendMessage(TextComponent.fromLegacyText(BungeeUtilisals.getInstance().getConfig().getString("PrivateMessages.MSG.Messages.Format.Sending").replace("%player%", pl.getName()).replace("&", "§").replace("%message%", message)));
-        pl.sendMessage(TextComponent.fromLegacyText(BungeeUtilisals.getInstance().getConfig().getString("PrivateMessages.MSG.Messages.Format.Receiving").replace("%player%", p.getName()).replace("&", "§").replace("%message%", message)));
+        p.sendMessage(TextComponent.fromLegacyText(BungeeUtilisals.getInstance().getConfig().getString("PrivateMessages.MSG.Messages.Format.Sending").replace("%player%", pl.getName()).replace("%server%", pl.getServer().getInfo().getName()).replace("&", "§").replace("%message%", message)));
+        pl.sendMessage(TextComponent.fromLegacyText(BungeeUtilisals.getInstance().getConfig().getString("PrivateMessages.MSG.Messages.Format.Receiving").replace("%player%", p.getName()).replace("%server%", p.getServer().getInfo().getName()).replace("&", "§").replace("%message%", message)));
 	}
 
 	@Override

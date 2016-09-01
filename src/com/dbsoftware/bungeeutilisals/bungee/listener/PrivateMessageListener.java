@@ -15,7 +15,8 @@ public class PrivateMessageListener implements Listener {
 				.getString("PrivateMessages.Spy.Messages.Format")
 				.replace("%sender%", event.getSender().getPlayer().getName())
 				.replace("%receiver%", event.getReceiver().getPlayer().getName())
-				.replace("%message%", event.getMessage());
+				.replace("%message%", event.getMessage())
+				.replace("%server%", event.getSender().getPlayer().getServer().getInfo().getName());
 		for(BungeeUser user : BungeeUtilisals.getInstance().users){
 			if(user.isSocialSpy()){
 				user.sendMessage(message);
