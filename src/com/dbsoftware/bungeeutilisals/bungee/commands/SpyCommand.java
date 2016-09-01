@@ -38,10 +38,10 @@ public class SpyCommand extends Command {
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		if(BungeeUtilisals.getInstance().getConfig().getBoolean("Bukkit-Permissions")){
-			PluginMessageChannel.sendPermissionCheckPluginMessage("hasPermission", "butilisals.spy", "spy", args, ((ProxiedPlayer)sender));
+			PluginMessageChannel.sendPermissionCheckPluginMessage("hasPermission", "butilisals.gspy", "spy", args, ((ProxiedPlayer)sender));
 			return;
 		}
-		if(sender.hasPermission("butilisals.spy") || sender.hasPermission("butilisals.*")){
+		if(sender.hasPermission("butilisals.gspy") || sender.hasPermission("butilisals.*")){
 			executeSpyCommand(sender, args);		
 		} else {
 			sender.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("Prefix") + BungeeUtilisals.getInstance().getConfig().getString("Main-messages.no-permission")));
