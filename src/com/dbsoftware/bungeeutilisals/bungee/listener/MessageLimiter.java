@@ -5,9 +5,9 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
+import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -36,7 +36,7 @@ public class MessageLimiter implements Listener {
 				  int got = messagelimiter.get(p);
 				  if(got >= max){
 					  event.setCancelled(true);
-					  p.sendMessage(new TextComponent(plugin.getConfig().getString("MessageLimiter.Message").replace("&", "§").replace("%player%", p.getName())));
+					  p.sendMessage(Utils.format(plugin.getConfig().getString("MessageLimiter.Message").replace("%player%", p.getName())));
 				  } else {
 					  messagelimiter.put(p, got + 1);
 				  }

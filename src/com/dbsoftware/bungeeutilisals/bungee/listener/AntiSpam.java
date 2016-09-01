@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
+import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -34,10 +34,10 @@ public class AntiSpam implements Listener {
 		if(plugin.getConfig().getBoolean("AntiSpam.Enabled") && !(norepeat.containsKey(p) && norepeat.containsValue(event.getMessage()))){
 			if(chatspam.contains(p.getName())){
 				if(!event.isCommand()){
-					p.sendMessage(new TextComponent(plugin.getConfig().getString("AntiSpam.Message").replace("%time%", plugin.getConfig().getInt("AntiSpam.Seconds") + "").replace("&", "§")));
+					p.sendMessage(Utils.format(plugin.getConfig().getString("AntiSpam.Message").replace("%time%", String.valueOf(plugin.getConfig().getInt("AntiSpam.Seconds")))));
 					event.setCancelled(true); 	  
 				} else if (event.getMessage().startsWith("/r ") || event.getMessage().startsWith("/msg ") || event.getMessage().startsWith("/m ") || event.getMessage().startsWith("/t ") || event.getMessage().startsWith("/w ")) {
-					p.sendMessage(new TextComponent(plugin.getConfig().getString("AntiSpam.Message").replace("%time%", plugin.getConfig().getInt("AntiSpam.Seconds") + "").replace("&", "§")));
+					p.sendMessage(Utils.format(plugin.getConfig().getString("AntiSpam.Message").replace("%time%", String.valueOf(plugin.getConfig().getInt("AntiSpam.Seconds")))));
 					event.setCancelled(true);
 				}
 				return;
@@ -53,7 +53,7 @@ public class AntiSpam implements Listener {
 			if(!event.isCommand()){
 				if(norepeat.containsKey(p) && norepeat.get(p).toLowerCase().equalsIgnoreCase(event.getMessage().toLowerCase())){
 					event.setCancelled(true);
-			    	p.sendMessage(new TextComponent(plugin.getConfig().getString("Norepeat.Message").replace("&", "§")));
+			    	p.sendMessage(Utils.format(plugin.getConfig().getString("Norepeat.Message")));
 			    	return;
 				} else {
 					norepeat.remove(p);

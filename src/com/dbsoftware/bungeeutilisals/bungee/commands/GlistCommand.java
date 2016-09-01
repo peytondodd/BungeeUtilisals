@@ -2,14 +2,15 @@ package com.dbsoftware.bungeeutilisals.bungee.commands;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
+import com.google.common.collect.Lists;
+
 import net.md_5.bungee.Util;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
@@ -30,27 +31,26 @@ public class GlistCommand extends Command {
 	
 	private static void glist(CommandSender sender){
 		if(!instance.getConfig().getBoolean("GList.Custom_GList")){
-			ProxiedPlayer localProxiedPlayer1 = (ProxiedPlayer)sender;
-			for (ServerInfo localServerInfo : ProxyServer.getInstance().getServers().values()) {
-				if (localServerInfo.canAccess(sender)){
-					ArrayList<String> localArrayList = new ArrayList<String>();
-					for (ProxiedPlayer localProxiedPlayer2 : localServerInfo.getPlayers()) {
-						localArrayList.add(localProxiedPlayer2.getDisplayName());
+			ProxiedPlayer p = (ProxiedPlayer)sender;
+			for (ServerInfo server : ProxyServer.getInstance().getServers().values()) {
+				if (server.canAccess(sender)){
+					ArrayList<String> list = new ArrayList<String>();
+					for (ProxiedPlayer pl : server.getPlayers()) {
+						list.add(pl.getDisplayName());
 					}
-					Collections.sort(localArrayList, String.CASE_INSENSITIVE_ORDER);
-					localProxiedPlayer1.sendMessage(new ComponentBuilder(instance.getConfig().getString("GList.Format")
-							.replace("%server%", localServerInfo.getName())
-							.replace("%players%", localServerInfo.getPlayers().size() + "")
-							.replace("%playerlist%", Util.format(localArrayList, instance.getConfig().getString("GList.PlayerListColor") + ", " + instance.getConfig().getString("GList.PlayerListColor")))
-							.replaceAll("&", "§")).create());
+					Collections.sort(list, String.CASE_INSENSITIVE_ORDER);
+					p.sendMessage(Utils.format(instance.getConfig().getString("GList.Format")
+							.replace("%server%", server.getName())
+							.replace("%players%", server.getPlayers().size() + "")
+							.replace("%playerlist%", Util.format(list, instance.getConfig().getString("GList.PlayerListColor") + ", " + instance.getConfig().getString("GList.PlayerListColor")))));
 				}
 			}
-			sender.sendMessage(new ComponentBuilder(instance.getConfig().getString("GList.Total").replace("%totalnum%", ProxyServer.getInstance().getPlayers().size() + "").replaceAll("&", "§")).create());
+			sender.sendMessage(Utils.format(instance.getConfig().getString("GList.Total").replace("%totalnum%", String.valueOf(ProxyServer.getInstance().getPlayers().size()))));
 		} else {
 			Configuration cs = instance.getConfig().getSection("GList.Servers");
 			for(String s : cs.getKeys()){
 				int serverPlayers = 0;
-				ArrayList<String> localArrayList = new ArrayList<String>();
+				ArrayList<String> list = Lists.newArrayList();
 				if(cs.getString(s).contains(",")){
 					for(String calculate : cs.getString(s).split(",")){
 						
@@ -58,7 +58,7 @@ public class GlistCommand extends Command {
 						if(server != null){
 							serverPlayers = serverPlayers + server.getPlayers().size();
 							for(ProxiedPlayer pl : server.getPlayers()){
-								localArrayList.add(pl.getDisplayName());
+								list.add(pl.getDisplayName());
 							}
 						}
 					}
@@ -67,18 +67,17 @@ public class GlistCommand extends Command {
 					if(server != null){
 						serverPlayers = serverPlayers + server.getPlayers().size();
 						for(ProxiedPlayer pl : server.getPlayers()){
-							localArrayList.add(pl.getDisplayName());
+							list.add(pl.getDisplayName());
 						}
 					}
 				}
-				Collections.sort(localArrayList, String.CASE_INSENSITIVE_ORDER);
-				sender.sendMessage(new TextComponent(instance.getConfig().getString("GList.Format")
+				Collections.sort(list, String.CASE_INSENSITIVE_ORDER);
+				sender.sendMessage(Utils.format(instance.getConfig().getString("GList.Format")
 						.replace("%server%", s)
-						.replace("%playerlist%", Util.format(localArrayList, instance.getConfig().getString("GList.PlayerListColor") + ", " + instance.getConfig().getString("GList.PlayerListColor")))
-						.replace("%players%", serverPlayers + "")
-						.replaceAll("&", "§")));
+						.replace("%playerlist%", Util.format(list, instance.getConfig().getString("GList.PlayerListColor") + ", " + instance.getConfig().getString("GList.PlayerListColor")))
+						.replace("%players%", serverPlayers + "")));
 			}
-			sender.sendMessage(new ComponentBuilder(instance.getConfig().getString("GList.Total").replace("%totalnum%", ProxyServer.getInstance().getPlayers().size() + "").replaceAll("&", "§")).create());
+			sender.sendMessage(Utils.format(instance.getConfig().getString("GList.Total").replace("%totalnum%", String.valueOf(ProxyServer.getInstance().getPlayers().size()))));
 		}
 	}
 	

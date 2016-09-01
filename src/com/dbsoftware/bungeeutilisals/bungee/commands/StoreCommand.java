@@ -1,9 +1,11 @@
 package com.dbsoftware.bungeeutilisals.bungee.commands;
 
+import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -21,19 +23,22 @@ public class StoreCommand extends Command {
 	
 	private static BungeeUtilisals instance = BungeeUtilisals.getInstance();
 
-	@SuppressWarnings("deprecation")
 	public static void executeStoreCommand(CommandSender sender, String[] args){
-		TextComponent click = new TextComponent( instance.getConfig().getString("Store.Text").replace("&", "§").replace("%player%", sender.getName()) );
-		click.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(instance.getConfig().getString("Store.Hover").replace("&", "§").replace("%player%", sender.getName())).create() ) );
+		if(!(sender instanceof ProxiedPlayer)){
+			return;
+		}
+		BungeeUser user = BungeeUtilisals.getInstance().getUser((ProxiedPlayer)sender);
+		TextComponent click = new TextComponent( ChatColor.translateAlternateColorCodes('&', instance.getConfig().getString("Store.Text").replace("%player%", sender.getName())) );
+		click.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.translateAlternateColorCodes('&', instance.getConfig().getString("Store.Hover").replace("%player%", sender.getName()))).create() ) );
 		click.setClickEvent( new ClickEvent( ClickEvent.Action.OPEN_URL, instance.getConfig().getString("Store.Site") ) );
-		sender.sendMessage(new TextComponent(instance.getConfig().getString("Store.Header").replace("&", "§")));
+		user.sendMessage(instance.getConfig().getString("Store.Header"));
 		
 		for (String links : instance.getConfig().getStringList("Store.Message")) {
-			sender.sendMessage(links.replace("&", "§").replace("%player%", sender.getName()));
+			user.sendMessage(links.replace("%player%", sender.getName()));
 		}
 		
 		sender.sendMessage(click);
-		sender.sendMessage(new TextComponent(instance.getConfig().getString("Store.Footer").replace("&", "§")));
+		user.sendMessage(instance.getConfig().getString("Store.Footer"));
 	}
 	
 	@Override

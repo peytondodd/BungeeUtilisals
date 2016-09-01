@@ -19,8 +19,7 @@ public class ChatUtilities implements Listener {
 	@EventHandler
 	public void Chat(ChatEvent event){
 		String message = event.getMessage();
-		if((!message.endsWith("!")) && (!message.endsWith("?")) && (!message.endsWith(".")) && (!message.startsWith("/")
-				&& (plugin.getConfig().getBoolean("ChatOptions.point-after-sentence")))){
+		if((!message.endsWith("!")) && (!message.endsWith("?")) && (!message.endsWith(".")) && (!message.startsWith("/") && (plugin.getConfig().getBoolean("ChatOptions.point-after-sentence")))){
 			event.setMessage(message + ".");
 		}
 	  	

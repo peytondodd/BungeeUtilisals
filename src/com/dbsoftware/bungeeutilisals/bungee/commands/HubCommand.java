@@ -1,13 +1,14 @@
 package com.dbsoftware.bungeeutilisals.bungee.commands;
 
-import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.plugin.Command;
+import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
+
+import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.plugin.Command;
 
 public class HubCommand extends Command {
 	
@@ -27,15 +28,16 @@ public class HubCommand extends Command {
 	public static void executeHubCommand(CommandSender sender, String[] args){
 		if (sender instanceof ProxiedPlayer){
 			ProxiedPlayer p = (ProxiedPlayer)sender;
+			BungeeUser user = BungeeUtilisals.getInstance().getUser(p);
 						
 			String server = instance.getConfig().getString("Hub.Server");
 			String playerserver = p.getServer().getInfo().getName();
 			if(!playerserver.equalsIgnoreCase(server)){
 				p.connect(ProxyServer.getInstance().getServerInfo(instance.getConfig().getString("Hub.Server")));
-				sender.sendMessage(new TextComponent(instance.getConfig().getString("Hub.Message").replace("&", "§")));
+				user.sendMessage(instance.getConfig().getString("Hub.Message"));
 				return;
 			}
-			p.sendMessage(new TextComponent(instance.getConfig().getString("Hub.inHub").replace("&", "§")));
+			user.sendMessage(instance.getConfig().getString("Hub.inHub"));
 			return;
 		}
 	}

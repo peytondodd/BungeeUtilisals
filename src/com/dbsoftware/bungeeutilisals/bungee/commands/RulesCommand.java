@@ -4,6 +4,7 @@ import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -22,19 +23,19 @@ public class RulesCommand extends Command {
 	private static BungeeUtilisals instance = (BungeeUtilisals)BungeeUtilisals.getInstance();
 
 	public static void executeRulesCommand(CommandSender sender, String[] args){
-		TextComponent click = new TextComponent( instance.getConfig().getString("Rules.Text").replace("&", "§").replace("%player%", sender.getName()) );
-		click.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(instance.getConfig().getString("Rules.Hover").replace("&", "§").replace("%player%", sender.getName())).create() ) );
+		TextComponent click = new TextComponent( ChatColor.translateAlternateColorCodes('&', instance.getConfig().getString("Rules.Text").replace("%player%", sender.getName())) );
+		click.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.translateAlternateColorCodes('&', instance.getConfig().getString("Rules.Hover").replace("%player%", sender.getName()))).create() ) );
 		click.setClickEvent( new ClickEvent( ClickEvent.Action.OPEN_URL, instance.getConfig().getString("Rules.Site") ) );
 		
-		sender.sendMessage(new TextComponent(instance.getConfig().getString("Rules.Header").replace("&", "§")));
+		sender.sendMessage(Utils.format(instance.getConfig().getString("Rules.Header")));
 		
 		for (String rules : instance.getConfig().getStringList("Rules.Rules")) {
-			sender.sendMessage(new TextComponent(rules.replace("&", "§").replace("%player%", sender.getName())));
+			sender.sendMessage(Utils.format(rules.replace("%player%", sender.getName())));
 		}
 		
 		sender.sendMessage(click);
 	      
-		sender.sendMessage(new TextComponent(instance.getConfig().getString("Rules.Footer").replace("&", "§")));
+		sender.sendMessage(Utils.format(instance.getConfig().getString("Rules.Footer")));
 	}
 	
 	@Override

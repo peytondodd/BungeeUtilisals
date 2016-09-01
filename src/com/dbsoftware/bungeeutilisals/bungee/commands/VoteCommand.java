@@ -1,5 +1,8 @@
 package com.dbsoftware.bungeeutilisals.bungee.commands;
 
+import org.bukkit.ChatColor;
+
+import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
@@ -21,19 +24,22 @@ public class VoteCommand extends Command {
 	
 	private static BungeeUtilisals instance = (BungeeUtilisals)BungeeUtilisals.getInstance();
 
-	@SuppressWarnings("deprecation")
 	public static void executeVoteCommand(CommandSender sender, String[] args){
-		TextComponent click = new TextComponent( instance.getConfig().getString("Vote.Text").replace("&", "§").replace("%player%", sender.getName()) );
-		click.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(instance.getConfig().getString("Vote.Hover").replace("&", "§").replace("%player%", sender.getName())).create() ) );
+		if(!(sender instanceof ProxiedPlayer)){
+			return;
+		}
+		BungeeUser user = BungeeUtilisals.getInstance().getUser((ProxiedPlayer)sender);
+		TextComponent click = new TextComponent( ChatColor.translateAlternateColorCodes('&', instance.getConfig().getString("Vote.Text").replace("%player%", sender.getName())) );
+		click.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.translateAlternateColorCodes('&', instance.getConfig().getString("Vote.Hover").replace("%player%", sender.getName()))).create() ) );
 		click.setClickEvent( new ClickEvent( ClickEvent.Action.OPEN_URL, instance.getConfig().getString("Vote.Site") ) );
-		sender.sendMessage(new TextComponent(instance.getConfig().getString("Vote.Header").replace("&", "§")));
+		user.sendMessage(instance.getConfig().getString("Vote.Header"));
 		
 		for (String links : instance.getConfig().getStringList("Vote.Links")) {
-			sender.sendMessage(links.replace("&", "§").replace("%player%", sender.getName()));
+			user.sendMessage(links.replace("%player%", sender.getName()));
 		}
 		
 		sender.sendMessage(click);
-		sender.sendMessage(new TextComponent(instance.getConfig().getString("Vote.Footer").replace("&", "§")));
+		user.sendMessage(instance.getConfig().getString("Vote.Footer"));
 	}
 	
 	@Override
