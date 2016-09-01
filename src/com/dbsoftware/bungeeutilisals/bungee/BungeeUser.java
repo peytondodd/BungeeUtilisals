@@ -1,12 +1,9 @@
 package com.dbsoftware.bungeeutilisals.bungee;
 
 import java.sql.ResultSet;
-import java.util.Arrays;
-
 import com.dbsoftware.bungeeutilisals.bungee.utils.MySQL;
 import com.dbsoftware.bungeeutilisals.bungee.utils.MySQL.WhereType;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
-
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -63,7 +60,7 @@ public class BungeeUser {
 				try {
 					if(rank.equals(BungeeRank.STAFF)){
 						if(!MySQL.getInstance().select().table("Staffs").column("Name").wheretype(WhereType.EQUALS).where("Name").wherereq(name.toLowerCase()).select().next()){
-							MySQL.getInstance().insert().table("Staffs").columns(Arrays.asList("Name")).values(Arrays.asList((Object)name.toLowerCase())).insert();
+							MySQL.getInstance().insert().single().table("Staffs").column("Name").value(name.toLowerCase()).insert();
 						}
 					} else {
 						if(MySQL.getInstance().select().table("Staffs").column("Name").wheretype(WhereType.EQUALS).where("Name").wherereq(name.toLowerCase()).select().next()){
