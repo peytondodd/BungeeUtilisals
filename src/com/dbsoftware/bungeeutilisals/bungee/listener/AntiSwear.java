@@ -17,7 +17,10 @@ public class AntiSwear implements Listener {
 	public void Anticurse(ChatEvent event) {
 		ProxiedPlayer p = (ProxiedPlayer) event.getSender();
 		Boolean foundSwear = false;
-		String msg = event.getMessage().toLowerCase();
+		
+		String startMessage = event.getMessage();
+		
+		String msg = startMessage.toLowerCase();
 		BaseComponent[] antiswear = Utils.format(BungeeUtilisals.getInstance().getConfig().getString("AntiSwear.Message"));
 		if (BungeeUtilisals.getInstance().getConfig().getBoolean("AntiSwear.Enabled")) {
 			if (event.getMessage().startsWith("/ban") || event.getMessage().startsWith("/banip")
@@ -82,7 +85,7 @@ public class AntiSwear implements Listener {
 		if(foundSwear){
 			for(BungeeUser user : BungeeUtilisals.getInstance().getStaff()){
 				for(String s : BungeeUtilisals.getInstance().getConfig().getStringList("AntiSwear.StaffMessage")){
-					user.sendMessage(s.replace("%name%", p.getName()).replace("%server%", p.getServer().getInfo().getName()).replace("%message%", event.getMessage()));
+					user.sendMessage(s.replace("%name%", p.getName()).replace("%server%", p.getServer().getInfo().getName()).replace("%message%", startMessage));
 				}
 			}	
 		}
