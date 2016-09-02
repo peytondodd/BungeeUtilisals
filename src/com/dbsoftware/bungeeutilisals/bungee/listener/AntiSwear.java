@@ -82,7 +82,7 @@ public class AntiSwear implements Listener {
 		if(foundSwear){
 			for(BungeeUser user : BungeeUtilisals.getInstance().getStaff()){
 				for(String s : BungeeUtilisals.getInstance().getConfig().getStringList("AntiSwear.StaffMessage")){
-					user.sendMessage(s.replace("%name%", p.getName()).replace("%server%", p.getServer().getInfo().getName()).replace("%message", event.getMessage()));
+					user.sendMessage(s.replace("%name%", p.getName()).replace("%server%", p.getServer().getInfo().getName()).replace("%message%", event.getMessage()));
 				}
 			}	
 		}

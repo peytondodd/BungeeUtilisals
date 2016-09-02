@@ -59,7 +59,7 @@ public class AntiAd implements Listener {
 					
 					for(BungeeUser user : BungeeUtilisals.getInstance().getStaff()){
 						for(String s : BungeeUtilisals.getInstance().getConfig().getStringList("AntiAd.StaffMessage")){
-							user.sendMessage(s.replace("%name%", p.getName()).replace("%server%", p.getServer().getInfo().getName()).replace("%message", event.getMessage()));
+							user.sendMessage(s.replace("%name%", p.getName()).replace("%server%", p.getServer().getInfo().getName()).replace("%message%", event.getMessage()));
 						}
 					}
 					
