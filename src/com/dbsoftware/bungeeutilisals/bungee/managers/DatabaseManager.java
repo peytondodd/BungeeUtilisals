@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class DatabaseManager {
 	
@@ -22,8 +21,6 @@ public class DatabaseManager {
 		DatabaseManager.database = database;
 		DatabaseManager.username = username;
 		DatabaseManager.password = password;
-    
-		System.out.println("[BungeeUtilisals] Connecting to database..");
 	}
   
 	public void openConnection(){
@@ -33,13 +30,10 @@ public class DatabaseManager {
 				connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
 				this.prepareDatabase();
 			} catch (SQLException e) {
-				System.out.println("[BungeeUtilisals]: Can't connect to database: " + e.getMessage());
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
-				System.out.println("[BungeeUtilisals]: Can't connect to database: " + e.getMessage());
+				e.printStackTrace();
 			}
-		} else {
-			System.out.println("[BungeeUtilisals]: Database already connected");
 		}
 	}
   
@@ -54,12 +48,16 @@ public class DatabaseManager {
 				st.executeUpdate("CREATE TABLE IF NOT EXISTS Bans (BannedBy VARCHAR(32) NOT NULL, Banned TEXT NOT NULL, BanTime LONG NOT NULL, Reason TEXT NOT NULL)");
 				st.executeUpdate("CREATE TABLE IF NOT EXISTS Mutes (MutedBy VARCHAR(32) NOT NULL, Muted TEXT NOT NULL, MuteTime LONG NOT NULL, Reason TEXT NOT NULL)");
 				st.executeUpdate("CREATE TABLE IF NOT EXISTS IPBans (BannedBy VARCHAR(32) NOT NULL, Banned TEXT NOT NULL, Reason TEXT NOT NULL)");
-				st.executeUpdate("CREATE TABLE IF NOT EXISTS Staffs (Name VARCHAR(32) NOT NULL)");
+				st.executeUpdate("CREATE TABLE IF NOT EXISTS Staffs (ID int NOT NULL AUTO_INCREMENT, Name VARCHAR(32) NOT NULL)");
+				
+                ResultSet rs = connection.getMetaData().getColumns(null, null, "Staffs", "ID");
+                if (!rs.next()) {
+                    st.executeUpdate("ALTER TABLE Staffs ADD ID BOOLEAN DEFAULT 0 int NOT NULL AUTO_INCREMENT");
+                }
+				
 			} catch (SQLException e) {
-				System.out.println("[BungeeUtilisals]: Can't prepare database: " + e.getMessage());
+				e.printStackTrace();
 			}
-		} else {
-			System.out.println("[BungeeUtilisals]: Database isn't connected ");
 		}
 	}
   
@@ -76,28 +74,12 @@ public class DatabaseManager {
 	public Connection getConnection(){
 		return connection;
 	}
-  
-	public boolean isInTable(ProxiedPlayer player, String table) {
-		if (isConnected()) {
-			try {
-				Statement statement = getConnection().createStatement();
-				ResultSet result = statement.executeQuery("SELECT * FROM '" + table + "' WHERE NAME='" + player.getName() + "'");
-        
-				return result.next();
-			} catch (SQLException e) {
-				e.printStackTrace();
-        
-				return false;
-			}
-		}
-		return false;
-	}
-  
+	
 	public void closeConnection() {
 		try {
 			connection.close();
 		} catch (SQLException e) {
-			System.out.println("[BungeeUtilisals]: Can't close the connection: " + e.getMessage());
+			e.printStackTrace();
 		} finally {
 			connection = null;
 		}

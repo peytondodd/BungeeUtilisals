@@ -5,10 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import com.dbsoftware.bungeeutilisals.bungee.actionbarannouncer.ActionBarAnnouncer;
 import com.dbsoftware.bungeeutilisals.bungee.announcer.Announcer;
 import com.dbsoftware.bungeeutilisals.bungee.commands.AlertCommand;
@@ -54,11 +54,12 @@ import com.dbsoftware.bungeeutilisals.bungee.staffchat.StaffChat;
 import com.dbsoftware.bungeeutilisals.bungee.tabmanager.TabManager;
 import com.dbsoftware.bungeeutilisals.bungee.titleannouncer.TitleAnnouncer;
 import com.dbsoftware.bungeeutilisals.bungee.updater.UpdateChecker;
+import com.dbsoftware.bungeeutilisals.bungee.utils.MySQL;
+import com.dbsoftware.bungeeutilisals.bungee.utils.MySQL.WhereType;
 import com.dbsoftware.bungeeutilisals.bungee.utils.TPSRunnable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.io.ByteStreams;
-
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -67,11 +68,6 @@ import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
-/**
- * 
- * @author Dieter
- *
- */
 
 public class BungeeUtilisals extends Plugin {
 
@@ -84,6 +80,7 @@ public class BungeeUtilisals extends Plugin {
     private ConfigData configdata;
     public HashMap<String, String> pmcache = Maps.newHashMap();
     public List<BungeeUser> users = Lists.newArrayList();
+    public List<String> staff = Lists.newArrayList();
     
 	public void onEnable(){
 		instance = this;
@@ -141,6 +138,25 @@ public class BungeeUtilisals extends Plugin {
 		    Reports.registerReportSystem();
 			Punishments.registerPunishmentSystem();
 			BungeeCord.getInstance().getPluginManager().registerCommand(this, new GRankCommand());
+			
+			Runnable r = new Runnable(){
+
+				@Override
+				public void run() {
+					try {
+						staff.clear();
+						ResultSet rs = MySQL.getInstance().select().table("Staffs").column("*").wheretype(WhereType.HIGHER).where("ID").wherereq("0").select();
+						
+						while(rs.next()){
+							staff.add(rs.getString("Name").toLowerCase());
+						}
+					} catch(Exception e){
+						e.printStackTrace();
+					}
+				}
+				
+			};
+			BungeeCord.getInstance().getScheduler().schedule(this, r, 0, 1, TimeUnit.MINUTES);
 	    }
 	    
 	    TabManager.loadTab();

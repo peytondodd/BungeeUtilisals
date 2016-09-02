@@ -1,9 +1,9 @@
 package com.dbsoftware.bungeeutilisals.bungee;
 
-import java.sql.ResultSet;
 import com.dbsoftware.bungeeutilisals.bungee.utils.MySQL;
 import com.dbsoftware.bungeeutilisals.bungee.utils.MySQL.WhereType;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
+
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -15,15 +15,10 @@ public class BungeeUser {
 	
 	public BungeeUser(ProxiedPlayer p){
 		this.p = p;
-		try {
-			ResultSet rs = MySQL.getInstance().select().table("Staffs").column("Name").wheretype(WhereType.EQUALS).where("Name").wherereq(p.getName().toLowerCase()).select();
-			if(rs.next()){
-				rank = BungeeRank.STAFF;
-			} else {
-				rank = BungeeRank.GUEST;
-			}
-		} catch(Exception e){
-			e.printStackTrace();
+		if(BungeeUtilisals.getInstance().staff.contains(p.getName().toLowerCase())){
+			this.rank = BungeeRank.STAFF;
+		} else {
+			this.rank = BungeeRank.GUEST;
 		}
 		if(this.getRank().equals(BungeeRank.STAFF)){
 			this.socialspy = true;
