@@ -19,11 +19,11 @@ public class StaffChatCommand extends Command {
 	public static void executeStaffChatCommand(CommandSender sender, String[] args){
 		if (!StaffChat.inchat.contains(sender.getName())){
 			StaffChat.inchat.add(sender.getName());
-			sender.sendMessage(new TextComponent(BungeeUtilisals.instance.getConfig().getString("StaffChat.ChatEnabled").replace("&", "§")));
+			sender.sendMessage(Utils.format(BungeeUtilisals.instance.getConfig().getString("StaffChat.ChatEnabled")));
 			return;
 		}
 		StaffChat.inchat.remove(sender.getName());
-		sender.sendMessage(new TextComponent(BungeeUtilisals.instance.getConfig().getString("StaffChat.ChatDisabled").replace("&", "§")));
+		sender.sendMessage(Utils.format(BungeeUtilisals.instance.getConfig().getString("StaffChat.ChatDisabled")));
 	}
 
 	@Override
