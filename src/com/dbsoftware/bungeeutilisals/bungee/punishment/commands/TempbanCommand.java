@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
+import com.dbsoftware.bungeeutilisals.bungee.events.BanEvent;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.BanAPI;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.TimeUnit;
@@ -12,6 +13,8 @@ import com.dbsoftware.bungeeutilisals.bungee.utils.PlayerInfo;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.UUIDFetcher;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
+
+import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -26,6 +29,7 @@ public class TempbanCommand extends Command {
 
 	public static void executeTempBanCommand(CommandSender sender, String[] args) {
 		String banreason = "";
+		Long bantime = -1L;
 		if(args.length < 3){
 			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempban.Messages.WrongArgs")){
 				sender.sendMessage(TextComponent.fromLegacyText(s.replace("&", "§")));
@@ -91,7 +95,7 @@ public class TempbanCommand extends Command {
 			} else {
 				BanAPI.addBan(sender.getName(), p.getName(), time, reason);
 			}
-
+			bantime = time;
 			Long end = time;
 			
 			SimpleDateFormat df2 = new SimpleDateFormat("kk:mm dd/MM/yyyy");
@@ -130,12 +134,16 @@ public class TempbanCommand extends Command {
 				}
 				return;
 			}
+			bantime = time;
 			if(BungeeUtilisals.getInstance().getConfigData().UUIDSTORAGE){
 				BanAPI.addBan(sender.getName(), uuid.toString(), time, reason);
 			} else {
 				BanAPI.addBan(sender.getName(), args[0], time, reason);
 			}
 		}
+		BanEvent event = new BanEvent(sender.getName(), args[0], bantime, banreason);
+		BungeeCord.getInstance().getPluginManager().callEvent(event);
+		
 		PlayerInfo info;
 		if(BungeeUtilisals.getInstance().getConfigData().UUIDSTORAGE){
 			info = new PlayerInfo(uuid.toString());

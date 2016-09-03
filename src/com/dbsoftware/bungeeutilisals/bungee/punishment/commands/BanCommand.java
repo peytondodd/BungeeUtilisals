@@ -1,7 +1,9 @@
 package com.dbsoftware.bungeeutilisals.bungee.punishment.commands;
 
 import java.util.UUID;
+
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
+import com.dbsoftware.bungeeutilisals.bungee.events.BanEvent;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.BanAPI;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PlayerInfo;
@@ -9,6 +11,7 @@ import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.UUIDFetcher;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 
+import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -80,6 +83,8 @@ public class BanCommand extends Command {
 		} else {
 			info = new PlayerInfo(args[0]);
 		}
+		BanEvent event = new BanEvent(sender.getName(), args[0], -1L, reason);
+		BungeeCord.getInstance().getPluginManager().callEvent(event);
 		info.addBan();
 		for(String s : Punishments.punishments.getFile().getStringList("Punishments.Ban.Messages.Banned")){
 			sender.sendMessage(Utils.format(s.replace("%player%", args[0]).replace("%reason%", banreason)));

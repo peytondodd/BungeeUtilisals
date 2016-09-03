@@ -3,12 +3,15 @@ package com.dbsoftware.bungeeutilisals.bungee.punishment.commands;
 import java.util.UUID;
 
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
+import com.dbsoftware.bungeeutilisals.bungee.events.MuteEvent;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.MuteAPI;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PlayerInfo;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.UUIDFetcher;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
+
+import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -84,6 +87,8 @@ public class MuteCommand extends Command {
 		} else {
 			pinfo = new PlayerInfo(args[0]);
 		}
+		MuteEvent event = new MuteEvent(sender.getName(), args[0], -1L, mutereason);
+		BungeeCord.getInstance().getPluginManager().callEvent(event);
 		pinfo.addMute();
 		for(String s : Punishments.punishments.getFile().getStringList("Punishments.Mute.Messages.Muted")){
 			sender.sendMessage(Utils.format(s.replace("%player%", args[0]).replace("%reason%", mutereason)));

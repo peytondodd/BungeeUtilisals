@@ -284,16 +284,23 @@ public class MySQL {
 					sb.append("` FROM `");
 				}
 				sb.append(table);
-				sb.append("` WHERE `");
-				sb.append(where);
-				
-				sb.append("` ");
-				sb.append(type.getSQL());
-				sb.append(" ?;");
+				if(where != null){
+					sb.append("` WHERE `");
+					sb.append(where);
+					
+					sb.append("` ");
+					sb.append(type.getSQL());
+					sb.append(" ?;");
+				} else {
+					sb.append("`;");
+				}
+
 				
 				preparedStatement = BungeeUtilisals.getInstance().getDatabaseManager().getConnection().prepareStatement(sb.toString());
 				
-				preparedStatement.setString(1, equals);
+				if(equals != null){
+					preparedStatement.setString(1, equals);
+				}
 				preparedStatement.executeQuery();
 				
 				return preparedStatement.getResultSet();

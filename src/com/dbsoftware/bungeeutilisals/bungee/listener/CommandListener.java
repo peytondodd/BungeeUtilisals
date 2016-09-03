@@ -12,7 +12,9 @@ public class CommandListener implements Listener {
 	@EventHandler
 	public void onCommand(CommandEvent event){
 		BungeeUser user = event.getPlayer();
-		
+		if(user == null){
+			return;
+		}
 		ProxiedPlayer player = user.getPlayer();
 		
 		for(BungeeUser u : BungeeUtilisals.getInstance().users){

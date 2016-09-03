@@ -6,7 +6,6 @@ import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
@@ -45,7 +44,7 @@ public class StaffChatCommand extends Command {
 		if(sender.hasPermission("butilisals.staffchat") || sender.hasPermission("butilisals.*")){
 			executeStaffChatCommand(sender, args);		
 		} else {
-			sender.sendMessage(new TextComponent("§cYou don't have the permission to use this Command!"));
+			sender.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("Prefix") + BungeeUtilisals.getInstance().getConfig().getString("Main-messages.no-permission")));
 		}
 	} 
 }

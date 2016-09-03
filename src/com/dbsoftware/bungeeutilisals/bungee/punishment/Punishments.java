@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
+import com.dbsoftware.bungeeutilisals.bungee.listener.PunishmentAlertListener;
 import com.dbsoftware.bungeeutilisals.bungee.managers.DatabaseManager;
 import com.dbsoftware.bungeeutilisals.bungee.managers.FileManager;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.commands.BanCommand;
@@ -104,7 +105,8 @@ public class Punishments {
         	
         	ProxyServer.getInstance().getPluginManager().registerListener(BungeeUtilisals.getInstance(), new LoginListener());
         	ProxyServer.getInstance().getPluginManager().registerListener(BungeeUtilisals.getInstance(), new ChatListener());
-        	
+        	ProxyServer.getInstance().getPluginManager().registerListener(BungeeUtilisals.getInstance(), new PunishmentAlertListener());
+
         	ProxyServer.getInstance().getScheduler().runAsync(BungeeUtilisals.getInstance(), new Runnable(){
 				@Override
 				public void run() {
@@ -138,6 +140,18 @@ public class Punishments {
     }
     
     private static void setDefaults(){
+    	if(!punishments.getFile().getKeys().contains("StaffAlert")){
+    		punishments.getFile().set("StaffAlert.Tempban", Arrays.asList("&b%player% &6has been tempbanned by &b%banner%.", "&6Expires at &b%expire%", "&bReason: &6%reason%"));
+    		punishments.getFile().set("StaffAlert.Ban", Arrays.asList("&b%player% &6has been banned by &b%banner%.", "&bReason: &6%reason%"));
+    		punishments.getFile().set("StaffAlert.Tempmute", Arrays.asList("&b%player% &6has been muted by &b%muter%.", "&6Expires at &b%expire%", "&bReason: &6%reason%"));
+    		punishments.getFile().set("StaffAlert.Mute", Arrays.asList("&b%player% &6has been muted by &b%muter%.", "&bReason: &6%reason%"));
+    		punishments.getFile().set("StaffAlert.Kick", Arrays.asList("&b%player% &6has been kicked by &b%kicker%.", "&bReason: &6%reason%"));
+    		punishments.getFile().set("StaffAlert.IPBan", Arrays.asList("&b%player% &6has been ipbanned by &b%banner%.", "&bReason: &6%reason%"));
+    		punishments.getFile().set("StaffAlert.Warn", Arrays.asList("&b%player% &6has been warned by &b%warner%.", "&bReason: &6%reason%"));
+    		punishments.getFile().set("StaffAlert.Unmute", Arrays.asList("&b%player% &6has been unmuted by &b%unmuter%."));
+    		punishments.getFile().set("StaffAlert.Unban", Arrays.asList("&b%player% &6has been unbanned by &b%unbanner%."));
+
+    	}
         Collection<String> check = punishments.getFile().getSection( "Punishments" ).getKeys();
         if(!check.contains("Commands")){
         	punishments.getFile().set("Punishments.Commands.Ban", true);

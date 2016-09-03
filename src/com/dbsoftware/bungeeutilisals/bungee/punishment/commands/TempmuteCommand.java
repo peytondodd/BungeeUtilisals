@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
+import com.dbsoftware.bungeeutilisals.bungee.events.MuteEvent;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.MuteAPI;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.TimeUnit;
@@ -12,6 +13,8 @@ import com.dbsoftware.bungeeutilisals.bungee.utils.PlayerInfo;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.UUIDFetcher;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
+
+import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -26,6 +29,7 @@ public class TempmuteCommand extends Command {
 
 	public static void executeTempmuteCommand(CommandSender sender, String[] args) {
 		String mutereason = "";
+		Long mutetime = -1L;
 		if(args.length < 3){
 			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempmute.Messages.WrongArgs")){
 				sender.sendMessage(TextComponent.fromLegacyText(s.replace("&", "§")));
@@ -87,7 +91,7 @@ public class TempmuteCommand extends Command {
 			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempmute.Messages.MuteMessage")){
 				p.sendMessage(Utils.format(s.replace("%player%", sender.getName()).replace("%reason%", mutereason).replace("%time%", date)));
 			}
-			
+			mutetime = time;
 			if(BungeeUtilisals.getInstance().getConfigData().UUIDSTORAGE){
 				MuteAPI.addMute(sender.getName(), uuid.toString(), time, reason);
 			} else {
@@ -121,6 +125,7 @@ public class TempmuteCommand extends Command {
 				}
 				return;
 			}
+			mutetime = time;
 			if(BungeeUtilisals.getInstance().getConfigData().UUIDSTORAGE){
 				MuteAPI.addMute(sender.getName(), uuid.toString(), time, reason);
 			} else {
@@ -133,6 +138,8 @@ public class TempmuteCommand extends Command {
 		} else {
 			info = new PlayerInfo(args[0]);
 		}
+		MuteEvent event = new MuteEvent(sender.getName(), args[0], mutetime, mutereason);
+		BungeeCord.getInstance().getPluginManager().callEvent(event);
 		info.addMute();
 		for(String s : Punishments.punishments.getFile().getStringList("Punishments.Tempmute.Messages.Muted")){
 			sender.sendMessage(Utils.format(s.replace("%player%", args[0]).replace("%reason%", mutereason)));

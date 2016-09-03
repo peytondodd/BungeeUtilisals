@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import com.dbsoftware.bungeeutilisals.bungee.actionbarannouncer.ActionBarAnnouncer;
 import com.dbsoftware.bungeeutilisals.bungee.announcer.Announcer;
 import com.dbsoftware.bungeeutilisals.bungee.commands.AlertCommand;
@@ -55,11 +56,11 @@ import com.dbsoftware.bungeeutilisals.bungee.tabmanager.TabManager;
 import com.dbsoftware.bungeeutilisals.bungee.titleannouncer.TitleAnnouncer;
 import com.dbsoftware.bungeeutilisals.bungee.updater.UpdateChecker;
 import com.dbsoftware.bungeeutilisals.bungee.utils.MySQL;
-import com.dbsoftware.bungeeutilisals.bungee.utils.MySQL.WhereType;
 import com.dbsoftware.bungeeutilisals.bungee.utils.TPSRunnable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.io.ByteStreams;
+
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -145,7 +146,7 @@ public class BungeeUtilisals extends Plugin {
 				public void run() {
 					try {
 						staff.clear();
-						ResultSet rs = MySQL.getInstance().select().table("Staffs").column("*").wheretype(WhereType.HIGHER).where("ID").wherereq("0").select();
+						ResultSet rs = MySQL.getInstance().select().table("Staffs").column("*").select();
 						
 						while(rs.next()){
 							staff.add(rs.getString("Name").toLowerCase());

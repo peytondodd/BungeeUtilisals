@@ -31,7 +31,7 @@ public class VoteCommand extends Command {
 		click.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.translateAlternateColorCodes('&', instance.getConfig().getString("Vote.Hover").replace("%player%", sender.getName()))).create() ) );
 		click.setClickEvent( new ClickEvent( ClickEvent.Action.OPEN_URL, instance.getConfig().getString("Vote.Site") ) );
 		user.sendMessage(instance.getConfig().getString("Vote.Header"));
-		
+
 		for (String links : instance.getConfig().getStringList("Vote.Links")) {
 			user.sendMessage(links.replace("%player%", sender.getName()));
 		}

@@ -14,6 +14,7 @@ import com.dbsoftware.bungeeutilisals.bungee.utils.PlayerInfo;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.UUIDFetcher;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
+
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -67,11 +68,11 @@ public class BanInfoCommand extends Command {
 		
 		if(BungeeUtilisals.getInstance().getConfigData().UUIDSTORAGE){
 			if(MuteAPI.isMuted(uuid.toString())){
-				end = MuteAPI.getMuteTime(uuid.toString());
+				muteend = MuteAPI.getMuteTime(uuid.toString());
 			}
 		} else {
 			if(MuteAPI.isMuted(args[0])){
-				end = MuteAPI.getMuteTime(args[0]);
+				muteend = MuteAPI.getMuteTime(args[0]);
 			}
 		}
 		
@@ -127,7 +128,7 @@ public class BanInfoCommand extends Command {
 		
 		List<BaseComponent[]> messages = new ArrayList<BaseComponent[]>();
 		for(String s : Punishments.punishments.getFile().getStringList("Punishments.PlayerInfo.Messages.Info")){
-			messages.add(Utils.format(s.replace("&", "§").replace("%ip%", IP.replace("localhost", "127.0.0.1"))
+			messages.add(Utils.format(s.replace("&", "§").replace("%ip%", IP)
 						.replace("%player%", args[0])
 							.replace("%bans%", String.valueOf(pinfo.getBans()))
 							.replace("%mutes%", String.valueOf(pinfo.getMutes()))

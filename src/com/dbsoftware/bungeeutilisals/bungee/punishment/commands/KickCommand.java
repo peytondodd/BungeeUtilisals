@@ -3,11 +3,14 @@ package com.dbsoftware.bungeeutilisals.bungee.punishment.commands;
 import java.util.UUID;
 
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
+import com.dbsoftware.bungeeutilisals.bungee.events.KickEvent;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PlayerInfo;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.UUIDFetcher;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
+
+import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -55,6 +58,8 @@ public class KickCommand extends Command {
 			info = new PlayerInfo(args[0]);
 		}
 		info.addKick();
+		KickEvent event = new KickEvent(sender.getName(), args[0], reason);
+		BungeeCord.getInstance().getPluginManager().callEvent(event);
 		p.disconnect(Utils.format(kreason.replace("%kicker%", sender.getName()).replace("%reason%", reason)));
 		for(String s : Punishments.punishments.getFile().getStringList("Punishments.Kick.Messages.Kicked")){
 			sender.sendMessage(Utils.format(s.replace("%player%", args[0])));
