@@ -1,7 +1,8 @@
 package com.dbsoftware.bungeeutilisals.api.placeholder;
 
 import java.util.List;
-import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
+
+import com.dbsoftware.bungeeutilisals.bungee.user.BungeeUser;
 import com.google.common.collect.Lists;
 
 public class PlaceHolderAPI {

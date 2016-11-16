@@ -4,11 +4,11 @@ import java.util.Arrays;
 import java.util.UUID;
 
 import com.dbsoftware.bungeeutilisals.api.DBCommand;
-import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.events.MuteEvent;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.MuteAPI;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
+import com.dbsoftware.bungeeutilisals.bungee.user.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PlayerInfo;
 import com.dbsoftware.bungeeutilisals.bungee.utils.UUIDFetcher;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;

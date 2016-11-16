@@ -3,11 +3,11 @@ package com.dbsoftware.bungeeutilisals.bungee.punishment.commands;
 import java.util.UUID;
 
 import com.dbsoftware.bungeeutilisals.api.DBCommand;
-import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.events.UnbanEvent;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.BanAPI;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
+import com.dbsoftware.bungeeutilisals.bungee.user.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.utils.UUIDFetcher;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 

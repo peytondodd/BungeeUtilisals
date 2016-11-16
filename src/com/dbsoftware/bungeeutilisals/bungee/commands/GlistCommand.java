@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import com.dbsoftware.bungeeutilisals.api.DBCommand;
-import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
+import com.dbsoftware.bungeeutilisals.bungee.user.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;

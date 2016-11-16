@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.dbsoftware.bungeeutilisals.api.DBCommand;
-import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
+import com.dbsoftware.bungeeutilisals.bungee.user.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.utils.TPSRunnable;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 

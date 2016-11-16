@@ -1,7 +1,6 @@
 package com.dbsoftware.bungeeutilisals.bungee.commands;
 
 import com.dbsoftware.bungeeutilisals.api.DBCommand;
-import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.actionbarannouncer.ActionBarAnnouncements;
 import com.dbsoftware.bungeeutilisals.bungee.announcer.Announcements;
@@ -10,6 +9,7 @@ import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.report.Reports;
 import com.dbsoftware.bungeeutilisals.bungee.tabmanager.TabManager;
 import com.dbsoftware.bungeeutilisals.bungee.titleannouncer.TitleAnnouncements;
+import com.dbsoftware.bungeeutilisals.bungee.user.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 
 import net.md_5.bungee.api.CommandSender;

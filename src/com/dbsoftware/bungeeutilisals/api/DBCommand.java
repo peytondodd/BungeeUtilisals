@@ -2,8 +2,8 @@ package com.dbsoftware.bungeeutilisals.api;
 
 import java.util.List;
 
-import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
+import com.dbsoftware.bungeeutilisals.bungee.user.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 import com.google.common.collect.Lists;

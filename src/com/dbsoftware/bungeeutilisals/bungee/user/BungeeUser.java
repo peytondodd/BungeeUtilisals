@@ -1,5 +1,6 @@
-package com.dbsoftware.bungeeutilisals.bungee;
+package com.dbsoftware.bungeeutilisals.bungee.user;
 
+import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.utils.ActionBarUtil;
 import com.dbsoftware.bungeeutilisals.bungee.utils.MySQL;
 import com.dbsoftware.bungeeutilisals.bungee.utils.MySQL.WhereType;

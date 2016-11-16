@@ -1,8 +1,8 @@
 package com.dbsoftware.bungeeutilisals.bungee.listener;
 
-import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.events.PrivateMessageEvent;
+import com.dbsoftware.bungeeutilisals.bungee.user.BungeeUser;
 
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;

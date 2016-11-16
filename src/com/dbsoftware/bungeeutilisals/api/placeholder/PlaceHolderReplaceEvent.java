@@ -1,6 +1,6 @@
 package com.dbsoftware.bungeeutilisals.api.placeholder;
 
-import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
+import com.dbsoftware.bungeeutilisals.bungee.user.BungeeUser;
 
 public class PlaceHolderReplaceEvent {
 

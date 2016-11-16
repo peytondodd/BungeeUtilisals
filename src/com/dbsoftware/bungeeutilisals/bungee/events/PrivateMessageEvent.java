@@ -1,6 +1,6 @@
 package com.dbsoftware.bungeeutilisals.bungee.events;
 
-import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
+import com.dbsoftware.bungeeutilisals.bungee.user.BungeeUser;
 
 import net.md_5.bungee.api.plugin.Cancellable;
 import net.md_5.bungee.api.plugin.Event;

@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import com.dbsoftware.bungeeutilisals.ConfigData;
 import com.dbsoftware.bungeeutilisals.api.CommandAPI;
 import com.dbsoftware.bungeeutilisals.bungee.actionbarannouncer.ActionBarAnnouncer;
 import com.dbsoftware.bungeeutilisals.bungee.announcer.Announcer;
@@ -57,6 +56,7 @@ import com.dbsoftware.bungeeutilisals.bungee.staffchat.StaffChat;
 import com.dbsoftware.bungeeutilisals.bungee.tabmanager.TabManager;
 import com.dbsoftware.bungeeutilisals.bungee.titleannouncer.TitleAnnouncer;
 import com.dbsoftware.bungeeutilisals.bungee.updater.UpdateChecker;
+import com.dbsoftware.bungeeutilisals.bungee.user.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.utils.MySQL;
 import com.dbsoftware.bungeeutilisals.bungee.utils.TPSRunnable;
 import com.google.common.collect.Lists;

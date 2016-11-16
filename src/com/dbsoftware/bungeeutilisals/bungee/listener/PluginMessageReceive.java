@@ -6,8 +6,8 @@ import java.io.IOException;
 
 import com.dbsoftware.bungeeutilisals.api.CommandAPI;
 import com.dbsoftware.bungeeutilisals.api.DBCommand;
-import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
+import com.dbsoftware.bungeeutilisals.bungee.user.BungeeUser;
 
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;

@@ -1,7 +1,7 @@
 package com.dbsoftware.bungeeutilisals.bungee.staffchat;
 
-import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
+import com.dbsoftware.bungeeutilisals.bungee.user.BungeeUser;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;

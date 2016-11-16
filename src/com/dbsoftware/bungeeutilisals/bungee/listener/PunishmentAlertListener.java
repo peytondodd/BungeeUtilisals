@@ -2,7 +2,6 @@ package com.dbsoftware.bungeeutilisals.bungee.listener;
 
 import java.util.List;
 
-import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.events.BanEvent;
 import com.dbsoftware.bungeeutilisals.bungee.events.IPBanEvent;
@@ -12,6 +11,7 @@ import com.dbsoftware.bungeeutilisals.bungee.events.UnbanEvent;
 import com.dbsoftware.bungeeutilisals.bungee.events.UnmuteEvent;
 import com.dbsoftware.bungeeutilisals.bungee.events.WarnEvent;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
+import com.dbsoftware.bungeeutilisals.bungee.user.BungeeUser;
 
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;

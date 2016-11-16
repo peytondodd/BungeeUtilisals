@@ -3,8 +3,8 @@ package com.dbsoftware.bungeeutilisals.bungee.listener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
+import com.dbsoftware.bungeeutilisals.bungee.user.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;

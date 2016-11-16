@@ -1,6 +1,4 @@
-package com.dbsoftware.bungeeutilisals;
-
-import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
+package com.dbsoftware.bungeeutilisals.bungee;
 
 import net.md_5.bungee.config.Configuration;
 
