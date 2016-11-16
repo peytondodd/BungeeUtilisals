@@ -10,17 +10,17 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
 public class ChatListener implements Listener {
-	
+
 	@EventHandler
-	public void onChat(ChatEvent event){
-		if(event.isCommand()){
-			CommandEvent commandEvent = new CommandEvent(BungeeUtilisals.getInstance().getUser((ProxiedPlayer)event.getSender()), event.getMessage());
+	public void onChat(ChatEvent event) {
+		if (event.isCommand()) {
+			CommandEvent commandEvent = new CommandEvent(
+					BungeeUtilisals.getInstance().getUser((ProxiedPlayer) event.getSender()), event.getMessage());
 			ProxyServer.getInstance().getPluginManager().callEvent(commandEvent);
-			
-			if(commandEvent.isCancelled()){
+
+			if (commandEvent.isCancelled()) {
 				event.setCancelled(true);
 			}
 		}
 	}
-
 }

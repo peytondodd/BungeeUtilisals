@@ -1,48 +1,48 @@
 package com.dbsoftware.bungeeutilisals.bungee.punishment;
 
 public class MuteInfo {
-	
+
 	private String player;
 	private String bannedby;
 	private Long mutetime;
 	private String reason;
-	
-	public MuteInfo(String player, String bannedby, Long mutetime, String reason){
+
+	public MuteInfo(String player, String bannedby, Long mutetime, String reason) {
 		this.player = player;
 		this.bannedby = bannedby;
 		this.mutetime = mutetime;
 		this.reason = reason;
 	}
-	
-	public String getPlayer(){
+
+	public String getPlayer() {
 		return this.player;
 	}
-	
-	public String getBy(){
+
+	public String getBy() {
 		return this.bannedby;
 	}
-	
-	public Long getTime(){
+
+	public Long getTime() {
 		return this.mutetime;
 	}
-	
-	public String getReason(){
+
+	public String getReason() {
 		return this.reason;
 	}
-	
-	public String setPlayer(String player){
+
+	public String setPlayer(String player) {
 		return this.player = player;
 	}
 
-	public String setBy(String by){
+	public String setBy(String by) {
 		return this.bannedby = by;
 	}
-	
-	public Long setTime(Long time){
+
+	public Long setTime(Long time) {
 		return this.mutetime = time;
 	}
-	
-	public String setReason(String reason){
+
+	public String setReason(String reason) {
 		return this.reason = reason;
 	}
 }

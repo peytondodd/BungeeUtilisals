@@ -1,6 +1,7 @@
 package com.dbsoftware.bungeeutilisals.bungee.tasks;
 
 import java.util.ArrayList;
+
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -27,16 +28,17 @@ public class ServerAnnouncements implements Runnable {
 		if (server.getPlayers().isEmpty()) {
 			return;
 		}
-		for(ProxiedPlayer player: server.getPlayers()){
-            for ( String line : list.get(count).split( "\n" ) ) {
-            	player.sendMessage(line.replace("%p%", player.getName()));
-            }
+		for (ProxiedPlayer player : server.getPlayers()) {
+			for (String line : list.get(count).split("\n")) {
+				player.sendMessage(line.replace("%p%", player.getName()));
+			}
 		}
 		count++;
-		if((count+1)>list.size()){
-			count=0;
+		if ((count + 1) > list.size()) {
+			count = 0;
 		}
 	}
+
 	public String colorize(String input) {
 		return ChatColor.translateAlternateColorCodes('&', input);
 	}

@@ -9,17 +9,11 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
 public class ServerSwitch implements Listener {
-
-	public BungeeUtilisals plugin;
-	  
-	public ServerSwitch(BungeeUtilisals plugin){
-		this.plugin = plugin;
-	}
 	  
 	@EventHandler
 	public void onJoin(ServerSwitchEvent event){
 		ProxiedPlayer p = event.getPlayer();
-		if((p.hasPermission("butilisals.notify") || p.hasPermission("butilisals.*")) && BungeeUtilisals.update){
+		if((p.hasPermission("butilisals.notify") || p.hasPermission("butilisals.*")) && BungeeUtilisals.getInstance().update){
 			String version = UpdateChecker.getLatestVersion();
 			p.sendMessage(Utils.format("&e&lBungeeUtilisals &8» &6Version &b" + version + " &6is available!"));
 			p.sendMessage(Utils.format("&6Go download it on the &bSpigotMC &6page!"));				

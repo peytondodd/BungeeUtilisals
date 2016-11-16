@@ -32,11 +32,12 @@ public class MuteAPI {
 
 	public static boolean isMuted(String player) {
 		MuteInfo info = Punishments.getMuteInfo(player);
-		if(info != null){
+		if (info != null) {
 			return true;
 		}
 		try {
-			PreparedStatement preparedStatement = dbmanager.getConnection().prepareStatement("SELECT `Reason` FROM `Mutes` WHERE `Muted` = ?;");
+			PreparedStatement preparedStatement = dbmanager.getConnection()
+					.prepareStatement("SELECT `Reason` FROM `Mutes` WHERE `Muted` = ?;");
 			preparedStatement.setString(1, player);
 
 			ResultSet rs = preparedStatement.executeQuery();
@@ -48,17 +49,18 @@ public class MuteAPI {
 	}
 
 	public static void addMute(final String muted_by, final String muted, final Long mute_time, final String reason) {
-		ProxyServer.getInstance().getScheduler().runAsync(BungeeUtilisals.getInstance(), new Runnable(){
+		ProxyServer.getInstance().getScheduler().runAsync(BungeeUtilisals.getInstance(), new Runnable() {
 			public void run() {
 				try {
-					PreparedStatement preparedStatement = dbmanager.getConnection().prepareStatement("INSERT INTO Mutes(`MutedBy`, `Muted`, `MuteTime`, `Reason`) VALUES (?, ?, ?, ?);");
+					PreparedStatement preparedStatement = dbmanager.getConnection().prepareStatement(
+							"INSERT INTO Mutes(`MutedBy`, `Muted`, `MuteTime`, `Reason`) VALUES (?, ?, ?, ?);");
 					preparedStatement.setString(1, muted_by);
 					preparedStatement.setString(2, muted);
 					preparedStatement.setLong(3, mute_time);
 					preparedStatement.setString(4, reason);
 
 					preparedStatement.executeUpdate();
-					
+
 					Punishments.mutes.add(new MuteInfo(muted, muted_by, mute_time, reason));
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -68,7 +70,7 @@ public class MuteAPI {
 	}
 
 	public static void removeMute(final String player) {
-		ProxyServer.getInstance().getScheduler().runAsync(BungeeUtilisals.getInstance(), new Runnable(){
+		ProxyServer.getInstance().getScheduler().runAsync(BungeeUtilisals.getInstance(), new Runnable() {
 			public void run() {
 				try {
 					PreparedStatement preparedStatement = dbmanager.getConnection()
@@ -77,7 +79,7 @@ public class MuteAPI {
 
 					preparedStatement.executeUpdate();
 					MuteInfo info = Punishments.getMuteInfo(player);
-					if(info != null){
+					if (info != null) {
 						Punishments.mutes.remove(info);
 					}
 				} catch (SQLException e) {
@@ -89,12 +91,13 @@ public class MuteAPI {
 
 	public static String getMutedBy(String player) {
 		MuteInfo info = Punishments.getMuteInfo(player);
-		if(info != null){
+		if (info != null) {
 			return info.getBy();
 		}
 		String playername = "";
 		try {
-			PreparedStatement preparedStatement = dbmanager.getConnection().prepareStatement("SELECT `MutedBy` FROM `Mutes` WHERE `Muted` = ?;");
+			PreparedStatement preparedStatement = dbmanager.getConnection()
+					.prepareStatement("SELECT `MutedBy` FROM `Mutes` WHERE `Muted` = ?;");
 			preparedStatement.setString(1, player);
 
 			ResultSet rs = preparedStatement.executeQuery();
@@ -109,11 +112,12 @@ public class MuteAPI {
 
 	public static Long getMuteTime(String player) {
 		MuteInfo info = Punishments.getMuteInfo(player);
-		if(info != null){
+		if (info != null) {
 			return info.getTime();
 		}
 		try {
-			PreparedStatement preparedStatement = dbmanager.getConnection().prepareStatement("SELECT `MuteTime` FROM `Mutes` WHERE `Muted` = ?;");
+			PreparedStatement preparedStatement = dbmanager.getConnection()
+					.prepareStatement("SELECT `MuteTime` FROM `Mutes` WHERE `Muted` = ?;");
 			preparedStatement.setString(1, player);
 
 			ResultSet rs = preparedStatement.executeQuery();
@@ -128,12 +132,13 @@ public class MuteAPI {
 
 	public static String getReason(String player) {
 		MuteInfo info = Punishments.getMuteInfo(player);
-		if(info != null){
+		if (info != null) {
 			return info.getReason();
 		}
 		String reason = "";
 		try {
-			PreparedStatement preparedStatement = dbmanager.getConnection().prepareStatement("SELECT `Reason` FROM `Mutes` WHERE `Muted` = ?;");
+			PreparedStatement preparedStatement = dbmanager.getConnection()
+					.prepareStatement("SELECT `Reason` FROM `Mutes` WHERE `Muted` = ?;");
 			preparedStatement.setString(1, player);
 
 			ResultSet rs = preparedStatement.executeQuery();

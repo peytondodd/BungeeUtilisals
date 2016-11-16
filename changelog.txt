@@ -1,0 +1,11 @@
+Changelog for Build #226:
+- Recoded all commands.
+- Fixed the bug that if someone get's kicked, you see the tempban staffalert.
+- Removed /butilisals lock (use /chat lock instead)
+- Fixed the colors for some commands. (For example bigalert & find).
+- Removed (buggy) Friend system (temporary, recoding).
+- Changed some listeners.
+- Recoded Punishment Commands & made them more efficient.
+- Added /unbanip (player/IP) to unban IP's, /unban to unban players.
+- Fixed a bug in /unmute, also broadcasting the unmute message to staff, when the user wasn't muted.
+- Fixed the warn counter (showing in /binfo) while using UUID mode.

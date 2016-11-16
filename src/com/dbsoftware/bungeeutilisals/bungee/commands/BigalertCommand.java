@@ -1,150 +1,89 @@
 package com.dbsoftware.bungeeutilisals.bungee.commands;
 
+import com.dbsoftware.bungeeutilisals.api.DBCommand;
+import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
-import com.dbsoftware.bungeeutilisals.bungee.utils.ActionBarUtil;
-import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
-import com.dbsoftware.bungeeutilisals.bungee.utils.TitleUtil;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.plugin.Command;
+import com.google.common.base.Joiner;
 
-public class BigalertCommand extends Command {
+import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.config.Configuration;
+
+public class BigalertCommand extends DBCommand {
 	
 	public BigalertCommand() {
-		super("bigalert");{
-		}
+		super("bigalert");
 	}
-	
-	public static void executeBigalertCommand(CommandSender sender, String[] args){
-		String prefix = ChatColor.translateAlternateColorCodes('&', BungeeUtilisals.getInstance().getConfig().getString("Prefix"));
-		if (args.length >= 1) {
-			if((args.length == 2) && (args[0].equalsIgnoreCase("config"))){
-				if(BungeeUtilisals.getInstance().getConfig().getString("BigAlert.Messages." + args[1]) != null){
-					String message = BungeeUtilisals.getInstance().getConfig().getString("BigAlert.Messages." + args[1]);
-					
-					if(BungeeUtilisals.getInstance().getConfig().getBoolean("BigAlert.Chat.Enabled")){
-						for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-							p.sendMessage(new TextComponent(prefix + ChatColor.translateAlternateColorCodes('&', message.replace("%p%", p.getName()).replaceAll("%n", " "))));
-						}
-					}
-					if(BungeeUtilisals.getInstance().getConfig().getBoolean("BigAlert.ActionBar.Enabled")){
-						for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-							ActionBarUtil.sendActionBar(p, ChatColor.translateAlternateColorCodes('&', message.replace("%p%", p.getName()).replaceAll("%n", " ")));	
-						}
-					}
-					
-					if(BungeeUtilisals.getInstance().getConfig().getBoolean("BigAlert.Title.Enabled")){
-						if(message.contains("%n")){
-							String[] titles = message.split("%n");
-							String title = titles[0];
-							String subtitle = titles[1];
-							int fadeIn = BungeeUtilisals.getInstance().getConfig().getInt("BigAlert.Title.FadeIn");
-							int stay = BungeeUtilisals.getInstance().getConfig().getInt("BigAlert.Title.Stay");
-							int fadeOut = BungeeUtilisals.getInstance().getConfig().getInt("BigAlert.Title.FadeOut");
-							
-							for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-								
-								BaseComponent[] btitle = new ComponentBuilder(title.replace("&", "§").replace("%p%", p.getName())).create();
-								BaseComponent[] stitle = new ComponentBuilder(subtitle.replace("&", "§").replace("%p%", p.getName())).create();
-								
-								TitleUtil.sendFullTitle(p, fadeIn, stay, fadeOut, stitle, btitle);
-							}
-							return;
-						} else {
-							int fadeIn = BungeeUtilisals.getInstance().getConfig().getInt("BigAlert.Title.FadeIn");
-							int stay = BungeeUtilisals.getInstance().getConfig().getInt("BigAlert.Title.Stay");
-							int fadeOut = BungeeUtilisals.getInstance().getConfig().getInt("BigAlert.Title.FadeOut");
-							for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-								
-								BaseComponent[] btitle = new ComponentBuilder(message.replace("&", "§").replace("%p%", p.getName())).create();
-								BaseComponent[] stitle = new ComponentBuilder("").create();
-								
-								TitleUtil.sendFullTitle(p, fadeIn, stay, fadeOut, stitle, btitle);
-							}
-							return;
-						}
-					}
-				} else {
-					sender.sendMessage(Utils.format("&cThat String doesn't exist in the Config!"));
-					return;
-				}
-			}
-			if((args.length != 2) && (args[0].equalsIgnoreCase("config"))){
+
+	@Override
+	public void onExecute(BungeeUser user, String[] args) {
+		this.onExecute(user.sender(), args);
+	}
+
+	@Override
+	public void onExecute(CommandSender sender, String[] args){
+		if(args.length == 0){
+			sender.sendMessage(Utils.format("&cPlease enter a message to alert."));
+			return;
+		}
+		Configuration config = BungeeUtilisals.getInstance().getConfig();
+		Boolean chat = config.getBoolean("BigAlert.Chat.Enabled"), title = config.getBoolean("BigAlert.Title.Enabled"), actionbar = config.getBoolean("BigAlert.ActionBar.Enabled");
+		
+		if(args.length == 2 && args[0].equalsIgnoreCase("config")){
+			if(!BungeeUtilisals.getInstance().getConfig().contains("BigAlert.Messages." + args[1])){
+				sender.sendMessage(Utils.format("&cThis message is does not exist in the config."));
 				return;
 			}
+			String message = BungeeUtilisals.getInstance().getConfig().getString("BigAlert.Messages." + args[1]);
+			if(chat){
+				chat(message);
+			}
+			if(actionbar){
+				bar(message);
+			}
+			if(title){
+				String[] titles = message.split("%n");
+				String tit = titles[0];
+				String stit = (titles.length == 2 ? titles[1] : null);
+				Integer in = config.getInt("BigAlert.Title.FadeIn"), stay = config.getInt("BigAlert.Title.Stay"), out = config.getInt("BigAlert.Title.FadeOut");
+				
+				title(in, stay, out, tit, stit);
+			}
+			return;
+		}
+		
+		String message = Joiner.on(" ").join(args);
+		if(chat){
+			chat(message);
+		}
+		if(actionbar){
+			bar(message);
+		}
+		if(title){
+			String[] titles = message.split("%n");
+			String tit = titles[0];
+			String stit = (titles.length == 2 ? titles[1] : null);
+			Integer in = config.getInt("BigAlert.Title.FadeIn"), stay = config.getInt("BigAlert.Title.Stay"), out = config.getInt("BigAlert.Title.FadeOut");
 			
-			String msg = "";
-			for(String s : args){
-				msg = msg + s + " ";
-			}
-			
-			if(BungeeUtilisals.getInstance().getConfig().getBoolean("BigAlert.Chat.Enabled")){
-				for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-					p.sendMessage(new TextComponent(prefix + ChatColor.translateAlternateColorCodes('&', msg.replace("%p%", p.getName()).replaceAll("%n", " "))));
-				}
-			}
-			if(BungeeUtilisals.getInstance().getConfig().getBoolean("BigAlert.ActionBar.Enabled")){
-				for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-					ActionBarUtil.sendActionBar(p, ChatColor.translateAlternateColorCodes('&', msg.replace("%p%", p.getName()).replaceAll("%n", " ")));	
-				}
-			}
-	        
-			if(BungeeUtilisals.getInstance().getConfig().getBoolean("BigAlert.Title.Enabled")){
-				if(msg.contains("%n")){
-					String[] titles = msg.split("%n");
-					String title = titles[0];
-					String subtitle = titles[1];
-					int fadeIn = BungeeUtilisals.getInstance().getConfig().getInt("BigAlert.Title.FadeIn");
-					int stay = BungeeUtilisals.getInstance().getConfig().getInt("BigAlert.Title.Stay");
-					int fadeOut = BungeeUtilisals.getInstance().getConfig().getInt("BigAlert.Title.FadeOut");
-					
-					for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-						
-						BaseComponent[] btitle = new ComponentBuilder(title.replace("&", "§").replace("%p%", p.getName())).create();
-						BaseComponent[] stitle = new ComponentBuilder(subtitle.replace("&", "§").replace("%p%", p.getName())).create();
-						
-						TitleUtil.sendFullTitle(p, fadeIn, stay, fadeOut, stitle, btitle);
-					}
-					return;
-				} else {
-					int fadeIn = BungeeUtilisals.getInstance().getConfig().getInt("BigAlert.Title.FadeIn");
-					int stay = BungeeUtilisals.getInstance().getConfig().getInt("BigAlert.Title.Stay");
-					int fadeOut = BungeeUtilisals.getInstance().getConfig().getInt("BigAlert.Title.FadeOut");
-					for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-						
-						BaseComponent[] btitle = new ComponentBuilder(msg.replace("&", "§").replace("%p%", p.getName())).create();
-						BaseComponent[] stitle = new ComponentBuilder("").create();
-						
-						TitleUtil.sendFullTitle(p, fadeIn, stay, fadeOut, stitle, btitle);
-					}
-					return;
-				}
-			}
-		} else {
-			sender.sendMessage(Utils.format("&cYou need to enter at least 1 word!"));
+			title(in, stay, out, tit, stit);
 		}
 	}
 	
-	@Override
-	public void execute(CommandSender sender, String[] args) {
-		if(!(sender instanceof ProxiedPlayer)){
-			executeBigalertCommand(sender, args);
-			return;
+	void chat(String message){
+		for(BungeeUser user : BungeeUtilisals.getInstance().getUsers()){
+			user.sendMessage(BungeeUtilisals.getInstance().getConfig().getString("Prefix") + message.replace("%p%", user.getName()).replaceAll("%n", " "));
 		}
-		if(BungeeUtilisals.getInstance().getConfig().getBoolean("Bukkit-Permissions")){
-			PluginMessageChannel.sendPermissionCheckPluginMessage("hasPermission", "butilisals.bigalert", "bigalert", args, ((ProxiedPlayer)sender));
-			return;
+	}
+	
+	void bar(String message){
+		for(BungeeUser user : BungeeUtilisals.getInstance().getUsers()){
+			user.sendBar(message);
 		}
-		if(sender.hasPermission("butilisals.bigalert") || sender.hasPermission("butilisals.*")){
-			executeBigalertCommand(sender, args);		
-		} else {
-			sender.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("Prefix") + BungeeUtilisals.getInstance().getConfig().getString("Main-messages.no-permission")));
+	}
+	
+	void title(Integer in, Integer stay, Integer out, String title, String subtitle){
+		for(BungeeUser user : BungeeUtilisals.getInstance().getUsers()){
+			user.sendTitle(in, stay, out, title, subtitle);
 		}
 	}
 }

@@ -10,14 +10,14 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
 public class JoinListener implements Listener {
-	
+
 	@EventHandler
-	public void onJoin(PostLoginEvent event){
+	public void onJoin(PostLoginEvent event) {
 		final ProxiedPlayer p = event.getPlayer();
-		if(BungeeUtilisals.getInstance().getUser(p) != null){
+		if (BungeeUtilisals.getInstance().getUser(p) != null) {
 			return;
 		}
-		Runnable r = new Runnable(){
+		Runnable r = new Runnable() {
 
 			@Override
 			public void run() {
@@ -26,5 +26,5 @@ public class JoinListener implements Listener {
 		};
 		BungeeCord.getInstance().getScheduler().runAsync(BungeeUtilisals.getInstance(), r);
 	}
-	
+
 }

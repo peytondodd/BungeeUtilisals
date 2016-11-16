@@ -8,20 +8,21 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
 public class CommandListener implements Listener {
-	
+
 	@EventHandler
-	public void onCommand(CommandEvent event){
+	public void onCommand(CommandEvent event) {
 		BungeeUser user = event.getPlayer();
-		if(user == null){
+		if (user == null) {
 			return;
 		}
 		ProxiedPlayer player = user.getPlayer();
-		
-		for(BungeeUser u : BungeeUtilisals.getInstance().users){
-			if(u.isLocalSpy()){
-				u.sendMessage(BungeeUtilisals.getInstance().getConfig().getString("LocalSpy.Messages.Format").replace("%player%", player.getName()).replace("%command%", event.getCommand()));
+
+		for (BungeeUser u : BungeeUtilisals.getInstance().users) {
+			if (u.isLocalSpy()) {
+				u.sendMessage(BungeeUtilisals.getInstance().getConfig().getString("LocalSpy.Messages.Format")
+						.replace("%player%", player.getName()).replace("%command%", event.getCommand()));
 			}
 		}
 	}
-	
+
 }

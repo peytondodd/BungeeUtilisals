@@ -5,33 +5,33 @@ import net.md_5.bungee.api.plugin.Event;
 
 public class KickEvent extends Event implements Cancellable {
 
-    private String kicker;
-    private String kicked,reason;
-    private Boolean cancelled = false;
+	private String kicker;
+	private String kicked, reason;
+	private Boolean cancelled = false;
 
-    public KickEvent(String kicker, String kicked, String reason){
-        this.kicked = kicked;
-        this.kicker = kicker;
-        this.reason = reason;
-    }
+	public KickEvent(String kicker, String kicked, String reason) {
+		this.kicked = kicked;
+		this.kicker = kicker;
+		this.reason = reason;
+	}
 
-    public String getKicker(){
-        return this.kicker;
-    }
-    
-    public String getKicked(){
-        return this.kicked;
-    }
+	public String getKicker() {
+		return this.kicker;
+	}
 
-    public String getReason(){
-        return this.reason;
-    }
+	public String getKicked() {
+		return this.kicked;
+	}
 
-    public void setCancelled(boolean cancel){
-        this.cancelled = cancel;
-    }
+	public String getReason() {
+		return this.reason;
+	}
 
-    public boolean isCancelled() {
-        return cancelled;
-    }
+	public void setCancelled(boolean cancel) {
+		this.cancelled = cancel;
+	}
+
+	public boolean isCancelled() {
+		return cancelled;
+	}
 }

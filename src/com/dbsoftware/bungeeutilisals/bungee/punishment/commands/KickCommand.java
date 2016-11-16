@@ -1,88 +1,67 @@
 package com.dbsoftware.bungeeutilisals.bungee.punishment.commands;
 
+import java.util.Arrays;
 import java.util.UUID;
 
+import com.dbsoftware.bungeeutilisals.api.DBCommand;
+import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.events.KickEvent;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PlayerInfo;
-import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.UUIDFetcher;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
+import com.google.common.base.Joiner;
 
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.plugin.Command;
 
-public class KickCommand extends Command {
+public class KickCommand extends DBCommand {
 
 	public KickCommand() {
 		super("kick");
 	}
 
-	public static void executeKickCommand(CommandSender sender, String[] args) {
-		if(args.length < 2){
-			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Kick.Messages.WrongArgs")){
-				sender.sendMessage(TextComponent.fromLegacyText(s.replace("&", "§")));
+	@Override
+	public void onExecute(BungeeUser user, String[] args) {
+		onExecute(user.sender(), args);
+	}
+
+	@Override
+	public void onExecute(CommandSender sender, String[] args) {
+		Boolean useUUIDs = BungeeUtilisals.getInstance().getConfigData().UUIDSTORAGE;
+		if (args.length < 2) {
+			for (String s : Punishments.punishments.getFile().getStringList("Punishments.Kick.Messages.WrongArgs")) {
+				sender.sendMessage(Utils.format(s));
 			}
 			return;
 		}
 		ProxiedPlayer p = ProxyServer.getInstance().getPlayer(args[0]);
-		if(p == null){
-			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Kick.Messages.NotOnline")){
+		if (p == null) {
+			for (String s : Punishments.punishments.getFile().getStringList("Punishments.Kick.Messages.NotOnline")) {
 				sender.sendMessage(Utils.format(s));
 			}
 			return;
 		}
-		String kreason = "";
-		String reason = "";
-		for(String s : args){
-			reason = reason + s + " ";
-		}
-		reason = reason.replace(p.getName() + " ", "");
-		for(String s : Punishments.punishments.getFile().getStringList("Punishments.Kick.Messages.KickMessage")){
-			kreason = kreason + "\n" + s;
-		}
-        
+		String reason = Joiner.on(" ").join(Arrays.copyOfRange(args, 1, args.length));
 		UUID uuid = UUIDFetcher.getUUIDOf(args[0]);
-		if(uuid == null){
+		if (uuid == null && useUUIDs) {
 			return;
 		}
-		PlayerInfo info;
-		if(BungeeUtilisals.getInstance().getConfigData().UUIDSTORAGE){
-			info = new PlayerInfo(uuid.toString());
-		} else {
-			info = new PlayerInfo(args[0]);
-		}
+		PlayerInfo info = new PlayerInfo((useUUIDs ? uuid.toString() : args[0]));
 		info.addKick();
 		KickEvent event = new KickEvent(sender.getName(), args[0], reason);
 		BungeeCord.getInstance().getPluginManager().callEvent(event);
-		p.disconnect(Utils.format(kreason.replace("%kicker%", sender.getName()).replace("%reason%", reason)));
-		for(String s : Punishments.punishments.getFile().getStringList("Punishments.Kick.Messages.Kicked")){
+		p.disconnect(
+				Utils.format(
+						Joiner.on("\n")
+								.join(Punishments.punishments.getFile()
+										.getStringList("Punishments.Kick.Messages.KickMessage"))
+								.replace("%kicker%", sender.getName()).replace("%reason%", reason)));
+		for (String s : Punishments.punishments.getFile().getStringList("Punishments.Kick.Messages.Kicked")) {
 			sender.sendMessage(Utils.format(s.replace("%player%", args[0])));
-		}
-	}
-	
-
-	@Override
-	public void execute(CommandSender sender, String[] args) {
-		if(!(sender instanceof ProxiedPlayer)){
-			executeKickCommand(sender, args);
-			return;
-		}
-		if(BungeeUtilisals.getInstance().getConfig().getBoolean("Bukkit-Permissions")){
-			PluginMessageChannel.sendPermissionCheckPluginMessage("hasPermission", "butilisals.kick", "kick", args, ((ProxiedPlayer)sender));
-			return;
-		}
-		if(sender.hasPermission("butilisals.kick") || sender.hasPermission("butilisals.*")){
-			executeKickCommand(sender, args);
-		} else {
-			for(String s : Punishments.punishments.getFile().getStringList("Punishments.Messages.NoPermission")){
-				sender.sendMessage(Utils.format(s));
-			}
 		}
 	}
 }

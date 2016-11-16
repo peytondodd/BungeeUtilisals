@@ -15,43 +15,36 @@ import net.md_5.bungee.event.EventHandler;
 
 public class MessageLimiter implements Listener {
 
-	  public BungeeUtilisals plugin;
-	  
-	  public MessageLimiter(BungeeUtilisals plugin) {
-	    this.plugin = plugin;
-	  }
-	  
-	  public static Map<ProxiedPlayer, Integer> messagelimiter = new HashMap<ProxiedPlayer, Integer>();
-	  
-	  @EventHandler
-	  public void Messagelimiter(ChatEvent event){
-		  final ProxiedPlayer p = (ProxiedPlayer)event.getSender();
-		  if(event.isCommand()){
-			  return;
-		  }
-		  if(plugin.getConfig().getBoolean("MessageLimiter.Enabled")){
-			  int max = plugin.getConfig().getInt("MessageLimiter.Max");
-			  int time = plugin.getConfig().getInt("MessageLimiter.Time");
-			  if(messagelimiter.containsKey(p)){
-				  int got = messagelimiter.get(p);
-				  if(got >= max){
-					  event.setCancelled(true);
-					  p.sendMessage(Utils.format(plugin.getConfig().getString("MessageLimiter.Message").replace("%player%", p.getName())));
-				  } else {
-					  messagelimiter.put(p, got + 1);
-				  }
-			  } else {
-				 messagelimiter.put(p, 0);
-				 
-		    	    ProxyServer.getInstance().getScheduler().schedule(BungeeUtilisals.getInstance(), new Runnable(){
-						public void run() {
-			    		  	messagelimiter.remove(p);
-						}
-		    	    }, time, TimeUnit.SECONDS);
-			  }
-		  }
-	  }
+	public static Map<ProxiedPlayer, Integer> messagelimiter = new HashMap<ProxiedPlayer, Integer>();
 
-	  
-	  
+	@EventHandler
+	public void Messagelimiter(ChatEvent event) {
+		final ProxiedPlayer p = (ProxiedPlayer) event.getSender();
+		if (event.isCommand()) {
+			return;
+		}
+		if (BungeeUtilisals.getInstance().getConfig().getBoolean("MessageLimiter.Enabled")) {
+			int max = BungeeUtilisals.getInstance().getConfig().getInt("MessageLimiter.Max");
+			int time = BungeeUtilisals.getInstance().getConfig().getInt("MessageLimiter.Time");
+			if (messagelimiter.containsKey(p)) {
+				int got = messagelimiter.get(p);
+				if (got >= max) {
+					event.setCancelled(true);
+					p.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig()
+							.getString("MessageLimiter.Message").replace("%player%", p.getName())));
+				} else {
+					messagelimiter.put(p, got + 1);
+				}
+			} else {
+				messagelimiter.put(p, 0);
+
+				ProxyServer.getInstance().getScheduler().schedule(BungeeUtilisals.getInstance(), new Runnable() {
+					public void run() {
+						messagelimiter.remove(p);
+					}
+				}, time, TimeUnit.SECONDS);
+			}
+		}
+	}
+
 }

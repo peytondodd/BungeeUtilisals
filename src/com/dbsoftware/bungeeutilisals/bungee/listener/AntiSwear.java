@@ -17,11 +17,12 @@ public class AntiSwear implements Listener {
 	public void Anticurse(ChatEvent event) {
 		ProxiedPlayer p = (ProxiedPlayer) event.getSender();
 		Boolean foundSwear = false;
-		
+
 		String startMessage = event.getMessage();
-		
+
 		String msg = startMessage.toLowerCase();
-		BaseComponent[] antiswear = Utils.format(BungeeUtilisals.getInstance().getConfig().getString("AntiSwear.Message"));
+		BaseComponent[] antiswear = Utils
+				.format(BungeeUtilisals.getInstance().getConfig().getString("AntiSwear.Message"));
 		if (BungeeUtilisals.getInstance().getConfig().getBoolean("AntiSwear.Enabled")) {
 			if (event.getMessage().startsWith("/ban") || event.getMessage().startsWith("/banip")
 					|| event.getMessage().startsWith("/checkban") || event.getMessage().startsWith("/kick")
@@ -33,8 +34,11 @@ public class AntiSwear implements Listener {
 			}
 			for (String word : BungeeUtilisals.getInstance().getConfig().getStringList("AntiSwear.Blocked")) {
 				if (BungeeUtilisals.getInstance().getConfig().getBoolean("AntiSwear.Advanced")) {
-					if ((msg.contains(word.toLowerCase())) || (msg.replace(" ", "").replace("*", "").replace("?", "").replace(".", "").replace(",", "").replace(";", "").replace(":", "").replace("/", "").replace("-", "").replace("_", "").contains(word.toLowerCase()))) {
-						String replacewith = BungeeUtilisals.getInstance().getConfig().getString("AntiSwear.Replace_With");
+					if ((msg.contains(word.toLowerCase())) || (msg.replace(" ", "").replace("*", "").replace("?", "")
+							.replace(".", "").replace(",", "").replace(";", "").replace(":", "").replace("/", "")
+							.replace("-", "").replace("_", "").contains(word.toLowerCase()))) {
+						String replacewith = BungeeUtilisals.getInstance().getConfig()
+								.getString("AntiSwear.Replace_With");
 						if (!replacewith.isEmpty()) {
 							event.setMessage(event.getMessage().replace(word, replacewith));
 							p.sendMessage(antiswear);
@@ -51,7 +55,8 @@ public class AntiSwear implements Listener {
 					if (!event.getMessage().contains(" ")) {
 						if (msg.toLowerCase().equalsIgnoreCase(word.toLowerCase())) {
 							if (!replacewith.isEmpty()) {
-								event.setMessage(event.getMessage().toLowerCase().replace(word.toLowerCase(), replacewith));
+								event.setMessage(
+										event.getMessage().toLowerCase().replace(word.toLowerCase(), replacewith));
 								p.sendMessage(antiswear);
 								foundSwear = true;
 							} else {
@@ -82,12 +87,13 @@ public class AntiSwear implements Listener {
 				}
 			}
 		}
-		if(foundSwear){
-			for(BungeeUser user : BungeeUtilisals.getInstance().getStaff()){
-				for(String s : BungeeUtilisals.getInstance().getConfig().getStringList("AntiSwear.StaffMessage")){
-					user.sendMessage(s.replace("%name%", p.getName()).replace("%server%", p.getServer().getInfo().getName()).replace("%message%", startMessage));
+		if (foundSwear) {
+			for (BungeeUser user : BungeeUtilisals.getInstance().getStaff()) {
+				for (String s : BungeeUtilisals.getInstance().getConfig().getStringList("AntiSwear.StaffMessage")) {
+					user.sendMessage(s.replace("%name%", p.getName())
+							.replace("%server%", p.getServer().getInfo().getName()).replace("%message%", startMessage));
 				}
-			}	
+			}
 		}
 	}
 }

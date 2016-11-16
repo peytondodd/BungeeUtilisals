@@ -29,16 +29,17 @@ public class ServerActionBarAnnouncements implements Runnable {
 		if (server.getPlayers().isEmpty()) {
 			return;
 		}
-		for(ProxiedPlayer player : server.getPlayers()){
-            for ( String line : list.get(count).split( "\n" ) ) {
-		        ActionBarUtil.sendActionBar(player, line.replace("%p%", player.getName()));
-            }
+		for (ProxiedPlayer player : server.getPlayers()) {
+			for (String line : list.get(count).split("\n")) {
+				ActionBarUtil.sendActionBar(player, line.replace("%p%", player.getName()));
+			}
 		}
 		count++;
-		if((count + 1) > list.size()){
+		if ((count + 1) > list.size()) {
 			count = 0;
 		}
 	}
+
 	public String colorize(String input) {
 		return ChatColor.translateAlternateColorCodes('&', input);
 	}

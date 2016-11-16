@@ -16,45 +16,49 @@ import net.md_5.bungee.event.EventHandler;
 
 public class AntiSpam implements Listener {
 
-	public BungeeUtilisals plugin;
-	  
-	public AntiSpam(BungeeUtilisals plugin){
-	    this.plugin = plugin;
-	}
-	
-    public static ArrayList<String> chatspam = new ArrayList<String>();
-    public static Map<ProxiedPlayer, String> norepeat = new HashMap<ProxiedPlayer, String>();
+	public static ArrayList<String> chatspam = new ArrayList<String>();
+	public static Map<ProxiedPlayer, String> norepeat = new HashMap<ProxiedPlayer, String>();
 
 	@EventHandler
-	public void Antispam(ChatEvent event){
-		final ProxiedPlayer p = (ProxiedPlayer)event.getSender();
-		if(p.hasPermission("butilisals.antispam.bypass")){
+	public void Antispam(ChatEvent event) {
+		final ProxiedPlayer p = (ProxiedPlayer) event.getSender();
+		if (p.hasPermission("butilisals.antispam.bypass")) {
 			return;
 		}
-		if(plugin.getConfig().getBoolean("AntiSpam.Enabled") && !(norepeat.containsKey(p) && norepeat.containsValue(event.getMessage()))){
-			if(chatspam.contains(p.getName())){
-				if(!event.isCommand()){
-					p.sendMessage(Utils.format(plugin.getConfig().getString("AntiSpam.Message").replace("%time%", String.valueOf(plugin.getConfig().getInt("AntiSpam.Seconds")))));
-					event.setCancelled(true); 	  
-				} else if (event.getMessage().startsWith("/r ") || event.getMessage().startsWith("/msg ") || event.getMessage().startsWith("/m ") || event.getMessage().startsWith("/t ") || event.getMessage().startsWith("/w ")) {
-					p.sendMessage(Utils.format(plugin.getConfig().getString("AntiSpam.Message").replace("%time%", String.valueOf(plugin.getConfig().getInt("AntiSpam.Seconds")))));
+		if (BungeeUtilisals.getInstance().getConfig().getBoolean("AntiSpam.Enabled")
+				&& !(norepeat.containsKey(p) && norepeat.containsValue(event.getMessage()))) {
+			if (chatspam.contains(p.getName())) {
+				if (!event.isCommand()) {
+					p.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("AntiSpam.Message")
+							.replace("%time%", String
+									.valueOf(BungeeUtilisals.getInstance().getConfig().getInt("AntiSpam.Seconds")))));
+					event.setCancelled(true);
+				} else if (event.getMessage().startsWith("/r ") || event.getMessage().startsWith("/msg ")
+						|| event.getMessage().startsWith("/m ") || event.getMessage().startsWith("/t ")
+						|| event.getMessage().startsWith("/w ")) {
+					p.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("AntiSpam.Message")
+							.replace("%time%", String
+									.valueOf(BungeeUtilisals.getInstance().getConfig().getInt("AntiSpam.Seconds")))));
 					event.setCancelled(true);
 				}
 				return;
 			} else {
 				chatspam.add(p.getName());
-				ProxyServer.getInstance().getScheduler().schedule(plugin, new Runnable(){
+				ProxyServer.getInstance().getScheduler().schedule(BungeeUtilisals.getInstance(), new Runnable() {
 					public void run() {
 						chatspam.remove(p.getName());
 					}
-				}, plugin.getConfig().getInt("AntiSpam.Seconds"), TimeUnit.SECONDS);
+				}, BungeeUtilisals.getInstance().getConfig().getInt("AntiSpam.Seconds"), TimeUnit.SECONDS);
 			}
-		} if(plugin.getConfig().getBoolean("Norepeat.Enabled")){
-			if(!event.isCommand()){
-				if(norepeat.containsKey(p) && norepeat.get(p).toLowerCase().equalsIgnoreCase(event.getMessage().toLowerCase())){
+		}
+		if (BungeeUtilisals.getInstance().getConfig().getBoolean("Norepeat.Enabled")) {
+			if (!event.isCommand()) {
+				if (norepeat.containsKey(p)
+						&& norepeat.get(p).toLowerCase().equalsIgnoreCase(event.getMessage().toLowerCase())) {
 					event.setCancelled(true);
-			    	p.sendMessage(Utils.format(plugin.getConfig().getString("Norepeat.Message")));
-			    	return;
+					p.sendMessage(
+							Utils.format(BungeeUtilisals.getInstance().getConfig().getString("Norepeat.Message")));
+					return;
 				} else {
 					norepeat.remove(p);
 					norepeat.put(p, event.getMessage());

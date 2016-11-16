@@ -10,30 +10,21 @@ import net.md_5.bungee.event.EventHandler;
 
 public class ChatLock implements Listener {
 
-	public BungeeUtilisals plugin;
-	  
-	public ChatLock(BungeeUtilisals plugin){
-		this.plugin = plugin;
-	}
-	  
-	private BungeeUtilisals instance = BungeeUtilisals.getInstance();
-	  
 	@EventHandler
-	public void Chatlock(ChatEvent event){
-		ProxiedPlayer p = (ProxiedPlayer)event.getSender();
-		if (isChatMuted()){
-			if(p.hasPermission("butilisals.talkinlock") || p.hasPermission("butilisals.*")){
+	public void Chatlock(ChatEvent event) {
+		ProxiedPlayer p = (ProxiedPlayer) event.getSender();
+		if (isChatMuted()) {
+			if (p.hasPermission("butilisals.talkinlock") || p.hasPermission("butilisals.*")) {
 				return;
 			}
-			if (!event.getMessage().startsWith("/")){
-				p.sendMessage(Utils.format(plugin.getConfig().getString("ChatLock.Locked")));
+			if (!event.getMessage().startsWith("/")) {
+				p.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("ChatLock.Locked")));
 				event.setCancelled(true);
 			}
 		}
 	}
-	
+
 	private boolean isChatMuted() {
-		return instance.chatMuted;
+		return BungeeUtilisals.getInstance().chatMuted;
 	}
 }
-

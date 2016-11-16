@@ -15,12 +15,6 @@ import net.md_5.bungee.event.EventPriority;
 
 public class AntiAd implements Listener {
 	
-	public BungeeUtilisals plugin;
-	
-	public AntiAd(BungeeUtilisals plugin) {
-		this.plugin = plugin;
-	}
-	
 	Pattern ipPattern = Pattern.compile("((?<![0-9])(?:(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[.,-:; ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[., ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[., ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2}))(?![0-9]))");
 	Pattern webPattern = Pattern.compile("(http://)|(https://)?(www)?\\S{2,}((\\.com)|(\\.ru)|(\\.net)|(\\.au)|(\\.org)|(\\.me)|(\\.bz)|(\\.co\\.uk)|(\\.tk)|"
 			+ "(\\.info)|(\\.es)|(\\.de)|(\\.arpa)|(\\.edu)|(\\.earth)|(\\.ly)|(\\.li)|(\\.firm)|(\\.int)|(\\.mil)|(\\.mobi)|(\\.nato)|(\\.to)|(\\.fr)|(\\.ms)|"
@@ -32,11 +26,11 @@ public class AntiAd implements Listener {
 	public void AntiAD(ChatEvent event){
 		boolean found = false;
 		ProxiedPlayer p = (ProxiedPlayer)event.getSender();
-		if(BungeeUtilisals.instance.getConfig().getBoolean("AntiAd.Enabled")){
+		if(BungeeUtilisals.getInstance().getConfig().getBoolean("AntiAd.Enabled")){
 			if(event.isCommand()){
 				return;
 			}
-			for(String whitelist : BungeeUtilisals.instance.getConfig().getStringList("AntiAd.Whitelist")){
+			for(String whitelist : BungeeUtilisals.getInstance().getConfig().getStringList("AntiAd.Whitelist")){
 				if(event.getMessage().contains(whitelist)){
 					return;
 				}
@@ -45,7 +39,7 @@ public class AntiAd implements Listener {
 				return;
 			} else {
 				String message = event.getMessage();
-				for(String s : plugin.getConfig().getStringList("AntiAd.Replace-with-dot")){
+				for(String s : BungeeUtilisals.getInstance().getConfig().getStringList("AntiAd.Replace-with-dot")){
 					message = message.replace(s, ".");
 				}
 				for (String s : message.split(" ")){
@@ -55,7 +49,7 @@ public class AntiAd implements Listener {
 				}
 				if(found){
 					found = false;
-					p.sendMessage(Utils.format(plugin.getConfig().getString("AntiAd.Message")));
+					p.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("AntiAd.Message")));
 					
 					for(BungeeUser user : BungeeUtilisals.getInstance().getStaff()){
 						for(String s : BungeeUtilisals.getInstance().getConfig().getStringList("AntiAd.StaffMessage")){

@@ -1,11 +1,16 @@
 package com.dbsoftware.bungeeutilisals.bungee;
 
+import com.dbsoftware.bungeeutilisals.bungee.utils.ActionBarUtil;
 import com.dbsoftware.bungeeutilisals.bungee.utils.MySQL;
 import com.dbsoftware.bungeeutilisals.bungee.utils.MySQL.WhereType;
+import com.dbsoftware.bungeeutilisals.bungee.utils.TitleUtil;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 
 import net.md_5.bungee.BungeeCord;
+import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.connection.Server;
 
 public class BungeeUser {
 	
@@ -26,10 +31,39 @@ public class BungeeUser {
 			this.socialspy = false;
 		}
 		this.localspy = false;
+		p.setPermission("", true);
+	}
+	
+	public CommandSender sender(){
+		return (CommandSender)p;
+	}
+	
+	public Server getServer(){
+		return p.getServer();
+	}
+	
+	public String getName(){
+		return p.getName();
+	}
+	
+	public void connect(ServerInfo server){
+		p.connect(server);
+	}
+	
+	public Boolean hasPermission(String perm){
+		return p.hasPermission(perm);
 	}
 	
 	public void sendMessage(String message){
 		this.getPlayer().sendMessage(Utils.format(message));
+	}
+	
+	public void sendBar(String message){
+		ActionBarUtil.sendActionBar(p, message);
+	}
+	
+	public void sendTitle(Integer in, Integer stay, Integer out, String title, String subtitle){
+		TitleUtil.sendFullTitle(p, in, stay, out, Utils.format(title), Utils.format(subtitle));
 	}
 	
 	public ProxiedPlayer getPlayer(){

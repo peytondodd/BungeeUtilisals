@@ -3,9 +3,10 @@ package com.dbsoftware.bungeeutilisals.bungee.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dbsoftware.bungeeutilisals.api.DBCommand;
+import com.dbsoftware.bungeeutilisals.bungee.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.events.PrivateMessageEvent;
-import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 import com.google.common.base.Joiner;
 
@@ -13,20 +14,17 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.plugin.Command;
 
-public class MSGCommand extends Command {
+public class MSGCommand extends DBCommand {
 	
 	public MSGCommand() {
-		super("gmsg", "", BungeeUtilisals.getInstance().getConfig().getStringList("PrivateMessages.MSG.Aliases").toArray(new String[]{}));
+		super("gmsg", BungeeUtilisals.getInstance().getConfig().getStringList("PrivateMessages.MSG.Aliases"));
+		permissions.add("butilisals.msg");
 	}
-
-	public static void executeMSGCommand(CommandSender sender, String[] args){
-        if (!(sender instanceof ProxiedPlayer)) {
-        	sender.sendMessage(Utils.format("&6Only players can use this command!"));
-            return;
-        }
-        ProxiedPlayer p = (ProxiedPlayer)sender;
+	
+	@Override
+	public void onExecute(BungeeUser user, String[] args) {
+        ProxiedPlayer p = user.getPlayer();
         if(args.length < 2){
         	p.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("PrivateMessages.MSG.Messages.WrongUsage")));
         	return;
@@ -52,29 +50,21 @@ public class MSGCommand extends Command {
         	return;
         }
         
-        if (BungeeUtilisals.getInstance().pmcache.containsKey(p.getName().toLowerCase())) {
-        	BungeeUtilisals.getInstance().pmcache.remove(p.getName().toLowerCase());
+        if (BungeeUtilisals.getInstance().getPmcache().containsKey(p.getName().toLowerCase())) {
+        	BungeeUtilisals.getInstance().getPmcache().remove(p.getName().toLowerCase());
         }
-        if (BungeeUtilisals.getInstance().pmcache.containsKey(pl.getName().toLowerCase())) {
-        	BungeeUtilisals.getInstance().pmcache.remove(pl.getName().toLowerCase());
+        if (BungeeUtilisals.getInstance().getPmcache().containsKey(pl.getName().toLowerCase())) {
+        	BungeeUtilisals.getInstance().getPmcache().remove(pl.getName().toLowerCase());
         }
-        BungeeUtilisals.getInstance().pmcache.put(p.getName().toLowerCase(), pl.getName().toLowerCase());
-        BungeeUtilisals.getInstance().pmcache.put(pl.getName().toLowerCase(), p.getName().toLowerCase());
+        BungeeUtilisals.getInstance().getPmcache().put(p.getName().toLowerCase(), pl.getName().toLowerCase());
+        BungeeUtilisals.getInstance().getPmcache().put(pl.getName().toLowerCase(), p.getName().toLowerCase());
         
         p.sendMessage(TextComponent.fromLegacyText(BungeeUtilisals.getInstance().getConfig().getString("PrivateMessages.MSG.Messages.Format.Sending").replace("%player%", pl.getName()).replace("%server%", pl.getServer().getInfo().getName()).replace("&", "§").replace("%message%", message)));
         pl.sendMessage(TextComponent.fromLegacyText(BungeeUtilisals.getInstance().getConfig().getString("PrivateMessages.MSG.Messages.Format.Receiving").replace("%player%", p.getName()).replace("%server%", p.getServer().getInfo().getName()).replace("&", "§").replace("%message%", message)));
 	}
 
 	@Override
-	public void execute(CommandSender sender, String[] args) {
-		if(BungeeUtilisals.getInstance().getConfig().getBoolean("Bukkit-Permissions")){
-			PluginMessageChannel.sendPermissionCheckPluginMessage("hasPermission", "butilisals.msg", "msg", args, ((ProxiedPlayer)sender));
-			return;
-		}
-		if(sender.hasPermission("butilisals.msg") || sender.hasPermission("butilisals.*")){
-			executeMSGCommand(sender, args);		
-		} else {
-			sender.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("Prefix") + BungeeUtilisals.getInstance().getConfig().getString("Main-messages.no-permission")));
-		}
+	public void onExecute(CommandSender sender, String[] args) {
+    	sender.sendMessage(Utils.format("&6Only players can use this command!"));
 	}
 }

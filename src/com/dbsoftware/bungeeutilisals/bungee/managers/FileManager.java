@@ -2,28 +2,28 @@ package com.dbsoftware.bungeeutilisals.bungee.managers;
 
 import java.io.File;
 import java.io.IOException;
+
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
 public class FileManager {
-	
+
 	private File file;
 	private Configuration config;
 	private String key;
-	
-	
+
 	public FileManager(String path) {
 		this.key = System.getProperty("user.dir") + path;
 		createFile();
 		file = new File(this.key);
 		load();
 	}
-	
-	public Configuration getFile(){
+
+	public Configuration getFile() {
 		return this.config;
 	}
-	
+
 	public void load() {
 		try {
 			this.config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(this.file);
@@ -39,10 +39,10 @@ public class FileManager {
 			e.printStackTrace();
 		}
 	}
-	
-	public void createFile(){
+
+	public void createFile() {
 		File config = new File(key);
-		if(!config.exists()){
+		if (!config.exists()) {
 			config.getParentFile().mkdirs();
 			try {
 				config.createNewFile();
