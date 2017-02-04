@@ -4,8 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-import com.dbsoftware.bungeeutilisals.api.CommandAPI;
-import com.dbsoftware.bungeeutilisals.api.DBCommand;
+import com.dbsoftware.bungeeutilisals.api.commands.CommandAPI;
+import com.dbsoftware.bungeeutilisals.api.commands.DBCommand;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.user.BungeeUser;
 

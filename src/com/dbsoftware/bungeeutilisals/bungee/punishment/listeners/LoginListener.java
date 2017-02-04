@@ -15,6 +15,7 @@ import net.md_5.bungee.event.EventHandler;
 
 public class LoginListener implements Listener {
 
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onLogin(final LoginEvent event) {
 		PlayerInfo info;

@@ -1,4 +1,4 @@
-package com.dbsoftware.bungeeutilisals.api;
+package com.dbsoftware.bungeeutilisals.api.commands;
 
 import java.util.List;
 

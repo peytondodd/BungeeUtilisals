@@ -11,7 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import com.dbsoftware.bungeeutilisals.api.CommandAPI;
+import com.dbsoftware.bungeeutilisals.api.MySQL;
+import com.dbsoftware.bungeeutilisals.api.commands.CommandAPI;
 import com.dbsoftware.bungeeutilisals.bungee.actionbarannouncer.ActionBarAnnouncer;
 import com.dbsoftware.bungeeutilisals.bungee.announcer.Announcer;
 import com.dbsoftware.bungeeutilisals.bungee.commands.AlertCommand;
@@ -51,13 +52,11 @@ import com.dbsoftware.bungeeutilisals.bungee.managers.DatabaseManager;
 import com.dbsoftware.bungeeutilisals.bungee.metrics.Metrics;
 import com.dbsoftware.bungeeutilisals.bungee.party.Party;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
-import com.dbsoftware.bungeeutilisals.bungee.report.Reports;
 import com.dbsoftware.bungeeutilisals.bungee.staffchat.StaffChat;
 import com.dbsoftware.bungeeutilisals.bungee.tabmanager.TabManager;
 import com.dbsoftware.bungeeutilisals.bungee.titleannouncer.TitleAnnouncer;
 import com.dbsoftware.bungeeutilisals.bungee.updater.UpdateChecker;
 import com.dbsoftware.bungeeutilisals.bungee.user.BungeeUser;
-import com.dbsoftware.bungeeutilisals.bungee.utils.MySQL;
 import com.dbsoftware.bungeeutilisals.bungee.utils.TPSRunnable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -76,27 +75,22 @@ import net.md_5.bungee.config.YamlConfiguration;
 
 public class BungeeUtilisals extends Plugin {
 
-	@Getter
-	@Setter(AccessLevel.PRIVATE)
+	@Getter @Setter(AccessLevel.PRIVATE)
 	private static BungeeUtilisals instance;
-	@Getter
-	@Setter(AccessLevel.PRIVATE)
+	@Getter @Setter(AccessLevel.PRIVATE)
 	private DatabaseManager databaseManager;
 	public boolean chatMuted = false;
 	public boolean update;
 	private File configfile;
-	@Getter
-	private Configuration config;
-	@Getter
-	private ConfigData configData;
-	@Getter
-	private HashMap<String, String> pmcache = Maps.newHashMap();
+	@Getter private Configuration config;
+	@Getter private ConfigData configData;
+	@Getter private HashMap<String, String> pmcache = Maps.newHashMap();
 	public List<BungeeUser> users = Lists.newArrayList();
 	public List<String> staff = Lists.newArrayList();
 
 	public void onEnable() {
 		setInstance(this);
-
+		
 		try {
 			Metrics metrics = new Metrics(this);
 			metrics.start();
@@ -151,7 +145,6 @@ public class BungeeUtilisals extends Plugin {
 				}
 			}, 5, 5, TimeUnit.MINUTES);
 
-			Reports.registerReportSystem();
 			Punishments.registerPunishmentSystem();
 			Runnable r = new Runnable() {
 				@Override

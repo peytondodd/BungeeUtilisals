@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 
-import com.dbsoftware.bungeeutilisals.api.CommandAPI;
+import com.dbsoftware.bungeeutilisals.api.commands.CommandAPI;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.managers.FileManager;
 

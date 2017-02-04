@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import com.dbsoftware.bungeeutilisals.api.DBCommand;
+import com.dbsoftware.bungeeutilisals.api.commands.DBCommand;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.BanAPI;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.MuteAPI;

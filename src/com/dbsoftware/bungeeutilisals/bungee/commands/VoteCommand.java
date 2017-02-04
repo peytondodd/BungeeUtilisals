@@ -1,6 +1,6 @@
 package com.dbsoftware.bungeeutilisals.bungee.commands;
 
-import com.dbsoftware.bungeeutilisals.api.DBCommand;
+import com.dbsoftware.bungeeutilisals.api.commands.DBCommand;
 import com.dbsoftware.bungeeutilisals.bukkit.BungeeUtilisals;
 import com.dbsoftware.bungeeutilisals.bungee.user.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;

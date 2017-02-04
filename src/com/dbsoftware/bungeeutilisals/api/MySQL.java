@@ -1,4 +1,4 @@
-package com.dbsoftware.bungeeutilisals.bungee.utils;
+package com.dbsoftware.bungeeutilisals.api;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

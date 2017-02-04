@@ -9,3 +9,4 @@ Changelog for Build #226:
 - Added /unbanip (player/IP) to unban IP's, /unban to unban players.
 - Fixed a bug in /unmute, also broadcasting the unmute message to staff, when the user wasn't muted.
 - Fixed the warn counter (showing in /binfo) while using UUID mode.
+- Temporary removed (buggy) report system. Mainly because it's unefficient.

@@ -3,7 +3,7 @@ package com.dbsoftware.bungeeutilisals.bungee.staffchat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dbsoftware.bungeeutilisals.api.CommandAPI;
+import com.dbsoftware.bungeeutilisals.api.commands.CommandAPI;
 import com.dbsoftware.bungeeutilisals.bungee.BungeeUtilisals;
 
 import net.md_5.bungee.api.ProxyServer;
