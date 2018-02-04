@@ -90,14 +90,7 @@ public class BungeeUtilisals extends Plugin {
 
 	public void onEnable() {
 		setInstance(this);
-		
-		try {
-			Metrics metrics = new Metrics(this);
-			metrics.start();
-		} catch (IOException e) {
-			ProxyServer.getInstance().getLogger().info("[BungeeUtilisals] Metrics could not be enabled.");
-		}
-
+		new Metrics(this);
 		this.configfile = this.loadResource(this, "config.yml");
 		try {
 			this.config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(this.configfile);
@@ -110,6 +103,7 @@ public class BungeeUtilisals extends Plugin {
 		loadCommands();
 		registerEvents();
 		Announcer.loadAnnouncements();
+		//new NEWAnnouncer();
 		TitleAnnouncer.loadAnnouncements();
 		ActionBarAnnouncer.loadAnnouncements();
 		StaffChat.registerStaffChat();

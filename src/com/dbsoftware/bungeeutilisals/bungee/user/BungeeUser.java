@@ -9,15 +9,21 @@ import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.connection.Server;
+import net.md_5.bungee.api.score.Scoreboard;
+import net.md_5.bungee.api.score.Team;
 
 public class BungeeUser {
 	
 	ProxiedPlayer p;
 	BungeeRank rank;
 	Boolean socialspy,localspy;
+	Scoreboard sb;
+	Team team;
 	
 	public BungeeUser(ProxiedPlayer p){
 		this.p = p;
@@ -56,11 +62,18 @@ public class BungeeUser {
 	}
 	
 	public void sendMessage(String message){
-		this.getPlayer().sendMessage(Utils.format(message));
+		sendMessage(Utils.format(message));
+	}
+	
+	public void sendMessage(TextComponent message){
+		this.getPlayer().sendMessage(message);
+	}
+	public void sendMessage(BaseComponent[] message){
+		this.getPlayer().sendMessage(message);
 	}
 	
 	public void sendBar(String message){
-		ActionBarUtil.sendActionBar(p, message);
+		ActionBarUtil.sendActionBar(p, Utils.c(message));
 	}
 	
 	public void sendTitle(Integer in, Integer stay, Integer out, String title, String subtitle){

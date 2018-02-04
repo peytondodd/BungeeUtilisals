@@ -9,7 +9,6 @@ import com.dbsoftware.bungeeutilisals.bungee.events.WarnEvent;
 import com.dbsoftware.bungeeutilisals.bungee.punishment.Punishments;
 import com.dbsoftware.bungeeutilisals.bungee.user.BungeeUser;
 import com.dbsoftware.bungeeutilisals.bungee.utils.PlayerInfo;
-import com.dbsoftware.bungeeutilisals.bungee.utils.PluginMessageChannel;
 import com.dbsoftware.bungeeutilisals.bungee.utils.UUIDFetcher;
 import com.dbsoftware.bungeeutilisals.bungee.utils.Utils;
 import com.google.common.base.Joiner;
@@ -24,31 +23,7 @@ public class WarnCommand extends DBCommand {
 	public WarnCommand() {
 		super("warn");
 	}
-
-	public static void executeWarnCommand(CommandSender sender, String[] args) {
-
-	}
-
-	@Override
-	public void execute(CommandSender sender, String[] args) {
-		if (!(sender instanceof ProxiedPlayer)) {
-			executeWarnCommand(sender, args);
-			return;
-		}
-		if (BungeeUtilisals.getInstance().getConfig().getBoolean("Bukkit-Permissions")) {
-			PluginMessageChannel.sendPermissionCheckPluginMessage("hasPermission", "butilisals.warn", "warn", args,
-					((ProxiedPlayer) sender));
-			return;
-		}
-		if (sender.hasPermission("butilisals.warn") || sender.hasPermission("butilisals.*")) {
-			executeWarnCommand(sender, args);
-		} else {
-			for (String s : Punishments.punishments.getFile().getStringList("Punishments.Messages.NoPermission")) {
-				sender.sendMessage(Utils.format(s));
-			}
-		}
-	}
-
+	
 	@Override
 	public void onExecute(BungeeUser user, String[] args) {
 		onExecute(user.sender(), args);

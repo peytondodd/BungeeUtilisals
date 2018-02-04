@@ -15,38 +15,38 @@ public class MySQL {
 		return instance;
 	}
 	
-	public Select select(){
-		return new Select();
+	public select select(){
+		return new select();
 	}
 	
-	public Insert insert(){
-		return new Insert();
+	public insert insert(){
+		return new insert();
 	}
 	
-	public Update update(){
-		return new Update();
+	public update update(){
+		return new update();
 	}
 	
-	public Delete delete(){
-		return new Delete();
+	public delete delete(){
+		return new delete();
 	}
 	
 	
-	public class Delete {
+	public class delete {
 		
 		private String table, where, equals;
 		
-		public Delete table(String table) {
+		public delete table(String table) {
 			this.table = table;
 			return this;
 		}
 		
-		public Delete where(String where) {
+		public delete where(String where) {
 			this.where = where;
 			return this;
 		}
 
-		public Delete equals(String equals) {
+		public delete equals(String equals) {
 			this.equals = equals;
 			return this;
 		}
@@ -73,37 +73,37 @@ public class MySQL {
 	
 	public enum UpdateType{SET}
 	
-	public class Update {
+	public class update {
 		
 		private UpdateType type;
 		private String column, table, where, equals, to;
 
-		public Update type(UpdateType type) {
+		public update type(UpdateType type) {
 			this.type = type;
 			return this;
 		}
 		
-		public Update to(String to){
+		public update to(String to){
 			this.to = to;
 			return this;
 		}
 
-		public Update table(String table) {
+		public update table(String table) {
 			this.table = table;
 			return this;
 		}
 
-		public Update column(String column) {
+		public update column(String column) {
 			this.column = column;
 			return this;
 		}
 
-		public Update where(String where) {
+		public update where(String where) {
 			this.where = where;
 			return this;
 		}
 
-		public Update equals(String equals) {
+		public update equals(String equals) {
 			this.equals = equals;
 			return this;
 		}
@@ -133,27 +133,27 @@ public class MySQL {
 		}
 	}
 	
-	public class Insert {
+	public class insert {
 		
-		public InsertSingle single(){
-			return new InsertSingle();
+		public insertsingle single(){
+			return new insertsingle();
 		}
 		
-		public class InsertSingle {
+		public class insertsingle {
 			
 			private String table,column,value;
 			
-			public InsertSingle table(String table){
+			public insertsingle table(String table){
 				this.table = table;
 				return this;
 			}
 			
-			public InsertSingle column(String column){
+			public insertsingle column(String column){
 				this.column = column;
 				return this;
 			}
 			
-			public InsertSingle value(String value){
+			public insertsingle value(String value){
 				this.value = value;
 				return this;
 			}
@@ -183,17 +183,17 @@ public class MySQL {
 		private List<String> columns;
 		private List<Object> values;
 		
-		public Insert table(String table){
+		public insert table(String table){
 			this.table = table;
 			return this;
 		}
 		
-		public Insert columns(List<String> columns){
+		public insert columns(List<String> columns){
 			this.columns = columns;
 			return this;
 		}
 		
-		public Insert values(List<Object> values){
+		public insert values(List<Object> values){
 			this.values = values;
 			return this;
 		}
@@ -239,32 +239,32 @@ public class MySQL {
 			return sql;
 		}
 	}
-	public class Select {
+	public class select {
 		
 		private String column,table,where,equals;
 		private WhereType type;
 		
-		public Select table(String table){
+		public select table(String table){
 			this.table = table;
 			return this;
 		}
 		
-		public Select column(String column){
+		public select column(String column){
 			this.column = column;
 			return this;
 		}
 		
-		public Select where(String where){
+		public select where(String where){
 			this.where = where;
 			return this;
 		}
 		
-		public Select wheretype(WhereType type){
+		public select wheretype(WhereType type){
 			this.type = type;
 			return this;
 		}
 		
-		public Select wherereq(String equals){
+		public select wherereq(String equals){
 			this.equals = equals;
 			return this;
 		}

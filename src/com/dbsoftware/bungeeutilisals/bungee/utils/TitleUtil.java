@@ -39,7 +39,7 @@ public class TitleUtil {
 
 	private static void playTitle(ProxiedPlayer player, Integer fadeIn, Integer stay, Integer fadeOut, BaseComponent[] title, BaseComponent[] subtitle) {
 		Title tit = ProxyServer.getInstance().createTitle();
-		if (subtitle != null) {
+		if (title != null) {
 			tit.title(title);
 		}
 		if (subtitle != null) {

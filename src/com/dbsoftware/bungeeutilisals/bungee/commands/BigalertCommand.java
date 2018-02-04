@@ -60,9 +60,17 @@ public class BigalertCommand extends DBCommand {
 			bar(message);
 		}
 		if(title){
-			String[] titles = message.split("%n");
-			String tit = titles[0];
-			String stit = (titles.length == 2 ? titles[1] : null);
+			String tit;
+			String stit;
+			
+			if(message.contains("%n")){
+				String[] titles = message.split("%n");
+				tit = titles[0];
+				stit = (titles.length == 2 ? titles[1] : null);
+			} else {
+				tit = message;
+				stit = null;
+			}
 			Integer in = config.getInt("BigAlert.Title.FadeIn"), stay = config.getInt("BigAlert.Title.Stay"), out = config.getInt("BigAlert.Title.FadeOut");
 			
 			title(in, stay, out, tit, stit);
@@ -76,14 +84,10 @@ public class BigalertCommand extends DBCommand {
 	}
 	
 	void bar(String message){
-		for(BungeeUser user : BungeeUtilisals.getInstance().getUsers()){
-			user.sendBar(message);
-		}
+		for(BungeeUser user : BungeeUtilisals.getInstance().getUsers()) user.sendBar(message.replaceAll("%n", " "));
 	}
 	
 	void title(Integer in, Integer stay, Integer out, String title, String subtitle){
-		for(BungeeUser user : BungeeUtilisals.getInstance().getUsers()){
-			user.sendTitle(in, stay, out, title, subtitle);
-		}
+		for(BungeeUser user : BungeeUtilisals.getInstance().getUsers()) user.sendTitle(in, stay, out, title, subtitle);
 	}
 }

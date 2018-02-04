@@ -23,7 +23,7 @@ public class ChatUtilities implements Listener {
 		if (BungeeUtilisals.getInstance().getConfig().getBoolean("ChatOptions.first-letter-uppercase")) {
 			if (!event.getMessage().toLowerCase().startsWith("http")) {
 				String msg = event.getMessage().trim();
-				event.setMessage(("" + msg.charAt(0)).toUpperCase() + msg.substring(1));
+				event.setMessage(String.valueOf(msg.charAt(0)).toUpperCase() + msg.substring(1));
 			}
 		}
 

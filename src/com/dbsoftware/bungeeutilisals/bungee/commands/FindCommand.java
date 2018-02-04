@@ -24,6 +24,7 @@ public class FindCommand extends DBCommand {
 	public void onExecute(CommandSender sender, String[] args) {
 		if(args.length != 1){
 			sender.sendMessage(Utils.format(BungeeUtilisals.getInstance().getConfig().getString("Main-messages.use-find")));
+			return;
 		}
 		ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[0]);
 		if(target == null){

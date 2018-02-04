@@ -13,6 +13,7 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 
 public class Announcer {
+	
 	public static ArrayList<ScheduledTask> announcementTasks = new ArrayList<>();
 	static ProxyServer proxy = ProxyServer.getInstance();
 	private static BungeeUtilisals instance = BungeeUtilisals.getInstance();

@@ -10,3 +10,9 @@ Changelog for Build #226:
 - Fixed a bug in /unmute, also broadcasting the unmute message to staff, when the user wasn't muted.
 - Fixed the warn counter (showing in /binfo) while using UUID mode.
 - Temporary removed (buggy) report system. Mainly because it's unefficient.
+- Fixed that BungeeUtilisals overrides /friend & /report, because those systems are removed for now.
+
+Changelog for Build #227:
+- Added @p placeholder for /alert, @p is being replaced by the name of the person who receives the message.
+- Fixed %unbanner% placeholder in Unban staff alert.
+- Fixed bigalert, colors in actionbar part & error in title part.

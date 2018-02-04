@@ -105,7 +105,7 @@ public class PunishmentAlertListener implements Listener {
 		for(BungeeUser user : BungeeUtilisals.getInstance().getStaff()){
 			for(String message : staffalert){
 				user.sendMessage(message.replace("%player%", event.getUnbanned())
-						.replace("%unbanned%", event.getUnbanner()));
+						.replace("%unbanner%", event.getUnbanner()));
 			}
 		}
 	}
