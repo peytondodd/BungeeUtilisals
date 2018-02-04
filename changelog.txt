@@ -16,3 +16,4 @@ Changelog for Build #227:
 - Added @p placeholder for /alert, @p is being replaced by the name of the person who receives the message.
 - Fixed %unbanner% placeholder in Unban staff alert.
 - Fixed bigalert, colors in actionbar part & error in title part.
+- Fixed error in /find command (without arguments)
