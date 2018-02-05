@@ -78,6 +78,7 @@ public class BanInfoCommand extends DBCommand {
 		}
 		SimpleDateFormat df2 = new SimpleDateFormat("kk:mm dd/MM/yyyy");
 		String date = df2.format(new Date(end));
+		String mutedate = df2.format(new Date(muteend));
 
 		Boolean isbanned = (useUUIDs ? BanAPI.isBanned(uuid.toString()) : BanAPI.isBanned(args[0]));
 		String bannedby = null;
@@ -146,11 +147,10 @@ public class BanInfoCommand extends DBCommand {
 									.getString("Punishments.PlayerInfo.Messages.isNotIPBanned", "&cNot IPBanned"))
 
 					/** IS MUTED */
-					).replace("%ismuted%", (ismuted ? Punishments.punishments.getFile().getString("Punishments.PlayerInfo.Messages.isMuted", "&cMuted by %muter% for %reason%. Unmute time: %time%").replace("&", "§").replace("%muter%", mutedby).replace("%reason%", mutereason).replace("%time%", (muteend == -1L ? "Never" : date))
+					).replace("%ismuted%", (ismuted ? Punishments.punishments.getFile().getString("Punishments.PlayerInfo.Messages.isMuted", "&cMuted by %muter% for %reason%. Unmute time: %time%").replace("&", "§").replace("%muter%", mutedby).replace("%reason%", mutereason).replace("%time%", (muteend == -1L ? "Never" : mutedate))
 
 							/** IS NOT MUTED */
-							: Punishments.punishments.getFile().getString("Punishments.PlayerInfo.Messages.isNotMuted",
-									"&cNot Muted")))));
+							: Punishments.punishments.getFile().getString("Punishments.PlayerInfo.Messages.isNotMuted", "&cNot Muted")))));
 		}
 		for (BaseComponent[] message : messages) {
 			sender.sendMessage(message);

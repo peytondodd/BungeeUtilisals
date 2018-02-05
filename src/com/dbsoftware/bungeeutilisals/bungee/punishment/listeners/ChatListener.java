@@ -23,9 +23,8 @@ public class ChatListener implements Listener {
 		}
 		if (event.isCommand()) {
 			boolean blockedcmd = false;
-			for (String s : Punishments.punishments.getFile()
-					.getStringList("Punishments.Settings.Blocked-Cmds-While-Muted")) {
-				if (event.getMessage().startsWith(s)) {
+			for (String s : Punishments.punishments.getFile().getStringList("Punishments.Settings.Blocked-Cmds-While-Muted")) {
+				if (event.getMessage().split(" ")[0].equalsIgnoreCase(s)) {
 					blockedcmd = true;
 					break;
 				}
